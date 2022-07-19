@@ -35,6 +35,13 @@ class Board {
     }
   }
 
+  // uci = "e2"||"f3"||"h7"
+  // get piece at uci location
+  get(uci) {
+    const [file, rank] = convertUciLocation(uci);
+    return this.board[rank][file];
+  }
+
   display() {
     let result = "";
     for (let i = 0; i < 8; i++) {
