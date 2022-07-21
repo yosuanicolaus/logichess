@@ -12,6 +12,7 @@ class Piece {
     this.file = file;
     this.ref = ref;
     this.moves = [];
+    this.captures = [];
   }
 
   createMove(toRank, toFile) {
@@ -19,23 +20,29 @@ class Piece {
     return move;
   }
 
-  checkPanel(rank, file) {
-    const panelPiece = this.ref.get(rank, file);
-    let move;
-    if (panelPiece === ".") {
-      move = this.createMove(rank, file);
-    } else {
-      if (sameFaction(this.faction, panelPiece)) {
-        return;
-      } else {
-        move = this.createMove(rank, file);
-        move.capture = true;
-      }
+  checkMove(rank, file) {
+    const move = this.createMove(rank, file);
+    if (!this.panelEmpty(rank, file)) {
+      move.capture = true;
     }
+    // simulate if we move into (rank, file)
+    // can the opponent take our king?
+    // for now let's just say our king is safe
+    this.moves.push(move);
+  }
 
-    if (move) {
-      // check if the opponent can take the king if we move
-    }
+  panelEmpty(rank, file) {
+    const panelPiece = this.ref.get(rank, file);
+    return panelPiece === ".";
+  }
+
+  canCapture(rank, file) {
+    const panelPiece = this.ref.get(rank, file);
+    return panelPiece !== "." && !sameFaction(this.faction, panelPiece);
+  }
+
+  inBoundaries(rank, file) {
+    return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
   }
 }
 
@@ -51,25 +58,56 @@ class Pawn extends Piece {
 
   generateMoves() {
     this.moves = [];
+    let target;
 
     if (this.startRank !== this.rank || this.startFile !== this.file) {
       this.hasMoved = true;
     }
 
     if (this.faction === "w") {
-      if (!this.hasMoved) {
-        this.checkPanel(this.rank - 2, this.file);
+      if (
+        !this.hasMoved &&
+        this.panelEmpty(this.rank - 2, this.file) &&
+        this.panelEmpty(this.rank - 1, this.file)
+      ) {
+        // special first 2 panel move
+        this.checkMove(this.rank - 2, this.file);
       }
-      this.checkPanel(this.rank - 1, this.file);
-      this.checkPanel(this.rank - 1, this.file - 1);
-      this.checkPanel(this.rank - 1, this.file + 1);
+      target = [this.rank - 1, this.file];
+      if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
+        this.checkMove(...target);
+      }
+      target = [this.rank - 1, this.file - 1];
+      if (this.inBoundaries(...target) && this.canCapture(...target)) {
+        this.checkMove(...target);
+      }
+      target = [this.rank - 1, this.file + 1];
+      if (this.inBoundaries(...target) && this.canCapture(...target)) {
+        this.checkMove(...target);
+      }
     } else if (this.faction === "b") {
-      if (!this.hasMoved) {
-        this.checkPanel(this.rank + 2, this.file);
+      if (
+        !this.hasMoved &&
+        this.panelEmpty(this.rank + 2, this.file) &&
+        this.panelEmpty(this.rank + 1, this.file)
+      ) {
+        // special first 2 panel move
+        this.checkMove(this.rank + 2, this.file);
       }
-      this.checkPanel(this.rank + 1, this.file);
-      this.checkPanel(this.rank + 1, this.file - 1);
-      this.checkPanel(this.rank + 1, this.file + 1);
+      target = [this.rank + 1, this.file];
+      if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
+        this.checkMove(...target);
+      }
+      target = [this.rank + 1, this.file - 1];
+      if (this.inBoundaries(...target) && this.canCapture(...target)) {
+        this.checkMove(...target);
+      }
+      target = [this.rank + 1, this.file + 1];
+      if (this.inBoundaries(...target) && this.canCapture(...target)) {
+        this.checkMove(...target);
+      }
+    } else {
+      throw "(Pawn) faction must be either 'w' or 'b'!";
     }
   }
 }
