@@ -1,5 +1,3 @@
-// const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
 class Board {
   constructor(fenBoard) {
     this.fen = fenBoard;
@@ -18,19 +16,19 @@ class Board {
   }
 
   load(fen) {
-    let file = 0;
     let rank = 0;
+    let file = 0;
     for (let i = 0; i < fen.length; i++) {
       if (fen[i] === "/") {
-        file++;
-        rank = 0;
+        rank++;
+        file = 0;
         continue;
-      } else if (!isNaN(fen[i])) {
-        rank += Number(fen[i]);
+      } else if (isNumber(fen[i])) {
+        file += Number(fen[i]);
         continue;
       } else {
-        this.board[file][rank] = fen[i];
-        rank++;
+        this.board[rank][file] = fen[i];
+        file++;
       }
     }
   }

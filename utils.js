@@ -10,3 +10,11 @@ function convertUciLocation(uci) {
 
   return [fileIndex, rankIndex];
 }
+
+function isNumber(str) {
+  return !isNaN(str);
+}
+
+function isCapital(str) {
+  return str.toUpperCase() === str;
+}
