@@ -84,11 +84,7 @@ class Pawn extends Piece {
     if (
       !this.hasMoved &&
       this.panelEmpty(...targets[0]) &&
-<<<<<<< HEAD
-      this.panelEmpty(targets[1])
-=======
       this.panelEmpty(...targets[1])
->>>>>>> 39a6b23 (create king moves, simplify pawn move to functions)
     ) {
       this.checkMove(...targets[0]);
     }
