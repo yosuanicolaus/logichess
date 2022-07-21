@@ -172,6 +172,35 @@ class Bishop extends Piece {
     this.code = factionCode(faction, "B");
     this.value = 3;
   }
+
+  generateMoves() {
+    const targets = [
+      [this.rank + 1, this.file + 1],
+      [this.rank - 1, this.file + 1],
+      [this.rank - 1, this.file - 1],
+      [this.rank + 1, this.file - 1],
+    ];
+    const increments = [
+      [1, 1],
+      [-1, 1],
+      [-1, -1],
+      [1, -1],
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      while (this.inBoundaries(...targets[i])) {
+        if (this.panelEmpty(...targets[i])) {
+          this.checkMove(...targets[i]);
+        } else if (this.canCapture(...targets[i])) {
+          this.checkMove(...targets[i]);
+          break;
+        } else {
+          break;
+        }
+        addIncrement(targets[i], increments[i]);
+      }
+    }
+  }
 }
 
 class Knight extends Piece {
