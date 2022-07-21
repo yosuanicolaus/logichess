@@ -31,6 +31,13 @@ class Piece {
     this.moves.push(move);
   }
 
+  canMove(rank, file) {
+    return (
+      this.inBoundaries(rank, file) &&
+      (this.panelEmpty(rank, file) || this.canCapture(rank, file))
+    );
+  }
+
   panelEmpty(rank, file) {
     const panelPiece = this.ref.get(rank, file);
     return panelPiece === ".";
@@ -51,64 +58,74 @@ class Pawn extends Piece {
     super(faction, rank, file, ref);
     this.code = factionCode(faction, "P");
     this.value = 1;
-    this.startRank = rank;
-    this.startFile = file;
     this.hasMoved = false;
   }
 
   generateMoves() {
     this.moves = [];
-    let target;
+    this.checkSpecialMove();
+    this.checkNormalMove();
+    this.checkCrossCapture();
+  }
 
-    if (this.startRank !== this.rank || this.startFile !== this.file) {
-      this.hasMoved = true;
-    }
-
+  checkSpecialMove() {
+    let targets;
     if (this.faction === "w") {
-      if (
-        !this.hasMoved &&
-        this.panelEmpty(this.rank - 2, this.file) &&
-        this.panelEmpty(this.rank - 1, this.file)
-      ) {
-        // special first 2 panel move
-        this.checkMove(this.rank - 2, this.file);
-      }
-      target = [this.rank - 1, this.file];
-      if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
-        this.checkMove(...target);
-      }
-      target = [this.rank - 1, this.file - 1];
-      if (this.inBoundaries(...target) && this.canCapture(...target)) {
-        this.checkMove(...target);
-      }
-      target = [this.rank - 1, this.file + 1];
-      if (this.inBoundaries(...target) && this.canCapture(...target)) {
-        this.checkMove(...target);
-      }
-    } else if (this.faction === "b") {
-      if (
-        !this.hasMoved &&
-        this.panelEmpty(this.rank + 2, this.file) &&
-        this.panelEmpty(this.rank + 1, this.file)
-      ) {
-        // special first 2 panel move
-        this.checkMove(this.rank + 2, this.file);
-      }
-      target = [this.rank + 1, this.file];
-      if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
-        this.checkMove(...target);
-      }
-      target = [this.rank + 1, this.file - 1];
-      if (this.inBoundaries(...target) && this.canCapture(...target)) {
-        this.checkMove(...target);
-      }
-      target = [this.rank + 1, this.file + 1];
-      if (this.inBoundaries(...target) && this.canCapture(...target)) {
-        this.checkMove(...target);
-      }
+      targets = [
+        [this.rank - 2, this.file],
+        [this.rank - 1, this.file],
+      ];
     } else {
-      throw "(Pawn) faction must be either 'w' or 'b'!";
+      targets = [
+        [this.rank + 2, this.file],
+        [this.rank + 1, this.file],
+      ];
     }
+    if (
+      !this.hasMoved &&
+      this.panelEmpty(...targets[0]) &&
+      this.panelEmpty(targets[1])
+    ) {
+      this.checkMove(...targets[0]);
+    }
+  }
+
+  checkNormalMove() {
+    let target;
+    if (this.faction === "w") {
+      target = [this.rank - 1, this.file];
+    } else {
+      target = [this.rank + 1, this.file];
+    }
+    if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
+      this.checkMove(...target);
+    }
+  }
+
+  checkCrossCapture() {
+    let targets;
+    if (this.faction === "w") {
+      targets = [
+        [this.rank - 1, this.file - 1],
+        [this.rank - 1, this.file + 1],
+      ];
+    } else {
+      targets = [
+        [this.rank + 1, this.file - 1],
+        [this.rank + 1, this.file + 1],
+      ];
+    }
+    for (let i = 0; i < targets.length; i++) {
+      if (this.inBoundaries(...targets[i]) && this.canCapture(...targets[i])) {
+        this.checkMove(...targets[i]);
+      }
+    }
+  }
+
+  move(move) {
+    this.hasMoved = true;
+    this.rank = move.to.rank;
+    this.file = move.to.file;
   }
 }
 
@@ -117,6 +134,34 @@ class King extends Piece {
     super(faction, rank, file, ref);
     this.code = factionCode(faction, "K");
     this.value = Number.POSITIVE_INFINITY;
+    this.hasMoved = false;
+  }
+
+  generateMoves() {
+    this.moves = [];
+
+    const targets = [
+      [this.rank - 1, this.file - 1],
+      [this.rank - 1, this.file + 0],
+      [this.rank - 1, this.file + 1],
+      [this.rank + 0, this.file - 1],
+      [this.rank + 0, this.file + 1],
+      [this.rank + 1, this.file - 1],
+      [this.rank + 1, this.file + 0],
+      [this.rank + 1, this.file + 1],
+    ];
+
+    for (let i = 0; i < targets.length; i++) {
+      if (this.canMove(...targets[i])) {
+        this.checkMove(...targets[i]);
+      }
+    }
+  }
+
+  move(move) {
+    this.hasMoved = true;
+    this.rank = move.to.rank;
+    this.file = move.to.file;
   }
 }
 
