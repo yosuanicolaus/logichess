@@ -41,22 +41,22 @@ class Player {
     code = code.toUpperCase();
     switch (code) {
       case "P":
-        this.pieces.push(new Pawn(this.id, [rank, file]));
+        this.pieces.push(new Pawn(this.id, rank, file));
         break;
       case "N":
-        this.pieces.push(new Knight(this.id, [rank, file]));
+        this.pieces.push(new Knight(this.id, rank, file));
         break;
       case "B":
-        this.pieces.push(new Bishop(this.id, [rank, file]));
+        this.pieces.push(new Bishop(this.id, rank, file));
         break;
       case "R":
-        this.pieces.push(new Rook(this.id, [rank, file]));
+        this.pieces.push(new Rook(this.id, rank, file));
         break;
       case "Q":
-        this.pieces.push(new Queen(this.id, [rank, file]));
+        this.pieces.push(new Queen(this.id, rank, file));
         break;
       case "K":
-        this.pieces.push(new King(this.id, [rank, file]));
+        this.pieces.push(new King(this.id, rank, file));
         break;
       default:
         throw "piece should be either p/b/n/r/q/k!";
