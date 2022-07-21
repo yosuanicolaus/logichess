@@ -8,9 +8,8 @@ class Player {
 
   getPieces() {
     const fen = this.ref.fen;
-    let capital = this.id === "w";
-
     let [file, rank] = [0, 0];
+
     for (let i = 0; i < fen.length; i++) {
       if (fen[i] === "/") {
         file = 0;
@@ -23,20 +22,44 @@ class Player {
         if (this.id === "w") {
           // if white, get all capital pieces position
           if (isCapital(fen[i])) {
-            const newPiece = new Piece("w", [rank, file]);
-            this.pieces.push(newPiece);
+            this.addPiece(fen[i], rank, file);
           }
         } else if (this.id === "b") {
           // if black, get the noncapital pieces position
           if (!isCapital(fen[i])) {
-            const newPiece = new Piece("b", [rank, file]);
-            this.pieces.push(newPiece);
+            this.addPiece(fen[i], rank, file);
           }
         } else {
           throw "player's id must be either 'w' or 'b'!";
         }
         file++;
       }
+    }
+  }
+
+  addPiece(code, rank, file) {
+    code = code.toUpperCase();
+    switch (code) {
+      case "P":
+        this.pieces.push(new Pawn(this.id, [rank, file]));
+        break;
+      case "N":
+        this.pieces.push(new Knight(this.id, [rank, file]));
+        break;
+      case "B":
+        this.pieces.push(new Bishop(this.id, [rank, file]));
+        break;
+      case "R":
+        this.pieces.push(new Rook(this.id, [rank, file]));
+        break;
+      case "Q":
+        this.pieces.push(new Queen(this.id, [rank, file]));
+        break;
+      case "K":
+        this.pieces.push(new King(this.id, [rank, file]));
+        break;
+      default:
+        throw "piece should be either p/b/n/r/q/k!";
     }
   }
 }

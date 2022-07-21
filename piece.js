@@ -1,7 +1,7 @@
-// faction = "white" || "black"
+// faction = "w" || "b"
 // location uses UCI standard ("e2", "c5", "f3", etc.)
 class Piece {
-  constructor(faction = "white", location) {
+  constructor(faction = "w", location) {
     this.faction = faction;
     this.location = location;
   }
@@ -11,13 +11,56 @@ class Pawn extends Piece {
   constructor(faction, location) {
     super(faction, location);
     this.code = "";
+    this.value = 1;
   }
 }
 
-class King extends Piece {}
+class King extends Piece {
+  constructor(faction, location) {
+    super(faction, location);
+    this.code = factionCode(faction, "K");
+    this.value = Number.POSITIVE_INFINITY;
+  }
+}
 
-class Queen extends Piece {}
+class Queen extends Piece {
+  constructor(faction, location) {
+    super(faction, location);
+    this.code = factionCode(faction, "Q");
+    this.value = 9;
+  }
+}
 
-class Bishop extends Piece {}
+class Bishop extends Piece {
+  constructor(faction, location) {
+    super(faction, location);
+    this.code = factionCode(faction, "B");
+    this.value = 3;
+  }
+}
 
-class Knight extends Piece {}
+class Knight extends Piece {
+  constructor(faction, location) {
+    super(faction, location);
+    this.code = factionCode(faction, "N");
+    this.value = 3;
+  }
+}
+
+class Rook extends Piece {
+  constructor(faction, location) {
+    super(faction, location);
+    this.code = factionCode(faction, "R");
+    this.value = 5;
+  }
+}
+
+function factionCode(faction, code) {
+  if (faction === "w") {
+    return code.toUpperCase();
+  } else if (faction === "b") {
+    return code.toLowerCase();
+  } else {
+    throw "faction should be either 'w'/'b'!";
+  }
+}
