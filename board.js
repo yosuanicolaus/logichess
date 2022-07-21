@@ -1,11 +1,11 @@
-const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+// const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 class Board {
-  constructor(fen = defaultFen) {
-    this.fen = fen;
+  constructor(fenBoard) {
+    this.fen = fenBoard;
     this.board = [];
     this.createBoard();
-    this.load(fen);
+    this.load(fenBoard);
   }
 
   createBoard() {
@@ -20,7 +20,6 @@ class Board {
   load(fen) {
     let file = 0;
     let rank = 0;
-    fen = fen.split(" ")[0];
     for (let i = 0; i < fen.length; i++) {
       if (fen[i] === "/") {
         file++;

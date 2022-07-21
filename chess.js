@@ -1,8 +1,9 @@
 class Chess {
   constructor(fen) {
-    this.board = new Board(fen);
-    this.white = new Player("w");
-    this.black = new Player("b");
+    this.fen = new Fen(fen);
+    this.board = new Board(this.fen.fenBoard);
+    this.pwhite = new Player("w");
+    this.pblack = new Player("b");
   }
 }
 
