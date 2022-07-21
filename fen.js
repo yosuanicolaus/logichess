@@ -1,10 +1,10 @@
 const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 class Fen {
-  constructor(fenString = defaultFen) {
-    this.fen = fenString;
+  constructor(fen = defaultFen) {
+    this.fen = fen;
 
-    const fens = fenString.split(" ");
+    const fens = fen.split(" ");
     this.fenBoard = fens[0];
     this.fenTurn = fens[1];
     this.fenCastle = fens[2];

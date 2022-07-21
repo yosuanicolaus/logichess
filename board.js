@@ -35,8 +35,12 @@ class Board {
 
   // uci = "e2"||"f3"||"h7"
   // get piece at uci location
-  get(uci) {
-    const [file, rank] = convertUciLocation(uci);
+  getUci(uci) {
+    const [rank, file] = convertUciLocation(uci);
+    return this.board[rank][file];
+  }
+
+  get(rank, file) {
     return this.board[rank][file];
   }
 

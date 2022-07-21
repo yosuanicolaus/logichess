@@ -8,7 +8,7 @@ function convertUciLocation(uci) {
     throw "rank is out of bonds";
   }
 
-  return [fileIndex, rankIndex];
+  return [rankIndex, fileIndex];
 }
 
 function isNumber(str) {
