@@ -13,6 +13,7 @@ class Piece {
     this.ref = ref;
     this.moves = [];
     this.captures = [];
+    this.hasMoved = false;
   }
 
   createMove(toRank, toFile) {
@@ -51,6 +52,12 @@ class Piece {
   inBoundaries(rank, file) {
     return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
   }
+
+  move(move) {
+    this.hasMoved = true;
+    this.rank = move.to.rank;
+    this.file = move.to.file;
+  }
 }
 
 class Pawn extends Piece {
@@ -58,7 +65,6 @@ class Pawn extends Piece {
     super(faction, rank, file, ref);
     this.code = factionCode(faction, "P");
     this.value = 1;
-    this.hasMoved = false;
   }
 
   generateMoves() {
@@ -121,12 +127,6 @@ class Pawn extends Piece {
       }
     }
   }
-
-  move(move) {
-    this.hasMoved = true;
-    this.rank = move.to.rank;
-    this.file = move.to.file;
-  }
 }
 
 class King extends Piece {
@@ -134,7 +134,6 @@ class King extends Piece {
     super(faction, rank, file, ref);
     this.code = factionCode(faction, "K");
     this.value = Number.POSITIVE_INFINITY;
-    this.hasMoved = false;
   }
 
   generateMoves() {
@@ -156,12 +155,6 @@ class King extends Piece {
         this.checkMove(...targets[i]);
       }
     }
-  }
-
-  move(move) {
-    this.hasMoved = true;
-    this.rank = move.to.rank;
-    this.file = move.to.file;
   }
 }
 
@@ -186,6 +179,27 @@ class Knight extends Piece {
     super(faction, rank, file, ref);
     this.code = factionCode(faction, "N");
     this.value = 3;
+  }
+
+  generateMoves() {
+    this.moves = [];
+
+    const targets = [
+      [this.rank + 2, this.file + 1],
+      [this.rank + 1, this.file + 2],
+      [this.rank - 1, this.file + 2],
+      [this.rank - 2, this.file + 1],
+      [this.rank - 2, this.file - 1],
+      [this.rank - 1, this.file - 2],
+      [this.rank + 1, this.file - 2],
+      [this.rank + 2, this.file - 1],
+    ];
+
+    for (let i = 0; i < targets.length; i++) {
+      if (this.canMove(...targets[i])) {
+        this.checkMove(...targets[i]);
+      }
+    }
   }
 }
 
