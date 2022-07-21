@@ -18,3 +18,8 @@ function isNumber(str) {
 function isCapital(str) {
   return str.toUpperCase() === str;
 }
+
+function addIncrement(target, increment) {
+  target[0] += increment[0];
+  target[1] += increment[1];
+}

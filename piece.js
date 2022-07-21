@@ -209,6 +209,35 @@ class Rook extends Piece {
     this.code = factionCode(faction, "R");
     this.value = 5;
   }
+
+  generateMoves() {
+    const targets = [
+      [this.rank + 1, this.file],
+      [this.rank - 1, this.file],
+      [this.rank, this.file + 1],
+      [this.rank, this.file - 1],
+    ];
+    const increments = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      while (this.inBoundaries(...targets[i])) {
+        if (this.panelEmpty(...targets[i])) {
+          this.checkMove(...targets[i]);
+        } else if (this.canCapture(...targets[i])) {
+          this.checkMove(...targets[i]);
+          break;
+        } else {
+          break;
+        }
+        addIncrement(targets[i], increments[i]);
+      }
+    }
+  }
 }
 
 function factionCode(faction, code) {
