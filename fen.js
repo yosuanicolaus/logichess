@@ -15,7 +15,7 @@ class Fen {
     this.castlingRights = ["K", "Q", "k", "q"];
   }
 
-  updateFen(move) {
+  update(move, newBoard) {
     if (this.fenTurn === "b") {
       this.fenFullmove++;
       this.fenTurn = "w";
@@ -30,8 +30,34 @@ class Fen {
     }
 
     // TODO: update EnPassant fen
-
+    this.updateBoard(newBoard);
     this.updateCastle(move);
+  }
+
+  updateBoard(board) {
+    let emptyCount = 0;
+    let newFenBoard = "";
+    for (let rank = 0; rank < 8; rank++) {
+      for (let file = 0; file < 8; file++) {
+        const piece = board[rank][file];
+        if (piece === ".") {
+          emptyCount++;
+        } else if (emptyCount !== 0) {
+          newFenBoard += emptyCount + piece;
+          emptyCount = 0;
+        } else {
+          newFenBoard += piece;
+        }
+      }
+      if (emptyCount != 0) {
+        newFenBoard += emptyCount;
+        emptyCount = 0;
+      }
+      if (rank !== 7) {
+        newFenBoard += "/";
+      }
+    }
+    this.fenBoard = newFenBoard;
   }
 
   updateCastle(move) {

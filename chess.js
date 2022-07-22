@@ -6,6 +6,11 @@ class Chess {
     this.pblack = new Player("b", this.board);
     this.turn = this.fen.fenTurn;
   }
+
+  play(move) {
+    this.board.update(move);
+    this.fen.update(move, this.board.board);
+  }
 }
 
 const game = new Chess();

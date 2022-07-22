@@ -1,6 +1,5 @@
 class Board {
   constructor(fenBoard) {
-    this.fen = fenBoard;
     this.board = [];
     this.createBoard();
     this.load(fenBoard);
@@ -53,5 +52,14 @@ class Board {
       result += "\n";
     }
     console.log(result);
+  }
+
+  /**
+   *
+   * @param {Move} move
+   */
+  update(move) {
+    this.board[move.from.rank][move.from.file] = ".";
+    this.board[move.to.rank][move.to.file] = move.piece;
   }
 }
