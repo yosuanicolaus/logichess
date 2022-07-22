@@ -5,6 +5,7 @@ class Player {
     this.fenRef = fenRef;
     this.pieces = [];
     this.possibleMoves = [];
+    this.capturedPieces = [];
 
     this.getPieces();
   }
@@ -88,5 +89,14 @@ class Player {
       piece.generateMoves();
       this.possibleMoves.push(...piece.moves);
     }
+  }
+
+  canCaptureKing() {
+    for (const move of this.possibleMoves) {
+      if (move.capture && move.capturedPiece.toUpperCase() === "K") {
+        return true;
+      }
+    }
+    return false;
   }
 }

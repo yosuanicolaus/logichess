@@ -1,33 +1,34 @@
 class Test {
-  constructor() {
-    this.g = new Chess();
+  captureKing1() {
+    const ng = new Chess("8/3k4/8/8/3R4/8/5K2/8 w - - 0 1");
+    const p = ng.pwhite;
+    p.generatePossibleMoves();
+    console.log(p.possibleMoves);
+    console.log(p.canCaptureKing());
+    console.log("expected true (can capture king)");
+
+    console.log("---");
+    const b = ng.pblack;
+    b.generatePossibleMoves();
+    console.log(b.possibleMoves);
+    console.log(b.canCaptureKing());
+    console.log("expected false");
   }
 
-  pieceGenerateMoves() {
-    // generate g-file knight's moves
-    const wknight = this.g.pwhite.pieces[14];
-    wknight.generateMoves();
-    console.log(wknight.moves);
-  }
+  captureKing2() {
+    const ng = new Chess("8/3k4/8/8/6n1/4R3/5K2/8 w - - 0 1");
+    const p = ng.pwhite;
+    p.generatePossibleMoves();
+    console.log(p.possibleMoves);
+    console.log(p.canCaptureKing());
+    console.log("expected false");
 
-  queenMoves() {
-    // check queen & bishop's moves after 1. e4 pawn moves
-    const ng = new Chess("8/8/1b6/8/3Q1r2/8/2n5/8 w - - 0 1");
-    const wq = ng.pwhite.pieces[0];
-    wq.generateMoves();
-    console.log(wq.moves);
-
-    for (const move of wq.moves) {
-      if (move.capture) {
-        console.log("captured: ", move.capturedPiece);
-      }
-    }
-  }
-
-  moveObj() {
-    const p = this.g.pwhite.pieces[5];
-    p.generateMoves();
-    return p.moves;
+    console.log("---");
+    const b = ng.pblack;
+    b.generatePossibleMoves();
+    console.log(b.possibleMoves);
+    console.log(b.canCaptureKing());
+    console.log("expected true");
   }
 }
 
