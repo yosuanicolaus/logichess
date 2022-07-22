@@ -1,8 +1,7 @@
 class Player {
-  constructor(id = "w", boardRef, fenRef) {
+  constructor(id = "w", gameRef) {
     this.id = id;
-    this.boardRef = boardRef;
-    this.fenRef = fenRef;
+    this.gameRef = gameRef;
     this.pieces = [];
     this.possibleMoves = [];
     this.capturedPieces = [];
@@ -11,7 +10,7 @@ class Player {
   }
 
   getPieces() {
-    const fen = this.fenRef.fenBoard;
+    const fen = this.gameRef.fen.fenBoard;
     let [file, rank] = [0, 0];
 
     for (let i = 0; i < fen.length; i++) {
@@ -46,22 +45,22 @@ class Player {
     let newPiece;
     switch (code) {
       case "P":
-        newPiece = new Pawn(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new Pawn(this.id, rank, file, this.gameRef);
         break;
       case "N":
-        newPiece = new Knight(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new Knight(this.id, rank, file, this.gameRef);
         break;
       case "B":
-        newPiece = new Bishop(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new Bishop(this.id, rank, file, this.gameRef);
         break;
       case "R":
-        newPiece = new Rook(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new Rook(this.id, rank, file, this.gameRef);
         break;
       case "Q":
-        newPiece = new Queen(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new Queen(this.id, rank, file, this.gameRef);
         break;
       case "K":
-        newPiece = new King(this.id, rank, file, this.boardRef, this.fenRef);
+        newPiece = new King(this.id, rank, file, this.gameRef);
         break;
       default:
         throw "piece should be either p/b/n/r/q/k!";
