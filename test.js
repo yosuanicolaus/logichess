@@ -30,6 +30,25 @@ class Test {
     console.log(b.canCaptureKing());
     console.log("expected true");
   }
+
+  blackTurn() {
+    // fen: white moved 1. e4
+    const ng = new Chess(
+      "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"
+    );
+    console.log("white moves:");
+    console.log(ng.pwhite.possibleMoves);
+    console.log("black moves:");
+    console.log(ng.pblack.possibleMoves);
+  }
+
+  blackInCheck() {
+    const g = new Chess(
+      "rnbqkbnr/ppp1pppp/8/1B1p4/4P3/8/PPPP1PPP/RNBQK1NR b KQkq - 1 2"
+    );
+    console.log("black possible moves:");
+    console.log(g.pblack.possibleMoves);
+  }
 }
 
 const test = new Test();
