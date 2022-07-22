@@ -18,15 +18,22 @@ class Piece {
   }
 
   createMove(toRank, toFile) {
-    const move = new Move(this.rank, this.file, toRank, toFile);
+    const move = new Move(
+      this.rank,
+      this.file,
+      toRank,
+      toFile,
+      this.code,
+      this.faction
+    );
     return move;
   }
 
   checkMove(rank, file) {
     const move = this.createMove(rank, file);
-    move.piece = this.code;
     if (!this.panelEmpty(rank, file)) {
       move.capture = true;
+      move.capturedPiece = this.ref.get(rank, file);
     }
     // simulate if we move into (rank, file)
     // can the opponent take our king?

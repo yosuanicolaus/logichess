@@ -1,5 +1,5 @@
 class Move {
-  constructor(fromRank, fromFile, toRank, toFile) {
+  constructor(fromRank, fromFile, toRank, toFile, piece, faction) {
     this.from = {
       rank: fromRank,
       file: fromFile,
@@ -8,13 +8,16 @@ class Move {
       rank: toRank,
       file: toFile,
     };
-    this.piece = undefined;
-    this.check = false;
-    this.capture = false;
-    this.promotion = false;
-    this.enpassant = false;
-    this.checkmate = false;
-    this.castle = false;
+    this.piece = piece;
+    this.faction = faction;
+
+    this.capture;
+    this.capturedPiece;
+    this.check;
+    this.promotion;
+    this.enpassant;
+    this.checkmate;
+    this.castle;
   }
 
   getSanMove(san) {}

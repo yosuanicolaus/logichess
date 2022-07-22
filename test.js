@@ -10,19 +10,24 @@ class Test {
     console.log(wknight.moves);
   }
 
-  queenAndBishopMoves() {
+  queenMoves() {
     // check queen & bishop's moves after 1. e4 pawn moves
-    const ng = new Chess(
-      "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"
-    );
-    const wq = ng.pwhite.pieces[11];
-    const wb = ng.pwhite.pieces[13];
+    const ng = new Chess("8/8/1b6/8/3Q1r2/8/2n5/8 w - - 0 1");
+    const wq = ng.pwhite.pieces[0];
     wq.generateMoves();
-    wb.generateMoves();
-    console.log("queen");
     console.log(wq.moves);
-    console.log("bishop");
-    console.log(wb.moves);
+
+    for (const move of wq.moves) {
+      if (move.capture) {
+        console.log("captured: ", move.capturedPiece);
+      }
+    }
+  }
+
+  moveObj() {
+    const p = this.g.pwhite.pieces[5];
+    p.generateMoves();
+    return p.moves;
   }
 }
 
