@@ -62,4 +62,8 @@ class Board {
     this.board[move.from.rank][move.from.file] = ".";
     this.board[move.to.rank][move.to.file] = move.piece;
   }
+
+  removePiece(rank, file) {
+    this.board[rank][file] = ".";
+  }
 }

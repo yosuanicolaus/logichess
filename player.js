@@ -4,6 +4,8 @@ class Player {
     this.boardRef = boardRef;
     this.fenRef = fenRef;
     this.pieces = [];
+    this.possibleMoves = [];
+
     this.getPieces();
   }
 
@@ -61,6 +63,30 @@ class Player {
         break;
       default:
         throw "piece should be either p/b/n/r/q/k!";
+    }
+  }
+
+  removePiece(rank, file) {
+    let toRemoveIndex;
+    for (let i = 0; i < this.pieces.length; i++) {
+      const piece = this.pieces[i];
+      if (piece.rank === rank && piece.file === file) {
+        toRemoveIndex = i;
+        break;
+      }
+    }
+    if (!toRemoveIndex) {
+      throw "can't find piece with that rank and file!";
+    }
+    this.pieces.splice(toRemoveIndex, 1);
+    this.boardRef.removePiece(rank, file);
+  }
+
+  generatePossibleMoves() {
+    this.possibleMoves = [];
+    for (const piece of this.pieces) {
+      piece.generateMoves();
+      this.possibleMoves.push(...piece.moves);
     }
   }
 }
