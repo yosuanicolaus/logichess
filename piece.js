@@ -222,6 +222,8 @@ class Bishop extends Piece {
   }
 
   generateMoves() {
+    this.moves = [];
+
     const targets = [
       [this.rank + 1, this.file + 1],
       [this.rank - 1, this.file + 1],
@@ -288,6 +290,8 @@ class Rook extends Piece {
   }
 
   generateMoves() {
+    this.moves = [];
+
     const targets = [
       [this.rank + 1, this.file],
       [this.rank - 1, this.file],

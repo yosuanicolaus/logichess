@@ -30,11 +30,11 @@ class Fen {
     }
 
     // TODO: update EnPassant fen
-    this.updateBoard(newBoard);
-    this.updateCastle(move);
+    this.updateFenBoard(newBoard);
+    this.updateFenCastle(move);
   }
 
-  updateBoard(board) {
+  updateFenBoard(board) {
     let emptyCount = 0;
     let newFenBoard = "";
     for (let rank = 0; rank < 8; rank++) {
@@ -60,7 +60,7 @@ class Fen {
     this.fenBoard = newFenBoard;
   }
 
-  updateCastle(move) {
+  updateFenCastle(move) {
     const [fromRank, fromFile] = [move.from.rank, move.from.file];
     switch (move.piece) {
       case "K":
