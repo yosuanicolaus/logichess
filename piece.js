@@ -14,6 +14,7 @@ class Piece {
     this.moves = [];
     this.captures = [];
     this.hasMoved = false;
+    this.code;
   }
 
   createMove(toRank, toFile) {
@@ -23,6 +24,7 @@ class Piece {
 
   checkMove(rank, file) {
     const move = this.createMove(rank, file);
+    move.piece = this.code;
     if (!this.panelEmpty(rank, file)) {
       move.capture = true;
     }
