@@ -43,28 +43,30 @@ class Player {
 
   addPiece(code, rank, file) {
     code = code.toUpperCase();
+    let newPiece;
     switch (code) {
       case "P":
-        this.pieces.push(new Pawn(this.id, rank, file, this.boardRef));
+        newPiece = new Pawn(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       case "N":
-        this.pieces.push(new Knight(this.id, rank, file, this.boardRef));
+        newPiece = new Knight(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       case "B":
-        this.pieces.push(new Bishop(this.id, rank, file, this.boardRef));
+        newPiece = new Bishop(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       case "R":
-        this.pieces.push(new Rook(this.id, rank, file, this.boardRef));
+        newPiece = new Rook(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       case "Q":
-        this.pieces.push(new Queen(this.id, rank, file, this.boardRef));
+        newPiece = new Queen(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       case "K":
-        this.pieces.push(new King(this.id, rank, file, this.boardRef));
+        newPiece = new King(this.id, rank, file, this.boardRef, this.fenRef);
         break;
       default:
         throw "piece should be either p/b/n/r/q/k!";
     }
+    this.pieces.push(newPiece);
   }
 
   removePiece(rank, file) {

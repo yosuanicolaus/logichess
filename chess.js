@@ -10,6 +10,7 @@ class Chess {
   play(move) {
     this.board.update(move);
     this.fen.update(move, this.board.board);
+    this.turn = this.fen.fenTurn;
   }
 }
 

@@ -32,6 +32,14 @@ class Fen {
     // TODO: update EnPassant fen
     this.updateFenBoard(newBoard);
     this.updateFenCastle(move);
+    this.fen = [
+      this.fenBoard,
+      this.fenTurn,
+      this.fenCastle,
+      this.fenEnPassant,
+      this.fenHalfmove,
+      this.fenFullmove,
+    ].join(" ");
   }
 
   updateFenBoard(board) {
