@@ -11,6 +11,12 @@ function convertUciLocation(uci) {
   return [rankIndex, fileIndex];
 }
 
+function convertRankFile(rank, file) {
+  const r = (rank + (4 - rank) * 2).toString();
+  const f = String.fromCharCode(97 + file);
+  return f + r;
+}
+
 function isNumber(str) {
   return !isNaN(str);
 }

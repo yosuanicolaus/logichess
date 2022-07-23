@@ -49,6 +49,21 @@ class Test {
     console.log("black possible moves:");
     console.log(g.pblack.possibleMoves);
   }
+
+  compareSan() {
+    const game = new Chess();
+    const allSan = [];
+    const allLan = [];
+    const allUci = [];
+    for (const move of game.pwhite.possibleMoves) {
+      allSan.push(move.san);
+      allLan.push(move.lan);
+      allUci.push(move.uci);
+    }
+    console.log(allSan.join(", "));
+    console.log(allLan.join(", "));
+    console.log(allUci.join(", "));
+  }
 }
 
 const test = new Test();
