@@ -66,8 +66,31 @@ class Test {
   }
 
   sanSameFile() {
-    const g = new Chess("k2R4/8/5R2/3q4/8/3R4/8/7K w - - 0 1");
     this.compareSan("k2R4/8/5R2/3q4/8/3R4/8/7K w - - 0 1");
+    console.log("expected san: R8xd5, Rff3, R3xd5, Rdf3, ...");
+  }
+
+  sanSameBoth() {
+    this.compareSan("8/8/3Q1Q2/8/3r1Q2/8/8/8 w - - 0 1");
+    console.log("expected san: Qd6xd4, Qf6xd4, Qf4xd4");
+  }
+
+  pawnCapture() {
+    const g = new Chess(
+      "rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"
+    );
+    const white = g.currentPlayer;
+    const allSan = [];
+    for (const move of white.possibleMoves) {
+      allSan.push(move.san);
+    }
+    console.log(allSan.join(", "));
+    console.log(white.possibleMoves);
+  }
+
+  blackSan() {
+    const game = new Chess("1k6/3N4/8/3q4/4B3/3R4/8/5K2 b - - 0 1");
+    console.log(game.pblack.possibleMoves);
   }
 }
 

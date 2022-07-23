@@ -85,10 +85,57 @@ class Player {
   }
 
   generatePossibleMoves() {
+    this.generateMoves();
+    this.disambiguateSan();
+  }
+
+  generateMoves() {
     this.possibleMoves = [];
     for (const piece of this.pieces) {
       piece.generateMoves();
       this.possibleMoves.push(...piece.moves);
+    }
+  }
+
+  disambiguateSan() {
+    const seenSan = {};
+    const toDisamb = {};
+
+    for (const move of this.possibleMoves) {
+      if (seenSan[move.san]) {
+        if (!toDisamb[move.san]) {
+          toDisamb[move.san] = [seenSan[move.san], move];
+        } else {
+          toDisamb[move.san].push(move);
+        }
+      } else {
+        seenSan[move.san] = move;
+      }
+    }
+
+    for (const san in toDisamb) {
+      const fromFiles = [];
+      const fromRanks = [];
+      const moves = toDisamb[san];
+
+      for (const move of moves) {
+        fromFiles.push(move.lan[1]);
+        fromRanks.push(move.lan[2]);
+      }
+
+      if (allDifferent(...fromFiles)) {
+        for (const move of moves) {
+          move.sanAddFromFile();
+        }
+      } else if (allDifferent(...fromRanks)) {
+        for (const move of moves) {
+          move.sanAddFromRank();
+        }
+      } else {
+        for (const move of moves) {
+          move.sanAddFromBoth();
+        }
+      }
     }
   }
 

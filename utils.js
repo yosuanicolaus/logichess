@@ -29,3 +29,14 @@ function addIncrement(target, increment) {
   target[0] += increment[0];
   target[1] += increment[1];
 }
+
+function allDifferent(...args) {
+  const seen = new Set();
+  for (const arg of args) {
+    if (seen.has(arg)) {
+      return false;
+    }
+    seen.add(arg);
+  }
+  return true;
+}
