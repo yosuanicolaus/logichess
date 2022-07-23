@@ -61,4 +61,6 @@ class Move {
     uci += convertRankFile(this.to.rank, this.to.file);
     this.uci = uci;
   }
+
+  sanFromFile() {}
 }
