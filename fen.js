@@ -16,22 +16,15 @@ class Fen {
   }
 
   update(move, newBoard) {
-    if (this.fenTurn === "b") {
-      this.fenFullmove++;
-      this.fenTurn = "w";
-    } else if (this.fenTurn === "w") {
-      this.fenTurn = "b";
-    }
-
-    if (move.capture || move.piece.toUpperCase() === "P") {
-      this.fenHalfmove = 0;
-    } else {
-      this.fenHalfmove++;
-    }
-
-    // TODO: update EnPassant fen
     this.updateFenBoard(newBoard);
+    this.updateTurn();
+    this.updateHalfmove(move);
+    // TODO: update EnPassant fen
     this.updateFenCastle(move);
+    this.updateFen();
+  }
+
+  updateFen() {
     this.fen = [
       this.fenBoard,
       this.fenTurn,
@@ -66,6 +59,23 @@ class Fen {
       }
     }
     this.fenBoard = newFenBoard;
+  }
+
+  updateTurn() {
+    if (this.fenTurn === "b") {
+      this.fenFullmove++;
+      this.fenTurn = "w";
+    } else if (this.fenTurn === "w") {
+      this.fenTurn = "b";
+    }
+  }
+
+  updateHalfmove(move) {
+    if (move.capture || move.piece.toUpperCase() === "P") {
+      this.fenHalfmove = 0;
+    } else {
+      this.fenHalfmove++;
+    }
   }
 
   updateFenCastle(move) {

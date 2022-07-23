@@ -85,11 +85,11 @@ class Player {
   }
 
   generatePossibleMoves() {
-    this.generateMoves();
+    this.getPiecesMoves();
     this.disambiguateSan();
   }
 
-  generateMoves() {
+  getPiecesMoves() {
     this.possibleMoves = [];
     for (const piece of this.pieces) {
       piece.generateMoves();
@@ -146,5 +146,13 @@ class Player {
       }
     }
     return false;
+  }
+
+  getSanMoves() {
+    const allSan = [];
+    for (const move of this.possibleMoves) {
+      allSan.push(move.san);
+    }
+    console.log(allSan.join(", "));
   }
 }

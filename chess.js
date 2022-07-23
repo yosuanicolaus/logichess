@@ -22,6 +22,13 @@ class Chess {
     this.currentPlayer.generatePossibleMoves();
   }
 
+  playNone() {
+    this.fen.updateTurn();
+    this.fen.updateFen();
+    this.updateTurn();
+    this.currentPlayer.generatePossibleMoves();
+  }
+
   updateTurn() {
     this.turn = this.fen.fenTurn;
     if (this.turn === "b") {
