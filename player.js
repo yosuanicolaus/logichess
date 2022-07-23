@@ -175,6 +175,14 @@ class Player {
         return move;
       }
     }
+    // if no move is stil found, try removing last character
+    // in case of there is check/checkmate symbol
+    for (const move of this.possibleMoves) {
+      if (move.san.slice(0, -1) === str || move.lan.slice(0, -1) === str) {
+        console.log("found move:", move.san);
+        return move;
+      }
+    }
     throw "can't found move";
   }
 }

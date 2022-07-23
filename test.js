@@ -99,6 +99,11 @@ class Test {
     );
     game.currentPlayer.getSanMoves();
   }
+
+  checkMove2() {
+    const ng = new Chess("8/8/1k6/8/8/3Q4/8/5K2 w - - 0 1");
+    ng.currentPlayer.getSanMoves();
+  }
 }
 
 const test = new Test();
