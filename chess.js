@@ -12,6 +12,10 @@ class Chess {
   }
 
   play(move) {
+    if (typeof move === "string") {
+      move = this.currentPlayer.getMoveFromString(move);
+    }
+
     this.board.update(move);
     this.fen.update(move, this.board.board);
     this.updateTurn();
@@ -20,6 +24,10 @@ class Chess {
       this.currentPlayer.removePiece(move.to.rank, move.to.file);
     }
     this.currentPlayer.generatePossibleMoves();
+
+    if (!this.simulation) {
+      this.board.display();
+    }
   }
 
   playNone() {

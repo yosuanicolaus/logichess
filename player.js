@@ -155,4 +155,14 @@ class Player {
     }
     console.log(allSan.join(", "));
   }
+
+  getMoveFromString(str) {
+    // check from all san, lan, and uci possible moves
+    for (const move of this.possibleMoves) {
+      if (move.san === str || move.lan === str || move.uci === str) {
+        return move;
+      }
+    }
+    throw "can't found move";
+  }
 }

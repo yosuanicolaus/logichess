@@ -92,6 +92,13 @@ class Test {
     const game = new Chess("1k6/3N4/8/3q4/4B3/3R4/8/5K2 b - - 0 1");
     console.log(game.pblack.possibleMoves);
   }
+
+  checkMove() {
+    const game = new Chess(
+      "rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"
+    );
+    game.currentPlayer.getSanMoves();
+  }
 }
 
 const test = new Test();
