@@ -6,6 +6,12 @@ class Player {
     this.possibleMoves = [];
     this.capturedPieces = [];
 
+    if (id === "w") {
+      this.name = "White";
+    } else if (id === "b") {
+      this.name = "Black";
+    }
+
     this.getPieces();
   }
 
@@ -164,7 +170,7 @@ class Player {
     for (const move of this.possibleMoves) {
       allSan.push(move.san);
     }
-    console.log(allSan.join(", "));
+    return allSan.join(", ");
   }
 
   getMoveFromString(str) {

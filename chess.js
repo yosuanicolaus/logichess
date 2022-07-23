@@ -30,6 +30,14 @@ class Chess {
     }
   }
 
+  info() {
+    console.log(this.fen.fen);
+    this.board.display();
+    console.log(`${this.currentPlayer.name} to move`);
+    console.log("Possible moves:");
+    console.log(this.currentPlayer.getSanMoves());
+  }
+
   playNone() {
     this.fen.updateTurn();
     this.fen.updateFen();
