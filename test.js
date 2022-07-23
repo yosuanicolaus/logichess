@@ -50,8 +50,8 @@ class Test {
     console.log(g.pblack.possibleMoves);
   }
 
-  compareSan() {
-    const game = new Chess();
+  compareSan(fen) {
+    const game = new Chess(fen);
     const allSan = [];
     const allLan = [];
     const allUci = [];
@@ -63,6 +63,11 @@ class Test {
     console.log(allSan.join(", "));
     console.log(allLan.join(", "));
     console.log(allUci.join(", "));
+  }
+
+  sanSameFile() {
+    const g = new Chess("k2R4/8/5R2/3q4/8/3R4/8/7K w - - 0 1");
+    this.compareSan("k2R4/8/5R2/3q4/8/3R4/8/7K w - - 0 1");
   }
 }
 

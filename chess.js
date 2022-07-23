@@ -5,22 +5,29 @@ class Chess {
     this.pwhite = new Player("w", this);
     this.pblack = new Player("b", this);
     this.turn = this.fen.fenTurn;
+    this.currentPlayer = this.pwhite;
     this.simulation = simulation;
-    this.generateMoves();
+    this.updateTurn();
+    this.currentPlayer.generatePossibleMoves();
   }
 
   play(move) {
     this.board.update(move);
     this.fen.update(move, this.board.board);
-    this.turn = this.fen.fenTurn;
-    this.generateMoves();
+    this.updateTurn();
+
+    if (move.capture) {
+      this.currentPlayer.removePiece(move.to.rank, move.to.file);
+    }
+    this.currentPlayer.generatePossibleMoves();
   }
 
-  generateMoves() {
-    if (this.turn === "w") {
-      this.pwhite.generatePossibleMoves();
-    } else if (this.turn === "b") {
-      this.pblack.generatePossibleMoves();
+  updateTurn() {
+    this.turn = this.fen.fenTurn;
+    if (this.turn === "b") {
+      this.currentPlayer = this.pblack;
+    } else if (this.turn === "w") {
+      this.currentPlayer = this.pwhite;
     } else {
       throw "turn must be either 'w' or 'b'";
     }

@@ -77,11 +77,11 @@ class Player {
         break;
       }
     }
-    if (!toRemoveIndex) {
+    if (isNaN(toRemoveIndex)) {
       throw "can't find piece with that rank and file!";
     }
     this.pieces.splice(toRemoveIndex, 1);
-    this.boardRef.removePiece(rank, file);
+    this.gameRef.board.removePiece(rank, file);
   }
 
   generatePossibleMoves() {

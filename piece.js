@@ -45,9 +45,8 @@ class Piece {
     } else {
       const simulation = new Chess(this.fenRef.fen, true);
       simulation.play(move);
-      const currentPlayer =
-        simulation.turn === "w" ? simulation.pwhite : simulation.pblack;
-      if (currentPlayer.canCaptureKing()) {
+      const player = simulation.currentPlayer;
+      if (player.canCaptureKing()) {
         // move is illegal
         return;
       } else {
