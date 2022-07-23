@@ -68,6 +68,18 @@ class Player {
     this.pieces.push(newPiece);
   }
 
+  updatePiecePosition(move) {
+    const [fr, ff] = [move.from.rank, move.from.file];
+
+    for (const piece of this.pieces) {
+      if (piece.rank === fr && piece.file === ff) {
+        piece.move(move);
+        return;
+      }
+    }
+    throw "can't find piece from that rank and file";
+  }
+
   removePiece(rank, file) {
     let toRemoveIndex;
     for (let i = 0; i < this.pieces.length; i++) {

@@ -15,9 +15,9 @@ class Chess {
     if (typeof move === "string") {
       move = this.currentPlayer.getMoveFromString(move);
     }
-
     this.board.update(move);
     this.fen.update(move, this.board.board);
+    this.currentPlayer.updatePiecePosition(move);
     this.updateTurn();
 
     if (move.capture) {
