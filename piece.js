@@ -38,6 +38,8 @@ class Piece {
       move.capturedPiece = this.boardRef.get(rank, file);
     }
 
+    move.generate();
+
     // simulate if we move into (rank, file)
     // can the opponent take our king?
     if (this.gameRef.simulation) {
@@ -99,19 +101,19 @@ class Pawn extends Piece {
 
   checkSpecialMove() {
     let targets;
-    if (this.faction === "w") {
+    if (this.faction === "w" && this.rank === 6) {
       targets = [
         [this.rank - 2, this.file],
         [this.rank - 1, this.file],
       ];
-    } else {
+    } else if (this.faction === "b" && this.rank === 1) {
       targets = [
         [this.rank + 2, this.file],
         [this.rank + 1, this.file],
       ];
     }
     if (
-      !this.hasMoved &&
+      targets &&
       this.panelEmpty(...targets[0]) &&
       this.panelEmpty(...targets[1])
     ) {

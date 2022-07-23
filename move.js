@@ -12,16 +12,19 @@ class Move {
     this.faction = faction;
 
     this.capture;
-    this.capturedPiece;
     this.check;
-    this.promotion;
-    this.enpassant;
     this.checkmate;
+    this.promotion;
     this.castle;
+    this.capturedPiece;
+    this.enpassant;
 
     this.san = "";
     this.lan = "";
     this.uci = "";
+  }
+
+  generate() {
     this.generateSanLan();
     this.generateUci();
   }
@@ -36,7 +39,9 @@ class Move {
     }
     const from = convertRankFile(this.from.rank, this.from.file);
     lan += from;
-    if (this.capture) {
+    if (piece === "P" && this.capture) {
+      san += from[0] + "x";
+    } else if (this.capture) {
       lan += "x";
       san += "x";
     }
@@ -62,5 +67,28 @@ class Move {
     this.uci = uci;
   }
 
-  sanFromFile() {}
+  sanAddFromFile() {
+    const from = this.#sanAddFrom();
+    this.san = this.san[0] + from[0] + this.san.slice(1);
+  }
+
+  sanAddFromRank() {
+    const from = this.#sanAddFrom();
+    this.san = this.san[0] + from[1] + this.san.slice(1);
+  }
+
+  sanAddFromBoth() {
+    this.san = this.lan;
+  }
+
+  #sanAddFrom() {
+    const from = convertRankFile(this.from.rank, this.from.file);
+
+    let piece = this.piece.toUpperCase();
+    if (piece === "P" || piece === "K") {
+      throw "pawn and knight should have no disambiguation";
+    }
+
+    return from;
+  }
 }
