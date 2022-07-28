@@ -187,14 +187,16 @@ class Player {
         return move;
       }
     }
-    // in case the user type uci but wihtout the '-'
+    // in case the user type uci with '-' in the middle
     for (const move of this.possibleMoves) {
-      let uci = move.uci.slice(0, 2) + move.uci.slice(-2);
+      let uciFrom = move.uci.slice(0, 2);
+      let uciTo = move.uci.slice(-2);
+      let uci = `${uciFrom}-${uciTo}`;
       if (str === uci) {
         console.log("found move:", move.uci);
         return move;
       }
     }
-    throw "can't found move";
+    throw `can't found move ${str}. Available moves: ${this.getSanMoves()}`;
   }
 }

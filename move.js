@@ -62,7 +62,6 @@ class Move {
   generateUci() {
     let uci = "";
     uci += convertRankFile(this.from.rank, this.from.file);
-    uci += "-";
     uci += convertRankFile(this.to.rank, this.to.file);
     this.uci = uci;
   }
