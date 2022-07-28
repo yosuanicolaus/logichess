@@ -75,6 +75,11 @@ class Player {
   }
 
   updatePiecePosition(move) {
+    if (move.castle) {
+      this.castle(move.castle);
+      return;
+    }
+
     const [fr, ff] = [move.from.rank, move.from.file];
 
     for (const piece of this.pieces) {
@@ -84,6 +89,33 @@ class Player {
       }
     }
     throw "can't find piece from that rank and file";
+  }
+
+  // code == K/Q/k/q
+  castle(code) {
+    let kingMove, rookMove;
+    switch (code) {
+      case "K":
+        kingMove = new Move(7, 4, 7, 6);
+        rookMove = new Move(7, 7, 7, 5);
+        break;
+      case "Q":
+        kingMove = new Move(7, 4, 7, 2);
+        rookMove = new Move(7, 0, 7, 3);
+        break;
+      case "k":
+        kingMove = new Move(0, 4, 0, 6);
+        rookMove = new Move(0, 7, 0, 5);
+        break;
+      case "q":
+        kingMove = new Move(0, 4, 0, 2);
+        rookMove = new Move(0, 0, 0, 3);
+        break;
+      default:
+        throw "(Player) castle code should be either K/Q/k/q!";
+    }
+    this.updatePiecePosition(kingMove);
+    this.updatePiecePosition(rookMove);
   }
 
   removePiece(rank, file) {
