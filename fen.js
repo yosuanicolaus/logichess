@@ -79,29 +79,47 @@ class Fen {
   }
 
   updateFenCastle(move) {
-    const [fromRank, fromFile] = [move.from.rank, move.from.file];
-    switch (move.piece) {
-      case "K":
-        this.castlingRights[0] = "";
-        this.castlingRights[1] = "";
-        break;
-      case "k":
-        this.castlingRights[2] = "";
-        this.castlingRights[3] = "";
-        break;
-      case "R":
-        if (fromRank === 7 && fromFile === 0) {
+    if (move.castle) {
+      const code = move.castle;
+      switch (code) {
+        case "K":
+        case "Q":
           this.castlingRights[0] = "";
-        } else if (fromRank === 7 && fromFile === 7) {
           this.castlingRights[1] = "";
-        }
-        break;
-      case "r":
-        if (fromRank === 0 && fromFile === 0) {
-          this.castlingRights[3] = "";
-        } else if (fromRank === 0 && fromFile === 7) {
+          break;
+        case "k":
+        case "q":
           this.castlingRights[2] = "";
-        }
+          this.castlingRights[3] = "";
+          break;
+        default:
+          throw "(Fen) move.castle should be either K/Q/k/q!";
+      }
+    } else {
+      const [fromRank, fromFile] = [move.from.rank, move.from.file];
+      switch (move.piece) {
+        case "K":
+          this.castlingRights[0] = "";
+          this.castlingRights[1] = "";
+          break;
+        case "k":
+          this.castlingRights[2] = "";
+          this.castlingRights[3] = "";
+          break;
+        case "R":
+          if (fromRank === 7 && fromFile === 0) {
+            this.castlingRights[0] = "";
+          } else if (fromRank === 7 && fromFile === 7) {
+            this.castlingRights[1] = "";
+          }
+          break;
+        case "r":
+          if (fromRank === 0 && fromFile === 0) {
+            this.castlingRights[3] = "";
+          } else if (fromRank === 0 && fromFile === 7) {
+            this.castlingRights[2] = "";
+          }
+      }
     }
     this.fenCastle = this.castlingRights.join("");
   }
