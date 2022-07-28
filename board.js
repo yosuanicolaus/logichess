@@ -66,4 +66,38 @@ class Board {
   removePiece(rank, file) {
     this.board[rank][file] = ".";
   }
+
+  // code == "K"/"Q"/"k"/"q";
+  castle(code) {
+    switch (code) {
+      case "K":
+        this.board[7][4] = ".";
+        this.board[7][5] = "R";
+        this.board[7][6] = "K";
+        this.board[7][7] = ".";
+        break;
+      case "Q":
+        this.board[7][0] = ".";
+        this.board[7][1] = ".";
+        this.board[7][2] = "K";
+        this.board[7][3] = "R";
+        this.board[7][4] = ".";
+        break;
+      case "k":
+        this.board[0][4] = ".";
+        this.board[0][5] = "r";
+        this.board[0][6] = "k";
+        this.board[0][7] = ".";
+        break;
+      case "q":
+        this.board[0][0] = ".";
+        this.board[0][1] = ".";
+        this.board[0][2] = "k";
+        this.board[0][3] = "r";
+        this.board[0][4] = ".";
+        break;
+      default:
+        throw "(Board) castle code should be either K/Q/k/q!";
+    }
+  }
 }
