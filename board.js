@@ -59,6 +59,10 @@ class Board {
    * @param {Move} move
    */
   update(move) {
+    if (move.castle) {
+      this.castle(move.castle);
+      return;
+    }
     this.board[move.from.rank][move.from.file] = ".";
     this.board[move.to.rank][move.to.file] = move.piece;
   }
