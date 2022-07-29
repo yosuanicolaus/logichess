@@ -43,26 +43,29 @@ class Piece {
       move.capturedPiece = this.boardRef.get(rank, file);
     }
 
+    this.checkSimulation(move);
+  }
+
+  checkSimulation(move) {
     if (this.gameRef.simulation) {
       this.addMove(move);
-    } else {
-      // simulate if we move into (rank, file)
-      // can the opponent take our king?
-      const simulation = new Chess(this.fenRef.fen, true);
-      simulation.play(move);
-      if (simulation.currentPlayer.canCaptureKing()) {
-        // if so, then that move is illegal
-        return;
-      } else {
-        // if we can take the opponent's king if the
-        // opponent does nothing, then it's a check
-        simulation.playNone();
-        if (simulation.currentPlayer.canCaptureKing()) {
-          move.check = true;
-        }
-        this.addMove(move);
-      }
+      return;
     }
+    // simulate if we move into (rank, file)
+    // can the opponent take our king?
+    const simulation = new Chess(this.fenRef.fen, true);
+    simulation.play(move);
+    if (simulation.currentPlayer.canCaptureKing()) {
+      // if so, then that move is illegal
+      return;
+    }
+    // if we can take the opponent's king if the
+    // opponent does nothing, then it's a check
+    simulation.playNone();
+    if (simulation.currentPlayer.canCaptureKing()) {
+      move.check = true;
+    }
+    this.addMove(move);
   }
 
   canMove(rank, file) {
@@ -187,6 +190,75 @@ class King extends Piece {
       if (this.canMove(...targets[i])) {
         this.validateMove(...targets[i]);
       }
+    }
+
+    this.castleCheck();
+  }
+
+  castleCheck() {
+    const castleFen = this.gameRef.fen.fenCastle;
+    let kingside = false;
+    let queenside = false;
+
+    if (this.faction === "w") {
+      kingside = castleFen.includes("K");
+      queenside = castleFen.includes("Q");
+      if (kingside) {
+        this.validateCastleMove("K");
+      }
+      if (queenside) {
+        this.validateCastleMove("Q");
+      }
+    } else {
+      kingside = castleFen.includes("k");
+      queenside = castleFen.includes("q");
+      if (kingside) {
+        this.validateCastleMove("k");
+      }
+      if (queenside) {
+        this.validateCastleMove("q");
+      }
+    }
+  }
+
+  validateCastleMove(code) {
+    let adjacent1 = false;
+    let adjacent2 = false;
+    let adjacent3 = false;
+    switch (code) {
+      case "K":
+        adjacent1 = this.panelEmpty(7, 5);
+        adjacent2 = this.panelEmpty(7, 6);
+        adjacent3 = true;
+        break;
+      case "Q":
+        adjacent1 = this.panelEmpty(7, 3);
+        adjacent2 = this.panelEmpty(7, 2);
+        adjacent3 = this.panelEmpty(7, 1);
+        break;
+      case "k":
+        adjacent1 = this.panelEmpty(0, 5);
+        adjacent2 = this.panelEmpty(0, 6);
+        adjacent3 = true;
+        break;
+      case "q":
+        adjacent1 = this.panelEmpty(0, 3);
+        adjacent2 = this.panelEmpty(0, 2);
+        adjacent3 = this.panelEmpty(0, 1);
+        break;
+      default:
+        throw "(Piece) code should be either K/Q/k/q!";
+    }
+
+    if (adjacent1 && adjacent2 && adjacent3) {
+      let move;
+      if (code.toUpperCase() === "K") {
+        move = this.createMove(this.rank, 6);
+      } else {
+        move = this.createMove(this.rank, 2);
+      }
+      move.castle = code;
+      this.checkSimulation(move);
     }
   }
 }
