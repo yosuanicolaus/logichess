@@ -108,6 +108,7 @@ class Pawn extends Piece {
     this.checkSpecialMove();
     this.checkNormalMove();
     this.checkCrossCapture();
+    this.checkEnPassant();
   }
 
   checkSpecialMove() {
@@ -160,6 +161,25 @@ class Pawn extends Piece {
     for (let i = 0; i < targets.length; i++) {
       if (this.inBoundaries(...targets[i]) && this.canCapture(...targets[i])) {
         this.validateMove(...targets[i]);
+      }
+    }
+  }
+
+  checkEnPassant() {
+    if (this.fenRef.fenEnPassant !== "-") {
+      const [eprank, epfile] = convertUciLocation(this.fenRef.fenEnPassant);
+
+      const eligibleRank =
+        (this.faction === "w" && this.rank === 3) ||
+        (this.faction === "b" && this.rank === 4);
+      const eligibleFile = this.file === epfile - 1 || this.file === epfile + 1;
+
+      if (eligibleRank && eligibleFile) {
+        const move = this.createMove(eprank, epfile);
+        move.capture = true;
+        move.capturedPiece = "p";
+        move.enpassant = true;
+        this.checkSimulation(move);
       }
     }
   }
