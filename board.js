@@ -54,15 +54,17 @@ class Board {
     console.log(result);
   }
 
-  /**
-   *
-   * @param {Move} move
-   */
   update(move) {
     if (move.castle) {
       this.castle(move.castle);
-      return;
+    } else if (move.enpassant) {
+      this.enPassant(move);
+    } else {
+      this.normalMove(move);
     }
+  }
+
+  normalMove(move) {
     this.board[move.from.rank][move.from.file] = ".";
     this.board[move.to.rank][move.to.file] = move.piece;
   }
@@ -102,6 +104,15 @@ class Board {
         break;
       default:
         throw "(Board) castle code should be either K/Q/k/q!";
+    }
+  }
+
+  enPassant(move) {
+    this.normalMove(move);
+    if (move.faction === "w") {
+      this.removePiece(move.to.rank + 1, move.to.file);
+    } else {
+      this.removePiece(move.to.rank - 1, move.to.file);
     }
   }
 }
