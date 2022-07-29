@@ -30,6 +30,20 @@ class Move {
   }
 
   generateSanLan() {
+    if (this.castle) {
+      const code = this.castle.toUpperCase();
+      if (code === "K") {
+        this.lan = "O-O";
+        this.san = "O-O";
+      } else if (code === "Q") {
+        this.lan = "O-O-O";
+        this.san = "O-O-O";
+      } else {
+        throw "(Move) this.castle should be either K/k/Q/q!";
+      }
+      return;
+    }
+
     let lan = "";
     let san = "";
     let piece = this.piece.toUpperCase();
