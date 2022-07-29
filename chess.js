@@ -24,7 +24,9 @@ class Chess {
     this.currentPlayer.updatePiecePosition(move);
     this.updateTurn();
 
-    if (move.capture) {
+    if (move.enpassant) {
+      this.currentPlayer.removePiece(move.from.rank, move.to.file);
+    } else if (move.capture) {
       this.currentPlayer.removePiece(move.to.rank, move.to.file);
     }
     this.currentPlayer.generatePossibleMoves();

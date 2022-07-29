@@ -58,7 +58,8 @@ class Board {
     if (move.castle) {
       this.castle(move.castle);
     } else if (move.enpassant) {
-      this.enPassant(move);
+      this.normalMove(move);
+      this.removePiece(move.from.rank, move.to.file);
     } else {
       this.normalMove(move);
     }
@@ -104,15 +105,6 @@ class Board {
         break;
       default:
         throw "(Board) castle code should be either K/Q/k/q!";
-    }
-  }
-
-  enPassant(move) {
-    this.normalMove(move);
-    if (move.faction === "w") {
-      this.removePiece(move.to.rank + 1, move.to.file);
-    } else {
-      this.removePiece(move.to.rank - 1, move.to.file);
     }
   }
 }
