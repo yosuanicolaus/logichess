@@ -18,9 +18,9 @@ class Fen {
   update(move, newBoard) {
     this.updateFenBoard(newBoard);
     this.updateTurn();
-    this.updateHalfmove(move);
-    // TODO: update EnPassant fen
     this.updateFenCastle(move);
+    this.updateFenEnPassant(move);
+    this.updateHalfmove(move);
     this.updateFen();
   }
 
@@ -122,5 +122,22 @@ class Fen {
       }
     }
     this.fenCastle = this.castlingRights.join("");
+  }
+
+  updateFenEnPassant(move) {
+    const isPawn = move.piece.toUpperCase() === "P";
+    const twoRankMove = Math.abs(move.from.rank - move.to.rank) === 2;
+
+    if (isPawn && twoRankMove) {
+      let target;
+      if (move.faction === "w") {
+        target = convertRankFile(move.to.rank + 1, move.to.file);
+      } else {
+        target = convertRankFile(move.to.rank - 1, move.to.file);
+      }
+      this.fenEnPassant = target;
+    } else {
+      this.fenEnPassant = "-";
+    }
   }
 }
