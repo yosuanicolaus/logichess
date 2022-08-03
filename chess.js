@@ -68,5 +68,3 @@ class Chess {
     }
   }
 }
-
-const game = new Chess();

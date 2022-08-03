@@ -436,22 +436,3 @@ class Rook extends Piece {
     }
   }
 }
-
-function factionCode(faction, code) {
-  if (faction === "w") {
-    return code.toUpperCase();
-  } else if (faction === "b") {
-    return code.toLowerCase();
-  } else {
-    throw "faction should be either 'w'/'b'!";
-  }
-}
-
-// faction = "w" / "b"
-// panelPiece = "\pnbrqkPNBRQK\"
-function sameFaction(faction, panelPiece) {
-  return (
-    (faction === "w" && isCapital(panelPiece)) ||
-    (faction === "b" && !isCapital(panelPiece))
-  );
-}
