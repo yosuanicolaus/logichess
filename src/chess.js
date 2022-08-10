@@ -67,4 +67,9 @@ class Chess {
       throw "turn must be either 'w' or 'b'";
     }
   }
+
+  // called with GET /game/:id/moves
+  getMoves() {
+    return this.currentPlayer.possibleMoves;
+  }
 }
