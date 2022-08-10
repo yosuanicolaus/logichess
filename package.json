@@ -5,7 +5,7 @@
   "main": "board.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bundle-js ./build.js -o ./main.js"
+    "build": "bundle-js ./build.js -o ./index.js"
   },
   "repository": {
     "type": "git",
