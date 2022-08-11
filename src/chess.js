@@ -7,9 +7,6 @@ class Chess {
     this.turn = this.fen.fenTurn;
     this.currentPlayer = this.pwhite;
     this.simulation = simulation;
-    if (!simulation) {
-      this.history = new GameHistory(this);
-    }
 
     this.updateTurn();
     this.currentPlayer.generatePossibleMoves();
@@ -33,7 +30,6 @@ class Chess {
 
     if (!this.simulation) {
       this.board.display();
-      this.history.update(move);
     }
   }
 
@@ -44,11 +40,6 @@ class Chess {
     console.log("Possible moves:");
     console.log(this.currentPlayer.getSanMoves());
   }
-
-  // TODO: create undo() / takeback function
-  // undo() {
-  //   const lastFen = this.history.undo();
-  // }
 
   playNone() {
     this.fen.updateTurn();
