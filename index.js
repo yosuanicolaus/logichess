@@ -1026,6 +1026,7 @@ class Chess {
         this.simulation = simulation;
         this.updateTurn();
         this.currentPlayer.generatePossibleMoves();
+        this.data = this.getData();
     }
     play(move) {
         if (typeof move === "string") {
@@ -1068,9 +1069,13 @@ class Chess {
             throw "turn must be either 'w' or 'b'";
         }
     }
-    // called with GET /game/:id/moves
-    getMoves() {
-        return this.currentPlayer.possibleMoves;
+    getData() {
+        return {
+            turn: this.turn,
+            fen: this.fen.fen,
+            board: this.board.board,
+            moves: this.currentPlayer.possibleMoves,
+        };
     }
 }
 module.exports = Chess;
