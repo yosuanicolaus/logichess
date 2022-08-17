@@ -10,6 +10,8 @@ class Chess {
 
     this.updateTurn();
     this.currentPlayer.generatePossibleMoves();
+
+    this.data = this.getData();
   }
 
   play(move) {
@@ -59,8 +61,12 @@ class Chess {
     }
   }
 
-  // called with GET /game/:id/moves
-  getMoves() {
-    return this.currentPlayer.possibleMoves;
+  getData() {
+    return {
+      turn: this.turn,
+      fen: this.fen.fen,
+      board: this.board.board,
+      moves: this.currentPlayer.possibleMoves,
+    };
   }
 }
