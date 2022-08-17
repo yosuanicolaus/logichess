@@ -59,6 +59,7 @@ class Piece {
       // if so, then that move is illegal
       return;
     }
+    move.fenResult = simulation.fen.fen;
     // if we can take the opponent's king if the
     // opponent does nothing, then it's a check
     simulation.playNone();

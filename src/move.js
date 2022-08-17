@@ -22,6 +22,8 @@ class Move {
     this.san = "";
     this.lan = "";
     this.uci = "";
+
+    this.fenResult = "";
   }
 
   generate() {

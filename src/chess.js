@@ -31,7 +31,7 @@ class Chess {
     this.currentPlayer.generatePossibleMoves();
 
     if (!this.simulation) {
-      this.board.display();
+      this.data = this.getData();
     }
   }
 

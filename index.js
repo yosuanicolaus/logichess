@@ -550,6 +550,7 @@ class Piece {
             // if so, then that move is illegal
             return;
         }
+        move.fenResult = simulation.fen.fen;
         // if we can take the opponent's king if the
         // opponent does nothing, then it's a check
         simulation.playNone();
@@ -902,6 +903,7 @@ class Move {
         this.san = "";
         this.lan = "";
         this.uci = "";
+        this.fenResult = "";
     }
     generate() {
         this.generateSanLan();
@@ -1043,7 +1045,7 @@ class Chess {
         }
         this.currentPlayer.generatePossibleMoves();
         if (!this.simulation) {
-            this.board.display();
+            this.data = this.getData();
         }
     }
     info() {
