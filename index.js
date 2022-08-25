@@ -65,7 +65,15 @@ class Fen {
         this.fenEnPassant = fens[3];
         this.fenHalfmove = Number(fens[4]);
         this.fenFullmove = Number(fens[5]);
-        this.castlingRights = ["K", "Q", "k", "q"];
+        this.castlingRights = this.getCastlingRights(this.fenCastle);
+    }
+    getCastlingRights(fenCastle) {
+        const res = ["", "", "", ""];
+        if (fenCastle.includes("K")) res[0] = "K";
+        if (fenCastle.includes("Q")) res[1] = "Q";
+        if (fenCastle.includes("k")) res[2] = "k";
+        if (fenCastle.includes("q")) res[3] = "q";
+        return res;
     }
     update(move, newBoard) {
         this.updateFenBoard(newBoard);
@@ -126,6 +134,7 @@ class Fen {
         }
     }
     updateFenCastle(move) {
+        if (this.fenCastle === "-") return;
         if (move.castle) {
             const code = move.castle;
             switch (code) {
@@ -169,6 +178,7 @@ class Fen {
             }
         }
         this.fenCastle = this.castlingRights.join("");
+        if (this.fenCastle === "") this.fenCastle = "-";
     }
     updateFenEnPassant(move) {
         const isPawn = move.piece.toUpperCase() === "P";
