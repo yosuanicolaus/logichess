@@ -209,7 +209,7 @@ export default class Player {
 
   canCaptureKing() {
     for (const move of this.possibleMoves) {
-      if (move.capture && move.capturedPiece.toUpperCase() === "K") {
+      if (move.capture && move.capturedPiece?.toUpperCase() === "K") {
         return true;
       }
     }

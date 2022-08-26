@@ -20,7 +20,7 @@ export default class Chess {
   simulation: boolean;
   data: Data;
 
-  constructor(fen: string, simulation = false) {
+  constructor(fen?: string, simulation = false) {
     this.fen = new Fen(fen);
     this.board = new Board(this.fen.fenBoard);
     this.pwhite = new Player("w", this);
