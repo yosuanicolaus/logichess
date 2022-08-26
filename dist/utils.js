@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isNumber = exports.convertRankFile = exports.convertUciLocation = void 0;
+exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isNumber = exports.convertRankFile = exports.convertUciLocation = void 0;
+const chess_1 = require("./chess");
 function convertUciLocation(uci) {
     const fileIndex = uci[0].charCodeAt(0) - 97;
     const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
@@ -57,3 +58,9 @@ function sameFaction(faction, panelPiece) {
         (faction === "b" && !isCapital(panelPiece)));
 }
 exports.sameFaction = sameFaction;
+function isInCheck(chess) {
+    const simulation = new chess_1.default(chess.fen.fen, true);
+    simulation.playNone();
+    return simulation.currentPlayer.canCaptureKing();
+}
+exports.isInCheck = isInCheck;

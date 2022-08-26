@@ -1,3 +1,4 @@
+import Chess from "./chess";
 import { Faction } from "./types";
 
 export function convertUciLocation(uci: string) {
@@ -56,4 +57,10 @@ export function sameFaction(faction: Faction, panelPiece: string) {
     (faction === "w" && isCapital(panelPiece)) ||
     (faction === "b" && !isCapital(panelPiece))
   );
+}
+
+export function isInCheck(chess: Chess) {
+  const simulation = new Chess(chess.fen.fen, true);
+  simulation.playNone();
+  return simulation.currentPlayer.canCaptureKing();
 }

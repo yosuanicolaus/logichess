@@ -20,7 +20,6 @@ class Piece {
         this.fenRef = chessRef.fen;
         this.moves = [];
     }
-    generateMoves() { }
     createMove(toRank, toFile) {
         const move = new move_1.default(this.rank, this.file, toRank, toFile, this.code, this.faction);
         return move;
@@ -43,21 +42,17 @@ class Piece {
             this.addMove(move);
             return;
         }
-        // simulate if we move into (rank, file)
-        // can the opponent take our king?
         const simulation = new chess_1.default(this.fenRef.fen, true);
         simulation.play(move);
         if (simulation.currentPlayer.canCaptureKing()) {
-            // if so, then that move is illegal
+            // if the opponent can take player's king right
+            // after the move, then it's illegal
             return;
         }
-        move.fenResult = simulation.fen.fen;
-        // if we can take the opponent's king if the
-        // opponent does nothing, then it's a check
-        simulation.playNone();
-        if (simulation.currentPlayer.canCaptureKing()) {
+        if ((0, utils_1.isInCheck)(simulation)) {
             move.check = true;
         }
+        move.fenResult = simulation.fen.fen;
         this.addMove(move);
     }
     canMove(...args) {

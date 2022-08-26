@@ -7,10 +7,11 @@ import {
   addIncrement,
   convertUciLocation,
   factionCode,
+  isInCheck,
   sameFaction,
 } from "./utils";
 
-export default class Piece {
+export default abstract class Piece {
   faction: Faction;
   rank: number;
   file: number;
@@ -36,7 +37,7 @@ export default class Piece {
     this.moves = [];
   }
 
-  generateMoves() {}
+  abstract generateMoves(): void;
 
   createMove(toRank: number, toFile: number) {
     const move = new Move(
@@ -71,21 +72,17 @@ export default class Piece {
       this.addMove(move);
       return;
     }
-    // simulate if we move into (rank, file)
-    // can the opponent take our king?
     const simulation = new Chess(this.fenRef.fen, true);
     simulation.play(move);
     if (simulation.currentPlayer.canCaptureKing()) {
-      // if so, then that move is illegal
+      // if the opponent can take player's king right
+      // after the move, then it's illegal
       return;
     }
-    move.fenResult = simulation.fen.fen;
-    // if we can take the opponent's king if the
-    // opponent does nothing, then it's a check
-    simulation.playNone();
-    if (simulation.currentPlayer.canCaptureKing()) {
+    if (isInCheck(simulation)) {
       move.check = true;
     }
+    move.fenResult = simulation.fen.fen;
     this.addMove(move);
   }
 
