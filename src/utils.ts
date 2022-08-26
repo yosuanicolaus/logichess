@@ -1,6 +1,6 @@
-import { Faction, PieceCode } from "./types";
+import { Faction, Notation, PieceCode } from "./types";
 
-export function convertUciLocation(uci: string) {
+export function convertUciLocation(uci: Notation) {
   const fileIndex = uci[0].charCodeAt(0) - 97;
   const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
 
