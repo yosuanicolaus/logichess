@@ -1,20 +1,26 @@
-class Board {
-  constructor(fenBoard) {
-    this.board = [];
-    this.createBoard();
+import { isNumber, convertUciLocation } from "./utils";
+import Move from "./move";
+import { CastleCode, Notation } from "./types";
+
+export default class Board {
+  board: string[][];
+  constructor(fenBoard: string) {
+    this.board = this.createBoard();
     this.load(fenBoard);
   }
 
   createBoard() {
+    const board: string[][] = [];
     for (let i = 0; i < 8; i++) {
-      this.board.push([]);
+      board.push([]);
       for (let j = 0; j < 8; j++) {
-        this.board[i].push(".");
+        board[i].push(".");
       }
     }
+    return board;
   }
 
-  load(fen) {
+  load(fen: string) {
     let rank = 0;
     let file = 0;
     for (let i = 0; i < fen.length; i++) {
@@ -32,14 +38,16 @@ class Board {
     }
   }
 
-  // uci = "e2"||"f3"||"h7"
-  // get piece at uci location
-  getUci(uci) {
+  /**
+   *  example uci = "e2"|"f3"|"h7"
+   *  get piece at uci location
+   */
+  getUci(uci: Notation) {
     const [rank, file] = convertUciLocation(uci);
     return this.board[rank][file];
   }
 
-  get(rank, file) {
+  get(rank: number, file: number) {
     return this.board[rank][file];
   }
 
@@ -54,7 +62,7 @@ class Board {
     console.log(result);
   }
 
-  update(move) {
+  update(move: Move) {
     if (move.castle) {
       this.castle(move.castle);
     } else if (move.enpassant) {
@@ -65,17 +73,16 @@ class Board {
     }
   }
 
-  normalMove(move) {
+  normalMove(move: Move) {
     this.board[move.from.rank][move.from.file] = ".";
     this.board[move.to.rank][move.to.file] = move.piece;
   }
 
-  removePiece(rank, file) {
+  removePiece(rank: number, file: number) {
     this.board[rank][file] = ".";
   }
 
-  // code == "K"/"Q"/"k"/"q";
-  castle(code) {
+  castle(code: CastleCode) {
     switch (code) {
       case "K":
         this.board[7][4] = ".";
