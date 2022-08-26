@@ -2,11 +2,11 @@ import { convertRankFile } from "./utils";
 import { Faction, CastleCode } from "./types";
 
 export default class Move {
-  from: {
+  readonly from: {
     rank: number;
     file: number;
   };
-  to: {
+  readonly to: {
     rank: number;
     file: number;
   };

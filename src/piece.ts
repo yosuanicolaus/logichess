@@ -10,7 +10,7 @@ import {
   sameFaction,
 } from "./utils";
 
-class Piece {
+export default class Piece {
   faction: Faction;
   rank: number;
   file: number;
@@ -18,17 +18,14 @@ class Piece {
   boardRef: Board;
   fenRef: Fen;
   moves: Move[];
-  hasMoved: boolean;
   code: string;
   value: number;
 
   constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
-    if (faction !== "w" && faction !== "b") {
-      throw "faction must be either 'w' or 'b'!";
-    } else if (rank < 0 || rank > 7) {
-      throw "piece's rank is out of bonds!";
+    if (rank < 0 || rank > 7) {
+      throw "piece's rank is out of bounds!";
     } else if (file < 0 || file > 7) {
-      throw "piece's file is out of bonds!";
+      throw "piece's file is out of bounds!";
     }
     this.faction = faction;
     this.rank = rank;
@@ -37,8 +34,9 @@ class Piece {
     this.boardRef = gameRef.board;
     this.fenRef = gameRef.fen;
     this.moves = [];
-    this.hasMoved = false;
   }
+
+  generateMoves() {}
 
   createMove(toRank: number, toFile: number) {
     const move = new Move(
@@ -117,7 +115,6 @@ class Piece {
   }
 
   move(move: Move) {
-    this.hasMoved = true;
     this.rank = move.to.rank;
     this.file = move.to.file;
   }

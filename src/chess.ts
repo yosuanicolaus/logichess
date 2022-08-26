@@ -4,9 +4,9 @@ import Move from "./move";
 import Player from "./player";
 import { Faction } from "./types";
 
-type Data = {
-  turn: string;
-  fen: string;
+type ChessData = {
+  turn: Faction;
+  fen: FenString;
   board: string[][];
   moves: Move[];
 };
@@ -19,7 +19,7 @@ export default class Chess {
   turn: Faction;
   currentPlayer: Player;
   simulation: boolean;
-  data: Data;
+  data: ChessData;
 
   constructor(fen?: FenString, simulation = false) {
     this.fen = new Fen(fen);
@@ -74,16 +74,14 @@ export default class Chess {
 
   updateTurn() {
     this.turn = this.fen.fenTurn;
-    if (this.turn === "b") {
-      this.currentPlayer = this.pblack;
-    } else if (this.turn === "w") {
+    if (this.turn === "w") {
       this.currentPlayer = this.pwhite;
     } else {
-      throw "turn must be either 'w' or 'b'";
+      this.currentPlayer = this.pblack;
     }
   }
 
-  getData() {
+  getData(): ChessData {
     return {
       turn: this.turn,
       fen: this.fen.fen,

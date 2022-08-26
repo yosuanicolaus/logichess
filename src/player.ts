@@ -1,28 +1,26 @@
 import Chess from "./chess";
 import Move from "./move";
-import { Bishop, King, Knight, Pawn, Queen, Rook } from "./piece";
+import Piece, { Bishop, King, Knight, Pawn, Queen, Rook } from "./piece";
 import { CastleCode, Faction } from "./types";
 import { allDifferent, isCapital, isNumber } from "./utils";
 
-type SuperPiece = Bishop | King | Knight | Pawn | Queen | Rook;
-
 export default class Player {
   id: Faction;
-  gameRef: Chess;
-  pieces: SuperPiece[];
+  chessRef: Chess;
+  pieces: Piece[];
 
   possibleMoves: Move[];
   name: "White" | "Black";
 
-  constructor(id: Faction = "w", gameRef: Chess) {
+  constructor(id: Faction = "w", chessRef: Chess) {
     this.id = id;
-    this.gameRef = gameRef;
+    this.chessRef = chessRef;
     this.pieces = [];
     this.possibleMoves = [];
 
     if (id === "w") {
       this.name = "White";
-    } else if (id === "b") {
+    } else {
       this.name = "Black";
     }
 
@@ -30,7 +28,7 @@ export default class Player {
   }
 
   getPieces() {
-    const fen = this.gameRef.fen.fenBoard;
+    const fen = this.chessRef.fen.fenBoard;
     let [file, rank] = [0, 0];
 
     for (let i = 0; i < fen.length; i++) {
@@ -65,22 +63,22 @@ export default class Player {
     let newPiece;
     switch (upCode) {
       case "P":
-        newPiece = new Pawn(this.id, rank, file, this.gameRef);
+        newPiece = new Pawn(this.id, rank, file, this.chessRef);
         break;
       case "N":
-        newPiece = new Knight(this.id, rank, file, this.gameRef);
+        newPiece = new Knight(this.id, rank, file, this.chessRef);
         break;
       case "B":
-        newPiece = new Bishop(this.id, rank, file, this.gameRef);
+        newPiece = new Bishop(this.id, rank, file, this.chessRef);
         break;
       case "R":
-        newPiece = new Rook(this.id, rank, file, this.gameRef);
+        newPiece = new Rook(this.id, rank, file, this.chessRef);
         break;
       case "Q":
-        newPiece = new Queen(this.id, rank, file, this.gameRef);
+        newPiece = new Queen(this.id, rank, file, this.chessRef);
         break;
       case "K":
-        newPiece = new King(this.id, rank, file, this.gameRef);
+        newPiece = new King(this.id, rank, file, this.chessRef);
         break;
       default:
         throw "piece should be either p/b/n/r/q/k!";

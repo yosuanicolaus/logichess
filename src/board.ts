@@ -1,6 +1,6 @@
 import { isNumber, convertUciLocation } from "./utils";
+import { CastleCode, Notation } from "./types";
 import Move from "./move";
-import { CastleCode } from "./types";
 
 export default class Board {
   board: string[][];
@@ -42,7 +42,7 @@ export default class Board {
    *  example uci = "e2"|"f3"|"h7"
    *  get piece at uci location
    */
-  getUci(uci: string) {
+  getUci(uci: Notation) {
     const [rank, file] = convertUciLocation(uci);
     return this.board[rank][file];
   }

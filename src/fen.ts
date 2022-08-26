@@ -88,7 +88,7 @@ export default class Fen {
     if (this.fenTurn === "b") {
       this.fenFullmove++;
       this.fenTurn = "w";
-    } else if (this.fenTurn === "w") {
+    } else {
       this.fenTurn = "b";
     }
   }
