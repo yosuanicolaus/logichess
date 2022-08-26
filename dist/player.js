@@ -4,21 +4,21 @@ const move_1 = require("./move");
 const piece_1 = require("./piece");
 const utils_1 = require("./utils");
 class Player {
-    constructor(id = "w", gameRef) {
+    constructor(id = "w", chessRef) {
         this.id = id;
-        this.gameRef = gameRef;
+        this.chessRef = chessRef;
         this.pieces = [];
         this.possibleMoves = [];
         if (id === "w") {
             this.name = "White";
         }
-        else if (id === "b") {
+        else {
             this.name = "Black";
         }
         this.getPieces();
     }
     getPieces() {
-        const fen = this.gameRef.fen.fenBoard;
+        const fen = this.chessRef.fen.fenBoard;
         let [file, rank] = [0, 0];
         for (let i = 0; i < fen.length; i++) {
             if (fen[i] === "/") {
@@ -55,22 +55,22 @@ class Player {
         let newPiece;
         switch (upCode) {
             case "P":
-                newPiece = new piece_1.Pawn(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.Pawn(this.id, rank, file, this.chessRef);
                 break;
             case "N":
-                newPiece = new piece_1.Knight(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.Knight(this.id, rank, file, this.chessRef);
                 break;
             case "B":
-                newPiece = new piece_1.Bishop(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.Bishop(this.id, rank, file, this.chessRef);
                 break;
             case "R":
-                newPiece = new piece_1.Rook(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.Rook(this.id, rank, file, this.chessRef);
                 break;
             case "Q":
-                newPiece = new piece_1.Queen(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.Queen(this.id, rank, file, this.chessRef);
                 break;
             case "K":
-                newPiece = new piece_1.King(this.id, rank, file, this.gameRef);
+                newPiece = new piece_1.King(this.id, rank, file, this.chessRef);
                 break;
             default:
                 throw "piece should be either p/b/n/r/q/k!";

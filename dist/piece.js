@@ -5,25 +5,22 @@ const chess_1 = require("./chess");
 const move_1 = require("./move");
 const utils_1 = require("./utils");
 class Piece {
-    constructor(faction, rank, file, gameRef) {
-        if (faction !== "w" && faction !== "b") {
-            throw "faction must be either 'w' or 'b'!";
-        }
-        else if (rank < 0 || rank > 7) {
-            throw "piece's rank is out of bonds!";
+    constructor(faction, rank, file, chessRef) {
+        if (rank < 0 || rank > 7) {
+            throw "piece's rank is out of bounds!";
         }
         else if (file < 0 || file > 7) {
-            throw "piece's file is out of bonds!";
+            throw "piece's file is out of bounds!";
         }
         this.faction = faction;
         this.rank = rank;
         this.file = file;
-        this.gameRef = gameRef;
-        this.boardRef = gameRef.board;
-        this.fenRef = gameRef.fen;
+        this.chessRef = chessRef;
+        this.boardRef = chessRef.board;
+        this.fenRef = chessRef.fen;
         this.moves = [];
-        this.hasMoved = false;
     }
+    generateMoves() { }
     createMove(toRank, toFile) {
         const move = new move_1.default(this.rank, this.file, toRank, toFile, this.code, this.faction);
         return move;
@@ -42,7 +39,7 @@ class Piece {
         this.checkSimulation(move);
     }
     checkSimulation(move) {
-        if (this.gameRef.simulation) {
+        if (this.chessRef.simulation) {
             this.addMove(move);
             return;
         }
@@ -83,14 +80,14 @@ class Piece {
         return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
     }
     move(move) {
-        this.hasMoved = true;
         this.rank = move.to.rank;
         this.file = move.to.file;
     }
 }
+exports.default = Piece;
 class Pawn extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "P");
         this.value = 1;
     }
@@ -171,8 +168,8 @@ class Pawn extends Piece {
 }
 exports.Pawn = Pawn;
 class King extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "K");
         this.value = Number.POSITIVE_INFINITY;
     }
@@ -196,7 +193,7 @@ class King extends Piece {
         this.castleCheck();
     }
     castleCheck() {
-        const castleFen = this.gameRef.fen.fenCastle;
+        const castleFen = this.chessRef.fen.fenCastle;
         let kingside = false;
         let queenside = false;
         if (this.faction === "w") {
@@ -263,8 +260,8 @@ class King extends Piece {
 }
 exports.King = King;
 class Queen extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "Q");
         this.value = 9;
     }
@@ -309,8 +306,8 @@ class Queen extends Piece {
 }
 exports.Queen = Queen;
 class Bishop extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "B");
         this.value = 3;
     }
@@ -347,8 +344,8 @@ class Bishop extends Piece {
 }
 exports.Bishop = Bishop;
 class Knight extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "N");
         this.value = 3;
     }
@@ -373,8 +370,8 @@ class Knight extends Piece {
 }
 exports.Knight = Knight;
 class Rook extends Piece {
-    constructor(faction, rank, file, gameRef) {
-        super(faction, rank, file, gameRef);
+    constructor(faction, rank, file, chessRef) {
+        super(faction, rank, file, chessRef);
         this.code = (0, utils_1.factionCode)(faction, "R");
         this.value = 5;
     }

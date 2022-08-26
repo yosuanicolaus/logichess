@@ -7,7 +7,11 @@ class Fen {
         this.fen = fen;
         const fens = fen.split(" ");
         this.fenBoard = fens[0];
-        this.fenTurn = fens[1];
+        const turn = fens[1];
+        if (turn !== "w" && turn !== "b") {
+            throw "Fen turn (fens[1]) must be w / b!";
+        }
+        this.fenTurn = turn;
         this.fenCastle = fens[2];
         this.fenEnPassant = fens[3];
         this.fenHalfmove = Number(fens[4]);
@@ -35,14 +39,7 @@ class Fen {
         this.updateFen();
     }
     updateFen() {
-        this.fen = [
-            this.fenBoard,
-            this.fenTurn,
-            this.fenCastle,
-            this.fenEnPassant,
-            this.fenHalfmove,
-            this.fenFullmove,
-        ].join(" ");
+        this.fen = `${this.fenBoard} ${this.fenTurn} ${this.fenCastle} ${this.fenEnPassant} ${this.fenHalfmove} ${this.fenFullmove}`;
     }
     updateFenBoard(board) {
         let emptyCount = 0;
@@ -76,7 +73,7 @@ class Fen {
             this.fenFullmove++;
             this.fenTurn = "w";
         }
-        else if (this.fenTurn === "w") {
+        else {
             this.fenTurn = "b";
         }
     }

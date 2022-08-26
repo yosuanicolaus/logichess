@@ -50,14 +50,11 @@ class Chess {
     }
     updateTurn() {
         this.turn = this.fen.fenTurn;
-        if (this.turn === "b") {
-            this.currentPlayer = this.pblack;
-        }
-        else if (this.turn === "w") {
+        if (this.turn === "w") {
             this.currentPlayer = this.pwhite;
         }
         else {
-            throw "turn must be either 'w' or 'b'";
+            this.currentPlayer = this.pblack;
         }
     }
     getData() {

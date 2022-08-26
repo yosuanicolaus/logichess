@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/yosuanicolaus/logichess/issues"
   },
-  "homepage": "https://github.com/yosuanicolaus/logichess#readme"
+  "homepage": "https://github.com/yosuanicolaus/logichess#readme",
+  "devDependencies": {
+    "@types/node": "^18.7.13"
+  }
 }
