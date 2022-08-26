@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const board_1 = require("./board");
 const fen_1 = require("./fen");
 const player_1 = require("./player");
+const utils_1 = require("./utils");
 class Chess {
     constructor(fen, simulation = false) {
         this.fen = new fen_1.default(fen);
@@ -14,7 +15,9 @@ class Chess {
         this.simulation = simulation;
         this.updateTurn();
         this.currentPlayer.generatePossibleMoves();
-        this.data = this.getData();
+        if (!simulation) {
+            this.data = this.getData();
+        }
     }
     play(move) {
         if (typeof move === "string") {
@@ -35,12 +38,21 @@ class Chess {
             this.data = this.getData();
         }
     }
-    info() {
-        console.log(this.fen.fen);
-        this.board.display();
-        console.log(`${this.currentPlayer.name} to move`);
-        console.log("Possible moves:");
-        console.log(this.currentPlayer.getSanMoves());
+    info(mode = "log") {
+        const info = [];
+        info.push(this.fen.fen);
+        info.push(this.board.display("get"));
+        info.push(`status: ${this.data.status}`);
+        info.push(`${this.currentPlayer.name} to move`);
+        info.push("Possible moves:");
+        info.push(this.currentPlayer.getSanMoves());
+        const result = info.join("\n");
+        if (mode === "log") {
+            console.log(result);
+        }
+        else {
+            return result;
+        }
     }
     playNone() {
         this.fen.updateTurn();
@@ -59,11 +71,23 @@ class Chess {
     }
     getData() {
         return {
+            status: this.getStatus(),
             turn: this.turn,
             fen: this.fen.fen,
             board: this.board.board,
             moves: this.currentPlayer.possibleMoves,
         };
+    }
+    getStatus() {
+        if (this.currentPlayer.possibleMoves.length === 0) {
+            return "end";
+        }
+        else if ((0, utils_1.isInCheck)(this)) {
+            return "check";
+        }
+        else {
+            return "normal";
+        }
     }
 }
 exports.default = Chess;

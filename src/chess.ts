@@ -3,13 +3,17 @@ import Fen, { FenString } from "./fen";
 import Move from "./move";
 import Player from "./player";
 import { Faction } from "./types";
+import { isInCheck } from "./utils";
 
-type ChessData = {
+type GameStatus = "normal" | "check" | "end";
+
+interface ChessData {
+  status: GameStatus;
   turn: Faction;
   fen: FenString;
   board: string[][];
   moves: Move[];
-};
+}
 
 export default class Chess {
   fen: Fen;
@@ -33,7 +37,9 @@ export default class Chess {
     this.updateTurn();
     this.currentPlayer.generatePossibleMoves();
 
-    this.data = this.getData();
+    if (!simulation) {
+      this.data = this.getData();
+    }
   }
 
   play(move: Move | string) {
@@ -57,12 +63,21 @@ export default class Chess {
     }
   }
 
-  info() {
-    console.log(this.fen.fen);
-    this.board.display();
-    console.log(`${this.currentPlayer.name} to move`);
-    console.log("Possible moves:");
-    console.log(this.currentPlayer.getSanMoves());
+  info(mode: "log" | "get" = "log") {
+    const info = [];
+    info.push(this.fen.fen);
+    info.push(this.board.display("get"));
+    info.push(`status: ${this.data.status}`);
+    info.push(`${this.currentPlayer.name} to move`);
+    info.push("Possible moves:");
+    info.push(this.currentPlayer.getSanMoves());
+
+    const result = info.join("\n");
+    if (mode === "log") {
+      console.log(result);
+    } else {
+      return result;
+    }
   }
 
   playNone() {
@@ -83,10 +98,21 @@ export default class Chess {
 
   getData(): ChessData {
     return {
+      status: this.getStatus(),
       turn: this.turn,
       fen: this.fen.fen,
       board: this.board.board,
       moves: this.currentPlayer.possibleMoves,
     };
+  }
+
+  getStatus(): GameStatus {
+    if (this.currentPlayer.possibleMoves.length === 0) {
+      return "end";
+    } else if (isInCheck(this)) {
+      return "check";
+    } else {
+      return "normal";
+    }
   }
 }

@@ -42,6 +42,11 @@ class Piece {
             this.addMove(move);
             return;
         }
+        if (move.castle && (0, utils_1.isInCheck)(this.chessRef)) {
+            // king can't castle when in check
+            return;
+        }
+        // creates simulation where we play the move
         const simulation = new chess_1.default(this.fenRef.fen, true);
         simulation.play(move);
         if (simulation.currentPlayer.canCaptureKing()) {

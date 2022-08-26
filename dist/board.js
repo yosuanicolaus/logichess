@@ -46,7 +46,7 @@ class Board {
     get(rank, file) {
         return this.board[rank][file];
     }
-    display() {
+    display(mode = "log") {
         let result = "";
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
@@ -54,7 +54,12 @@ class Board {
             }
             result += "\n";
         }
-        console.log(result);
+        if (mode === "log") {
+            console.log(result);
+        }
+        else {
+            return result;
+        }
     }
     update(move) {
         if (move.castle) {
