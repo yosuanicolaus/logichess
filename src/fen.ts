@@ -1,11 +1,17 @@
 import { convertRankFile } from "./utils";
 import Move from "./move";
-const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+import { Faction } from "./types";
+
+export type FenString =
+  `${string} ${Faction} ${string} ${string} ${number} ${number}`;
+
+const defaultFen: FenString =
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export default class Fen {
-  fen: string;
+  fen: FenString;
   fenBoard: string;
-  fenTurn: string;
+  fenTurn: Faction;
   fenCastle: string;
   fenEnPassant: string;
   fenHalfmove: number;
@@ -14,10 +20,15 @@ export default class Fen {
 
   constructor(fen = defaultFen) {
     this.fen = fen;
-
     const fens = fen.split(" ");
     this.fenBoard = fens[0];
-    this.fenTurn = fens[1];
+
+    const turn = fens[1];
+    if (turn !== "w" && turn !== "b") {
+      throw "Fen turn (fens[1]) must be w / b!";
+    }
+    this.fenTurn = turn;
+
     this.fenCastle = fens[2];
     this.fenEnPassant = fens[3];
     this.fenHalfmove = Number(fens[4]);
@@ -44,14 +55,7 @@ export default class Fen {
   }
 
   updateFen() {
-    this.fen = [
-      this.fenBoard,
-      this.fenTurn,
-      this.fenCastle,
-      this.fenEnPassant,
-      this.fenHalfmove,
-      this.fenFullmove,
-    ].join(" ");
+    this.fen = `${this.fenBoard} ${this.fenTurn} ${this.fenCastle} ${this.fenEnPassant} ${this.fenHalfmove} ${this.fenFullmove}`;
   }
 
   updateFenBoard(board: string[][]) {

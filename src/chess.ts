@@ -1,7 +1,8 @@
 import Board from "./board";
-import Fen from "./fen";
+import Fen, { FenString } from "./fen";
 import Move from "./move";
 import Player from "./player";
+import { Faction } from "./types";
 
 type Data = {
   turn: string;
@@ -15,12 +16,12 @@ export default class Chess {
   board: Board;
   pwhite: Player;
   pblack: Player;
-  turn: string;
+  turn: Faction;
   currentPlayer: Player;
   simulation: boolean;
   data: Data;
 
-  constructor(fen?: string, simulation = false) {
+  constructor(fen?: FenString, simulation = false) {
     this.fen = new Fen(fen);
     this.board = new Board(this.fen.fenBoard);
     this.pwhite = new Player("w", this);
