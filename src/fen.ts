@@ -1,6 +1,17 @@
+import { convertRankFile } from "./utils";
+import Move from "./move";
 const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-class Fen {
+export default class Fen {
+  fen: string;
+  fenBoard: string;
+  fenTurn: string;
+  fenCastle: string;
+  fenEnPassant: string;
+  fenHalfmove: number;
+  fenFullmove: number;
+  castlingRights: string[];
+
   constructor(fen = defaultFen) {
     this.fen = fen;
 
@@ -14,7 +25,7 @@ class Fen {
     this.castlingRights = this.getCastlingRights(this.fenCastle);
   }
 
-  getCastlingRights(fenCastle) {
+  getCastlingRights(fenCastle: string) {
     const res = ["", "", "", ""];
     if (fenCastle.includes("K")) res[0] = "K";
     if (fenCastle.includes("Q")) res[1] = "Q";
@@ -23,7 +34,7 @@ class Fen {
     return res;
   }
 
-  update(move, newBoard) {
+  update(move: Move, newBoard: string[][]) {
     this.updateFenBoard(newBoard);
     this.updateTurn();
     this.updateFenCastle(move);
@@ -43,7 +54,7 @@ class Fen {
     ].join(" ");
   }
 
-  updateFenBoard(board) {
+  updateFenBoard(board: string[][]) {
     let emptyCount = 0;
     let newFenBoard = "";
     for (let rank = 0; rank < 8; rank++) {
@@ -78,7 +89,7 @@ class Fen {
     }
   }
 
-  updateHalfmove(move) {
+  updateHalfmove(move: Move) {
     if (move.capture || move.piece.toUpperCase() === "P") {
       this.fenHalfmove = 0;
     } else {
@@ -86,7 +97,7 @@ class Fen {
     }
   }
 
-  updateFenCastle(move) {
+  updateFenCastle(move: Move) {
     if (this.fenCastle === "-") return;
     if (move.castle) {
       const code = move.castle;
@@ -134,7 +145,7 @@ class Fen {
     if (this.fenCastle === "") this.fenCastle = "-";
   }
 
-  updateFenEnPassant(move) {
+  updateFenEnPassant(move: Move) {
     const isPawn = move.piece.toUpperCase() === "P";
     const twoRankMove = Math.abs(move.from.rank - move.to.rank) === 2;
 

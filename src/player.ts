@@ -1,10 +1,24 @@
-class Player {
-  constructor(id = "w", gameRef) {
+import Chess from "./chess";
+import Move from "./move";
+import { Bishop, King, Knight, Pawn, Queen, Rook } from "./piece";
+import { CastleCode, Faction } from "./types";
+import { allDifferent, isCapital, isNumber } from "./utils";
+
+type SuperPiece = Bishop | King | Knight | Pawn | Queen | Rook;
+
+export default class Player {
+  id: Faction;
+  gameRef: Chess;
+  pieces: SuperPiece[];
+
+  possibleMoves: Move[];
+  name: "White" | "Black";
+
+  constructor(id: Faction = "w", gameRef: Chess) {
     this.id = id;
     this.gameRef = gameRef;
     this.pieces = [];
     this.possibleMoves = [];
-    this.capturedPieces = [];
 
     if (id === "w") {
       this.name = "White";
@@ -46,10 +60,10 @@ class Player {
     }
   }
 
-  addPiece(code, rank, file) {
-    code = code.toUpperCase();
+  addPiece(code: string, rank: number, file: number) {
+    const upCode = code.toUpperCase();
     let newPiece;
-    switch (code) {
+    switch (upCode) {
       case "P":
         newPiece = new Pawn(this.id, rank, file, this.gameRef);
         break;
@@ -74,7 +88,7 @@ class Player {
     this.pieces.push(newPiece);
   }
 
-  updatePiecePosition(move) {
+  updatePiecePosition(move: Move) {
     if (move.castle) {
       this.castle(move.castle);
       return;
@@ -91,8 +105,7 @@ class Player {
     throw "can't find piece from that rank and file";
   }
 
-  // code == K/Q/k/q
-  castle(code) {
+  castle(code: CastleCode) {
     let kingMove, rookMove;
     switch (code) {
       case "K":
@@ -118,7 +131,7 @@ class Player {
     this.updatePiecePosition(rookMove);
   }
 
-  removePiece(rank, file) {
+  removePiece(rank: number, file: number) {
     let toRemoveIndex;
     for (let i = 0; i < this.pieces.length; i++) {
       const piece = this.pieces[i];
@@ -147,8 +160,14 @@ class Player {
   }
 
   disambiguateSan() {
-    const seenSan = {};
-    const toDisamb = {};
+    interface SeenSan {
+      [key: string]: Move;
+    }
+    interface DisambSan {
+      [key: string]: Move[];
+    }
+    const seenSan: SeenSan = {};
+    const toDisamb: DisambSan = {};
 
     for (const move of this.possibleMoves) {
       if (seenSan[move.san]) {
@@ -190,7 +209,7 @@ class Player {
 
   canCaptureKing() {
     for (const move of this.possibleMoves) {
-      if (move.capture && move.capturedPiece.toUpperCase() === "K") {
+      if (move.capture && move.capturedPiece?.toUpperCase() === "K") {
         return true;
       }
     }
@@ -205,7 +224,7 @@ class Player {
     return allSan.join(", ");
   }
 
-  getMoveFromString(str) {
+  getMoveFromString(str: string) {
     // check from all san, lan, and uci possible moves
     for (const move of this.possibleMoves) {
       if (move.san === str || move.lan === str || move.uci === str) {
