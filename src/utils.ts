@@ -1,5 +1,5 @@
-function convertUciLocation(uci) {
-  const fileIndex = uci[0].charCodeAt() - 97;
+export function convertUciLocation(uci: string) {
+  const fileIndex = uci[0].charCodeAt(0) - 97;
   const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
 
   if (fileIndex < 0 || fileIndex > 7) {
@@ -11,26 +11,26 @@ function convertUciLocation(uci) {
   return [rankIndex, fileIndex];
 }
 
-function convertRankFile(rank, file) {
+export function convertRankFile(rank: number, file: number) {
   const r = (rank + (4 - rank) * 2).toString();
   const f = String.fromCharCode(97 + file);
   return f + r;
 }
 
-function isNumber(str) {
+export function isNumber(str: any) {
   return !isNaN(str);
 }
 
-function isCapital(str) {
+export function isCapital(str: string) {
   return str.toUpperCase() === str;
 }
 
-function addIncrement(target, increment) {
+export function addIncrement(target: number[], increment: number[]) {
   target[0] += increment[0];
   target[1] += increment[1];
 }
 
-function allDifferent(...args) {
+export function allDifferent(...args: any[]) {
   const seen = new Set();
   for (const arg of args) {
     if (seen.has(arg)) {
@@ -41,19 +41,31 @@ function allDifferent(...args) {
   return true;
 }
 
-function factionCode(faction, code) {
+type Faction = "w" | "b";
+
+export function factionCode(faction: Faction, code: string) {
   if (faction === "w") {
     return code.toUpperCase();
-  } else if (faction === "b") {
-    return code.toLowerCase();
   } else {
-    throw "faction should be either 'w'/'b'!";
+    return code.toLowerCase();
   }
 }
 
-// faction = "w" / "b"
-// panelPiece = "\pnbrqkPNBRQK\"
-function sameFaction(faction, panelPiece) {
+type PieceCode =
+  | "p"
+  | "n"
+  | "b"
+  | "r"
+  | "q"
+  | "k"
+  | "P"
+  | "N"
+  | "B"
+  | "R"
+  | "Q"
+  | "K";
+
+export function sameFaction(faction: Faction, panelPiece: PieceCode) {
   return (
     (faction === "w" && isCapital(panelPiece)) ||
     (faction === "b" && !isCapital(panelPiece))
