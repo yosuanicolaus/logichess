@@ -2,7 +2,7 @@ import { convertRankFile } from "./utils";
 import Move from "./move";
 const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-class Fen {
+export default class Fen {
   fen: string;
   fenBoard: string;
   fenTurn: string;

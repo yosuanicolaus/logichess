@@ -1,6 +1,6 @@
-import { Faction, Notation, PieceCode } from "./types";
+import { Faction } from "./types";
 
-export function convertUciLocation(uci: Notation) {
+export function convertUciLocation(uci: string) {
   const fileIndex = uci[0].charCodeAt(0) - 97;
   const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
 
@@ -46,12 +46,12 @@ export function allDifferent(...args: any[]) {
 export function factionCode(faction: Faction, code: string) {
   if (faction === "w") {
     return code.toUpperCase();
-  } else {
+  } else if (faction === "b") {
     return code.toLowerCase();
   }
 }
 
-export function sameFaction(faction: Faction, panelPiece: PieceCode) {
+export function sameFaction(faction: Faction, panelPiece: string) {
   return (
     (faction === "w" && isCapital(panelPiece)) ||
     (faction === "b" && !isCapital(panelPiece))

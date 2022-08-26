@@ -1,5 +1,5 @@
 import { convertRankFile } from "./utils";
-import { PieceCode, Faction, CastleCode } from "./types";
+import { Faction, CastleCode } from "./types";
 
 export default class Move {
   from: {
@@ -10,7 +10,7 @@ export default class Move {
     rank: number;
     file: number;
   };
-  piece: PieceCode;
+  piece: string;
   faction: Faction;
 
   capture?: true;
@@ -18,7 +18,7 @@ export default class Move {
   checkmate?: true;
   promotion?: string;
   castle?: CastleCode;
-  capturedPiece?: PieceCode;
+  capturedPiece?: string;
   enpassant?: string;
 
   san: string;
@@ -32,8 +32,8 @@ export default class Move {
     fromFile: number,
     toRank: number,
     toFile: number,
-    piece: PieceCode,
-    faction: Faction
+    piece?: string,
+    faction?: Faction
   ) {
     this.from = {
       rank: fromRank,
