@@ -1,25 +1,13 @@
 const Chess = require("./index");
-let c = new Chess();
-const p = (s) => c.play(s);
 
-p("e4");
-p("e5");
-p("Bc4");
-p("Bc5");
-p("Nf3");
-p("Nf6");
-p("O-O");
-
-console.log("after white castled:");
+const c = new Chess(
+  "r1b1k1nr/pppp1ppp/2nb4/8/2B1PpPq/8/PPPPN2P/RNBQK2R w KQkq - 5 6"
+);
 
 c.info();
 
-console.log("creating new chess using that fen");
-const fenData = c.data.fen;
-c = new Chess(fenData);
-
-p("O-O");
-
-console.log("after black castled:");
-
-c.info();
+if (c.data.moves.find((move) => move.san === "O-O")) {
+  console.log("FALSE, king should not be able to castle");
+} else {
+  console.log("ISSUE FIXED, king cannot castle in check");
+}

@@ -14,11 +14,11 @@ export default class Move {
   faction: Faction;
 
   capture?: true;
+  capturedPiece?: string;
   check?: true;
   checkmate?: true;
   promotion?: string;
   castle?: CastleCode;
-  capturedPiece?: string;
   enpassant?: true;
 
   san: string;

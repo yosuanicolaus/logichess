@@ -33,7 +33,7 @@ class Piece {
         const move = this.createMove(rank, file);
         if (!this.panelEmpty(rank, file)) {
             move.capture = true;
-            // move.capturedPiece = this.boardRef.get(rank, file);
+            move.capturedPiece = this.boardRef.get(rank, file);
         }
         this.checkSimulation(move);
     }

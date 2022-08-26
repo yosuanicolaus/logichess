@@ -183,9 +183,8 @@ class Player {
         }
     }
     canCaptureKing() {
-        var _a;
         for (const move of this.possibleMoves) {
-            if (move.capture && ((_a = move.capturedPiece) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "K") {
+            if (move.capture && move.capturedPiece.toUpperCase() === "K") {
                 return true;
             }
         }
