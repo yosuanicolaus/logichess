@@ -19,7 +19,7 @@ export default class Move {
   promotion?: string;
   castle?: CastleCode;
   capturedPiece?: string;
-  enpassant?: string;
+  enpassant?: true;
 
   san: string;
   lan: string;

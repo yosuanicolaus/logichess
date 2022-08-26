@@ -1,5 +1,28 @@
+import Board from "./board";
+import Chess from "./chess";
+import Fen from "./fen";
+import Move from "./move";
+import { CastleCode, Faction } from "./types";
+import {
+  addIncrement,
+  convertUciLocation,
+  factionCode,
+  sameFaction,
+} from "./utils";
+
 class Piece {
-  constructor(faction, rank, file, gameRef) {
+  faction: Faction;
+  rank: number;
+  file: number;
+  gameRef: Chess;
+  boardRef: Board;
+  fenRef: Fen;
+  moves: Move[];
+  hasMoved: boolean;
+  code: string;
+  value: number;
+
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     if (faction !== "w" && faction !== "b") {
       throw "faction must be either 'w' or 'b'!";
     } else if (rank < 0 || rank > 7) {
@@ -14,12 +37,10 @@ class Piece {
     this.boardRef = gameRef.board;
     this.fenRef = gameRef.fen;
     this.moves = [];
-    this.captures = [];
     this.hasMoved = false;
-    this.code;
   }
 
-  createMove(toRank, toFile) {
+  createMove(toRank: number, toFile: number) {
     const move = new Move(
       this.rank,
       this.file,
@@ -31,22 +52,23 @@ class Piece {
     return move;
   }
 
-  addMove(move) {
+  addMove(move: Move) {
     move.generate();
     this.moves.push(move);
   }
 
-  validateMove(rank, file) {
+  validateMove(...args: number[]) {
+    const [rank, file] = [...args];
     const move = this.createMove(rank, file);
     if (!this.panelEmpty(rank, file)) {
       move.capture = true;
-      move.capturedPiece = this.boardRef.get(rank, file);
+      // move.capturedPiece = this.boardRef.get(rank, file);
     }
 
     this.checkSimulation(move);
   }
 
-  checkSimulation(move) {
+  checkSimulation(move: Move) {
     if (this.gameRef.simulation) {
       this.addMove(move);
       return;
@@ -69,36 +91,40 @@ class Piece {
     this.addMove(move);
   }
 
-  canMove(rank, file) {
+  canMove(...args: number[]) {
+    const [rank, file] = [...args];
     return (
       this.inBoundaries(rank, file) &&
       (this.panelEmpty(rank, file) || this.canCapture(rank, file))
     );
   }
 
-  panelEmpty(rank, file) {
+  panelEmpty(...args: number[]) {
+    const [rank, file] = [...args];
     const panelPiece = this.boardRef.get(rank, file);
     return panelPiece === ".";
   }
 
-  canCapture(rank, file) {
+  canCapture(...args: number[]) {
+    const [rank, file] = [...args];
     const panelPiece = this.boardRef.get(rank, file);
     return panelPiece !== "." && !sameFaction(this.faction, panelPiece);
   }
 
-  inBoundaries(rank, file) {
+  inBoundaries(...args: number[]) {
+    const [rank, file] = [...args];
     return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
   }
 
-  move(move) {
+  move(move: Move) {
     this.hasMoved = true;
     this.rank = move.to.rank;
     this.file = move.to.file;
   }
 }
 
-class Pawn extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class Pawn extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "P");
     this.value = 1;
@@ -186,8 +212,8 @@ class Pawn extends Piece {
   }
 }
 
-class King extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class King extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "K");
     this.value = Number.POSITIVE_INFINITY;
@@ -242,7 +268,7 @@ class King extends Piece {
     }
   }
 
-  validateCastleMove(code) {
+  validateCastleMove(code: CastleCode) {
     let adjacent1 = false;
     let adjacent2 = false;
     let adjacent3 = false;
@@ -284,8 +310,8 @@ class King extends Piece {
   }
 }
 
-class Queen extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class Queen extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "Q");
     this.value = 9;
@@ -331,8 +357,8 @@ class Queen extends Piece {
   }
 }
 
-class Bishop extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class Bishop extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "B");
     this.value = 3;
@@ -370,8 +396,8 @@ class Bishop extends Piece {
   }
 }
 
-class Knight extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class Knight extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "N");
     this.value = 3;
@@ -399,8 +425,8 @@ class Knight extends Piece {
   }
 }
 
-class Rook extends Piece {
-  constructor(faction, rank, file, gameRef) {
+export class Rook extends Piece {
+  constructor(faction: Faction, rank: number, file: number, gameRef: Chess) {
     super(faction, rank, file, gameRef);
     this.code = factionCode(faction, "R");
     this.value = 5;
