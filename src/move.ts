@@ -1,5 +1,40 @@
-class Move {
-  constructor(fromRank, fromFile, toRank, toFile, piece, faction) {
+import { convertRankFile } from "./utils";
+import { PieceCode, Faction, CastleCode } from "./types";
+
+export default class Move {
+  from: {
+    rank: number;
+    file: number;
+  };
+  to: {
+    rank: number;
+    file: number;
+  };
+  piece: PieceCode;
+  faction: Faction;
+
+  capture?: true;
+  check?: true;
+  checkmate?: true;
+  promotion?: string;
+  castle?: CastleCode;
+  capturedPiece?: PieceCode;
+  enpassant?: string;
+
+  san: string;
+  lan: string;
+  uci: string;
+
+  fenResult: string;
+
+  constructor(
+    fromRank: number,
+    fromFile: number,
+    toRank: number,
+    toFile: number,
+    piece: PieceCode,
+    faction: Faction
+  ) {
     this.from = {
       rank: fromRank,
       file: fromFile,
@@ -10,14 +45,6 @@ class Move {
     };
     this.piece = piece;
     this.faction = faction;
-
-    this.capture;
-    this.check;
-    this.checkmate;
-    this.promotion;
-    this.castle;
-    this.capturedPiece;
-    this.enpassant;
 
     this.san = "";
     this.lan = "";
