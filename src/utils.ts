@@ -1,3 +1,5 @@
+import { Faction, PieceCode } from "./types";
+
 export function convertUciLocation(uci: string) {
   const fileIndex = uci[0].charCodeAt(0) - 97;
   const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
@@ -41,8 +43,6 @@ export function allDifferent(...args: any[]) {
   return true;
 }
 
-type Faction = "w" | "b";
-
 export function factionCode(faction: Faction, code: string) {
   if (faction === "w") {
     return code.toUpperCase();
@@ -50,20 +50,6 @@ export function factionCode(faction: Faction, code: string) {
     return code.toLowerCase();
   }
 }
-
-type PieceCode =
-  | "p"
-  | "n"
-  | "b"
-  | "r"
-  | "q"
-  | "k"
-  | "P"
-  | "N"
-  | "B"
-  | "R"
-  | "Q"
-  | "K";
 
 export function sameFaction(faction: Faction, panelPiece: PieceCode) {
   return (
