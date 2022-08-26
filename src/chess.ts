@@ -1,5 +1,26 @@
-class Chess {
-  constructor(fen, simulation = false) {
+import Board from "./board";
+import Fen from "./fen";
+import Move from "./move";
+import Player from "./player";
+
+type Data = {
+  turn: string;
+  fen: string;
+  board: string[][];
+  moves: Move[];
+};
+
+export default class Chess {
+  fen: Fen;
+  board: Board;
+  pwhite: Player;
+  pblack: Player;
+  turn: string;
+  currentPlayer: Player;
+  simulation: boolean;
+  data: Data;
+
+  constructor(fen: string, simulation = false) {
     this.fen = new Fen(fen);
     this.board = new Board(this.fen.fenBoard);
     this.pwhite = new Player("w", this);
@@ -14,7 +35,7 @@ class Chess {
     this.data = this.getData();
   }
 
-  play(move) {
+  play(move: Move | string) {
     if (typeof move === "string") {
       move = this.currentPlayer.getMoveFromString(move);
     }
