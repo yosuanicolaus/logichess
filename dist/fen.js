@@ -78,7 +78,8 @@ class Fen {
         }
     }
     updateHalfmove(move) {
-        if (move.capture || move.piece.toUpperCase() === "P") {
+        var _a;
+        if (move.capture || ((_a = move.piece) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "P") {
             this.fenHalfmove = 0;
         }
         else {
@@ -138,7 +139,8 @@ class Fen {
             this.fenCastle = "-";
     }
     updateFenEnPassant(move) {
-        const isPawn = move.piece.toUpperCase() === "P";
+        var _a;
+        const isPawn = ((_a = move.piece) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "P";
         const twoRankMove = Math.abs(move.from.rank - move.to.rank) === 2;
         if (isPawn && twoRankMove) {
             let target;

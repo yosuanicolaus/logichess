@@ -39,10 +39,11 @@ class Chess {
         }
     }
     info(mode = "log") {
+        var _a;
         const info = [];
         info.push(this.fen.fen);
         info.push(this.board.display("get"));
-        info.push(`status: ${this.data.status}`);
+        info.push(`status: ${(_a = this.data) === null || _a === void 0 ? void 0 : _a.status}`);
         info.push(`${this.currentPlayer.name} to move`);
         info.push("Possible moves:");
         info.push(this.currentPlayer.getSanMoves());

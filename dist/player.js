@@ -125,7 +125,7 @@ class Player {
                 break;
             }
         }
-        if (isNaN(toRemoveIndex)) {
+        if (typeof toRemoveIndex !== "number") {
             throw "can't find piece with that rank and file!";
         }
         this.pieces.splice(toRemoveIndex, 1);
@@ -183,8 +183,9 @@ class Player {
         }
     }
     canCaptureKing() {
+        var _a;
         for (const move of this.possibleMoves) {
-            if (move.capture && move.capturedPiece.toUpperCase() === "K") {
+            if (move.capture && ((_a = move.capturedPiece) === null || _a === void 0 ? void 0 : _a.toUpperCase()) === "K") {
                 return true;
             }
         }

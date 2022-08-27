@@ -30,6 +30,7 @@ class Move {
         this.generateUci();
     }
     generateSanLan() {
+        var _a;
         if (this.castle) {
             const code = this.castle.toUpperCase();
             if (code === "K") {
@@ -47,7 +48,7 @@ class Move {
         }
         let lan = "";
         let san = "";
-        let piece = this.piece.toUpperCase();
+        let piece = (_a = this.piece) === null || _a === void 0 ? void 0 : _a.toUpperCase();
         if (piece !== "P") {
             lan += piece;
             san += piece;
@@ -95,8 +96,9 @@ class Move {
 }
 exports.default = Move;
 _Move_instances = new WeakSet(), _Move_sanAddFrom = function _Move_sanAddFrom() {
+    var _a;
     const from = (0, utils_1.convertRankFile)(this.from.rank, this.from.file);
-    let piece = this.piece.toUpperCase();
+    let piece = (_a = this.piece) === null || _a === void 0 ? void 0 : _a.toUpperCase();
     if (piece === "P" || piece === "K") {
         throw "pawn and knight should have no disambiguation";
     }

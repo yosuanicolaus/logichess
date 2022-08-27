@@ -23,7 +23,7 @@ export default class Chess {
   turn: Faction;
   currentPlayer: Player;
   simulation: boolean;
-  data: ChessData;
+  data?: ChessData;
 
   constructor(fen?: FenString, simulation = false) {
     this.fen = new Fen(fen);
@@ -67,7 +67,7 @@ export default class Chess {
     const info = [];
     info.push(this.fen.fen);
     info.push(this.board.display("get"));
-    info.push(`status: ${this.data.status}`);
+    info.push(`status: ${this.data?.status}`);
     info.push(`${this.currentPlayer.name} to move`);
     info.push("Possible moves:");
     info.push(this.currentPlayer.getSanMoves());

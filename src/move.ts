@@ -10,8 +10,8 @@ export default class Move {
     rank: number;
     file: number;
   };
-  piece: string;
-  faction: Faction;
+  piece?: string;
+  faction?: Faction;
 
   capture?: true;
   capturedPiece?: string;
@@ -75,7 +75,7 @@ export default class Move {
 
     let lan = "";
     let san = "";
-    let piece = this.piece.toUpperCase();
+    let piece = this.piece?.toUpperCase();
     if (piece !== "P") {
       lan += piece;
       san += piece;
@@ -126,7 +126,7 @@ export default class Move {
   #sanAddFrom() {
     const from = convertRankFile(this.from.rank, this.from.file);
 
-    let piece = this.piece.toUpperCase();
+    let piece = this.piece?.toUpperCase();
     if (piece === "P" || piece === "K") {
       throw "pawn and knight should have no disambiguation";
     }

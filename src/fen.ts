@@ -94,7 +94,7 @@ export default class Fen {
   }
 
   updateHalfmove(move: Move) {
-    if (move.capture || move.piece.toUpperCase() === "P") {
+    if (move.capture || move.piece?.toUpperCase() === "P") {
       this.fenHalfmove = 0;
     } else {
       this.fenHalfmove++;
@@ -150,7 +150,7 @@ export default class Fen {
   }
 
   updateFenEnPassant(move: Move) {
-    const isPawn = move.piece.toUpperCase() === "P";
+    const isPawn = move.piece?.toUpperCase() === "P";
     const twoRankMove = Math.abs(move.from.rank - move.to.rank) === 2;
 
     if (isPawn && twoRankMove) {

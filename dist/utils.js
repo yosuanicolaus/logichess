@@ -48,7 +48,7 @@ function factionCode(faction, code) {
     if (faction === "w") {
         return code.toUpperCase();
     }
-    else if (faction === "b") {
+    else {
         return code.toLowerCase();
     }
 }

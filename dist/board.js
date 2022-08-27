@@ -74,6 +74,8 @@ class Board {
         }
     }
     normalMove(move) {
+        if (!move.piece)
+            throw "move.piece should be defined";
         this.board[move.from.rank][move.from.file] = ".";
         this.board[move.to.rank][move.to.file] = move.piece;
     }

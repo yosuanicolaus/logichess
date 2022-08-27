@@ -47,7 +47,7 @@ export function allDifferent(...args: any[]) {
 export function factionCode(faction: Faction, code: string) {
   if (faction === "w") {
     return code.toUpperCase();
-  } else if (faction === "b") {
+  } else {
     return code.toLowerCase();
   }
 }
