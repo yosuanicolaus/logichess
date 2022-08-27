@@ -132,9 +132,9 @@ export default class Fen {
           break;
         case "R":
           if (fromRank === 7 && fromFile === 0) {
-            this.castlingRights[0] = "";
-          } else if (fromRank === 7 && fromFile === 7) {
             this.castlingRights[1] = "";
+          } else if (fromRank === 7 && fromFile === 7) {
+            this.castlingRights[0] = "";
           }
           break;
         case "r":
