@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isNumber = exports.convertRankFile = exports.convertUciLocation = void 0;
+exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = void 0;
 const chess_1 = require("./chess");
+function checkBoundaries(rank, file) {
+    if (file < 0 || file > 7) {
+        throw "file is out of bonds";
+    }
+    else if (rank < 0 || rank > 7) {
+        throw "rank is out of bonds";
+    }
+}
+exports.checkBoundaries = checkBoundaries;
 function convertUciLocation(uci) {
     const fileIndex = uci[0].charCodeAt(0) - 97;
     const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
-    if (fileIndex < 0 || fileIndex > 7) {
-        throw "file is out of bonds";
-    }
-    else if (rankIndex < 0 || rankIndex > 7) {
-        throw "rank is out of bonds";
-    }
+    checkBoundaries(rankIndex, fileIndex);
     return [rankIndex, fileIndex];
 }
 exports.convertUciLocation = convertUciLocation;
@@ -20,10 +24,10 @@ function convertRankFile(rank, file) {
     return f + r;
 }
 exports.convertRankFile = convertRankFile;
-function isNumber(str) {
-    return !isNaN(str);
+function isStringNumber(str) {
+    return !isNaN(Number(str));
 }
-exports.isNumber = isNumber;
+exports.isStringNumber = isStringNumber;
 function isCapital(str) {
     return str.toUpperCase() === str;
 }

@@ -6,12 +6,7 @@ const move_1 = require("./move");
 const utils_1 = require("./utils");
 class Piece {
     constructor(faction, rank, file, chessRef, code, value) {
-        if (rank < 0 || rank > 7) {
-            throw "piece's rank is out of bounds!";
-        }
-        else if (file < 0 || file > 7) {
-            throw "piece's file is out of bounds!";
-        }
+        (0, utils_1.checkBoundaries)(rank, file);
         this.faction = faction;
         this.rank = rank;
         this.file = file;

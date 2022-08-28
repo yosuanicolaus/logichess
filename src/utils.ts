@@ -1,15 +1,18 @@
 import Chess from "./chess";
 import { Faction } from "./types";
 
+export function checkBoundaries(rank: number, file: number) {
+  if (file < 0 || file > 7) {
+    throw "file is out of bonds";
+  } else if (rank < 0 || rank > 7) {
+    throw "rank is out of bonds";
+  }
+}
+
 export function convertUciLocation(uci: string) {
   const fileIndex = uci[0].charCodeAt(0) - 97;
   const rankIndex = Number(uci[1]) + (4 - Number(uci[1])) * 2;
-
-  if (fileIndex < 0 || fileIndex > 7) {
-    throw "file is out of bonds";
-  } else if (rankIndex < 0 || rankIndex > 7) {
-    throw "rank is out of bonds";
-  }
+  checkBoundaries(rankIndex, fileIndex);
 
   return [rankIndex, fileIndex];
 }
@@ -20,8 +23,8 @@ export function convertRankFile(rank: number, file: number) {
   return f + r;
 }
 
-export function isNumber(str: any) {
-  return !isNaN(str);
+export function isStringNumber(str: string) {
+  return !isNaN(Number(str));
 }
 
 export function isCapital(str: string) {
@@ -33,7 +36,7 @@ export function addIncrement(target: number[], increment: number[]) {
   target[1] += increment[1];
 }
 
-export function allDifferent(...args: any[]) {
+export function allDifferent(...args: unknown[]) {
   const seen = new Set();
   for (const arg of args) {
     if (seen.has(arg)) {

@@ -1,4 +1,4 @@
-import { isNumber, convertUciLocation } from "./utils";
+import { isStringNumber, convertUciLocation } from "./utils";
 import { CastleCode, Notation } from "./types";
 import Move from "./move";
 
@@ -28,7 +28,7 @@ export default class Board {
         rank++;
         file = 0;
         continue;
-      } else if (isNumber(fen[i])) {
+      } else if (isStringNumber(fen[i])) {
         file += Number(fen[i]);
         continue;
       } else {
@@ -108,15 +108,12 @@ export default class Board {
         this.board[0][6] = "k";
         this.board[0][7] = ".";
         break;
-      case "q":
+      default:
         this.board[0][0] = ".";
         this.board[0][1] = ".";
         this.board[0][2] = "k";
         this.board[0][3] = "r";
         this.board[0][4] = ".";
-        break;
-      default:
-        throw "(Board) castle code should be either K/Q/k/q!";
     }
   }
 }

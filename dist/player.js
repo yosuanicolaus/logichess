@@ -4,7 +4,7 @@ const move_1 = require("./move");
 const piece_1 = require("./piece");
 const utils_1 = require("./utils");
 class Player {
-    constructor(id = "w", chessRef) {
+    constructor(id, chessRef) {
         this.id = id;
         this.chessRef = chessRef;
         this.pieces = [];
@@ -26,7 +26,7 @@ class Player {
                 rank++;
                 continue;
             }
-            else if ((0, utils_1.isNumber)(fen[i])) {
+            else if ((0, utils_1.isStringNumber)(fen[i])) {
                 file += Number(fen[i]);
                 continue;
             }

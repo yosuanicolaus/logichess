@@ -25,7 +25,7 @@ class Board {
                 file = 0;
                 continue;
             }
-            else if ((0, utils_1.isNumber)(fen[i])) {
+            else if ((0, utils_1.isStringNumber)(fen[i])) {
                 file += Number(fen[i]);
                 continue;
             }
@@ -103,15 +103,12 @@ class Board {
                 this.board[0][6] = "k";
                 this.board[0][7] = ".";
                 break;
-            case "q":
+            default:
                 this.board[0][0] = ".";
                 this.board[0][1] = ".";
                 this.board[0][2] = "k";
                 this.board[0][3] = "r";
                 this.board[0][4] = ".";
-                break;
-            default:
-                throw "(Board) castle code should be either K/Q/k/q!";
         }
     }
 }

@@ -2,7 +2,7 @@ import Chess from "./chess";
 import Move from "./move";
 import Piece, { Bishop, King, Knight, Pawn, Queen, Rook } from "./piece";
 import { CastleCode, Faction } from "./types";
-import { allDifferent, isCapital, isNumber } from "./utils";
+import { allDifferent, isCapital, isStringNumber } from "./utils";
 
 export default class Player {
   id: Faction;
@@ -12,7 +12,7 @@ export default class Player {
   possibleMoves: Move[];
   name: "White" | "Black";
 
-  constructor(id: Faction = "w", chessRef: Chess) {
+  constructor(id: Faction, chessRef: Chess) {
     this.id = id;
     this.chessRef = chessRef;
     this.pieces = [];
@@ -36,7 +36,7 @@ export default class Player {
         file = 0;
         rank++;
         continue;
-      } else if (isNumber(fen[i])) {
+      } else if (isStringNumber(fen[i])) {
         file += Number(fen[i]);
         continue;
       } else {

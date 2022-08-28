@@ -5,6 +5,7 @@ import Move from "./move";
 import { CastleCode, Faction } from "./types";
 import {
   addIncrement,
+  checkBoundaries,
   convertUciLocation,
   factionCode,
   isInCheck,
@@ -30,11 +31,7 @@ export default abstract class Piece {
     code: string,
     value: number
   ) {
-    if (rank < 0 || rank > 7) {
-      throw "piece's rank is out of bounds!";
-    } else if (file < 0 || file > 7) {
-      throw "piece's file is out of bounds!";
-    }
+    checkBoundaries(rank, file);
     this.faction = faction;
     this.rank = rank;
     this.file = file;
