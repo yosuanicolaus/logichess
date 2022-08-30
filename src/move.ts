@@ -1,5 +1,5 @@
 import { convertRankFile } from "./utils";
-import { Faction, CastleCode } from "./types";
+import { Faction, CastleCode, PromoteCode } from "./types";
 
 export default class Move {
   readonly from: {
@@ -17,7 +17,7 @@ export default class Move {
   capturedPiece?: string;
   check?: true;
   checkmate?: true;
-  promotion?: string;
+  promotion?: PromoteCode;
   castle?: CastleCode;
   enpassant?: true;
 
