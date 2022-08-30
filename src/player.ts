@@ -86,7 +86,7 @@ export default class Player {
     this.pieces.push(newPiece);
   }
 
-  updatePiecePosition(move: Move) {
+  update(move: Move) {
     if (move.castle) {
       this.castle(move.castle);
       return;
@@ -106,6 +106,20 @@ export default class Player {
       }
     }
     throw "can't find piece from that rank and file";
+  }
+
+  initialize(lastMove?: Move) {
+    const init = () => {
+      this.generatePossibleMoves();
+    };
+
+    if (!lastMove) return init();
+    if (lastMove.enpassant) {
+      this.removePiece(lastMove.from.rank, lastMove.to.file);
+    } else if (lastMove.capture) {
+      this.removePiece(lastMove.to.rank, lastMove.to.file);
+    }
+    init();
   }
 
   createPromotionPiece(move: Move) {
@@ -151,8 +165,8 @@ export default class Player {
       default:
         throw "(Player) castle code should be either K/Q/k/q!";
     }
-    this.updatePiecePosition(kingMove);
-    this.updatePiecePosition(rookMove);
+    this.update(kingMove);
+    this.update(rookMove);
   }
 
   removePiece(rank: number, file: number) {

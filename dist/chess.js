@@ -8,13 +8,13 @@ class Chess {
     constructor(fen, simulation = false) {
         this.fen = new fen_1.default(fen);
         this.board = new board_1.default(this.fen.fenBoard);
+        this.simulation = simulation;
         this.pwhite = new player_1.default("w", this);
         this.pblack = new player_1.default("b", this);
         this.turn = this.fen.fenTurn;
         this.currentPlayer = this.pwhite;
-        this.simulation = simulation;
         this.updateTurn();
-        this.currentPlayer.generatePossibleMoves();
+        this.currentPlayer.initialize();
         if (!simulation) {
             this.data = this.getData();
         }
@@ -25,18 +25,11 @@ class Chess {
         }
         this.board.update(move);
         this.fen.update(move, this.board.board);
-        this.currentPlayer.updatePiecePosition(move);
+        this.currentPlayer.update(move);
         this.updateTurn();
-        if (move.enpassant) {
-            this.currentPlayer.removePiece(move.from.rank, move.to.file);
-        }
-        else if (move.capture) {
-            this.currentPlayer.removePiece(move.to.rank, move.to.file);
-        }
-        this.currentPlayer.generatePossibleMoves();
-        if (!this.simulation) {
+        this.currentPlayer.initialize(move);
+        if (!this.simulation)
             this.data = this.getData();
-        }
     }
     info(mode = "log") {
         var _a;

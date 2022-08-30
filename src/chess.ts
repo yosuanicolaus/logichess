@@ -16,27 +16,26 @@ interface ChessData {
 }
 
 export default class Chess {
-  fen: Fen;
-  board: Board;
-  pwhite: Player;
-  pblack: Player;
-  turn: Faction;
+  readonly fen: Fen;
+  readonly board: Board;
+  readonly simulation: boolean;
+  private pwhite: Player;
+  private pblack: Player;
+  protected turn: Faction;
   currentPlayer: Player;
-  simulation: boolean;
   data?: ChessData;
 
   constructor(fen?: FenString, simulation = false) {
     this.fen = new Fen(fen);
     this.board = new Board(this.fen.fenBoard);
+    this.simulation = simulation;
     this.pwhite = new Player("w", this);
     this.pblack = new Player("b", this);
     this.turn = this.fen.fenTurn;
     this.currentPlayer = this.pwhite;
-    this.simulation = simulation;
 
     this.updateTurn();
-    this.currentPlayer.generatePossibleMoves();
-
+    this.currentPlayer.initialize();
     if (!simulation) {
       this.data = this.getData();
     }
@@ -48,19 +47,11 @@ export default class Chess {
     }
     this.board.update(move);
     this.fen.update(move, this.board.board);
-    this.currentPlayer.updatePiecePosition(move);
+    this.currentPlayer.update(move);
     this.updateTurn();
+    this.currentPlayer.initialize(move);
 
-    if (move.enpassant) {
-      this.currentPlayer.removePiece(move.from.rank, move.to.file);
-    } else if (move.capture) {
-      this.currentPlayer.removePiece(move.to.rank, move.to.file);
-    }
-    this.currentPlayer.generatePossibleMoves();
-
-    if (!this.simulation) {
-      this.data = this.getData();
-    }
+    if (!this.simulation) this.data = this.getData();
   }
 
   info(mode: "log" | "get" = "log") {
@@ -87,7 +78,7 @@ export default class Chess {
     this.currentPlayer.generatePossibleMoves();
   }
 
-  updateTurn() {
+  private updateTurn() {
     this.turn = this.fen.fenTurn;
     if (this.turn === "w") {
       this.currentPlayer = this.pwhite;
@@ -96,7 +87,7 @@ export default class Chess {
     }
   }
 
-  getData(): ChessData {
+  private getData(): ChessData {
     return {
       status: this.getStatus(),
       turn: this.turn,
@@ -106,7 +97,7 @@ export default class Chess {
     };
   }
 
-  getStatus(): GameStatus {
+  private getStatus(): GameStatus {
     if (this.currentPlayer.possibleMoves.length === 0) {
       return "end";
     } else if (isInCheck(this)) {

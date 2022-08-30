@@ -77,7 +77,7 @@ class Player {
         }
         this.pieces.push(newPiece);
     }
-    updatePiecePosition(move) {
+    update(move) {
         if (move.castle) {
             this.castle(move.castle);
             return;
@@ -95,6 +95,20 @@ class Player {
             }
         }
         throw "can't find piece from that rank and file";
+    }
+    initialize(lastMove) {
+        const init = () => {
+            this.generatePossibleMoves();
+        };
+        if (!lastMove)
+            return init();
+        if (lastMove.enpassant) {
+            this.removePiece(lastMove.from.rank, lastMove.to.file);
+        }
+        else if (lastMove.capture) {
+            this.removePiece(lastMove.to.rank, lastMove.to.file);
+        }
+        init();
     }
     createPromotionPiece(move) {
         if (!move.promotion || !move.faction)
@@ -138,8 +152,8 @@ class Player {
             default:
                 throw "(Player) castle code should be either K/Q/k/q!";
         }
-        this.updatePiecePosition(kingMove);
-        this.updatePiecePosition(rookMove);
+        this.update(kingMove);
+        this.update(rookMove);
     }
     removePiece(rank, file) {
         let toRemoveIndex;
