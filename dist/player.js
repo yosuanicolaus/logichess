@@ -9,20 +9,21 @@ const King_1 = require("./pieces/King");
 const Pawn_1 = require("./pieces/Pawn");
 const utils_1 = require("./utils");
 class Player {
-    constructor(id, chessRef) {
+    constructor(faction, chessRef) {
         this.pieces = [];
         this.possibleMoves = [];
-        this.id = id;
+        this.faction = faction;
         this.chessRef = chessRef;
-        if (id === "w") {
+        if (faction === "w") {
             this.name = "White";
         }
         else {
             this.name = "Black";
         }
-        this.pieces = Player.getPieces(id, chessRef);
+        this.pieces = Player.getPieces(faction, chessRef);
+        this.totalValue = Player.getTotalValue(this.pieces);
     }
-    static getPieces(id, chessRef) {
+    static getPieces(faction, chessRef) {
         const fen = chessRef.fen.fenBoard;
         let [file, rank] = [0, 0];
         const pieces = [];
@@ -36,38 +37,47 @@ class Player {
                 file += Number(fen[i]);
                 continue;
             }
-            if (id === "w" && (0, utils_1.isCapital)(fen[i])) {
+            if (faction === "w" && (0, utils_1.isCapital)(fen[i])) {
                 // white gets capital pieces position
-                const piece = Player.createPiece(id, fen[i], rank, file, chessRef);
+                const piece = Player.createPiece(faction, fen[i], rank, file, chessRef);
                 pieces.push(piece);
             }
-            else if (id === "b" && !(0, utils_1.isCapital)(fen[i])) {
+            else if (faction === "b" && !(0, utils_1.isCapital)(fen[i])) {
                 // black gets noncapital pieces position
-                const piece = Player.createPiece(id, fen[i], rank, file, chessRef);
+                const piece = Player.createPiece(faction, fen[i], rank, file, chessRef);
                 pieces.push(piece);
             }
             file++;
         }
         return pieces;
     }
-    static createPiece(id, code, rank, file, chessRef) {
+    static createPiece(faction, code, rank, file, chessRef) {
         const upCode = code.toUpperCase();
         switch (upCode) {
             case "P":
-                return new Pawn_1.Pawn(id, rank, file, chessRef);
+                return new Pawn_1.Pawn(faction, rank, file, chessRef);
             case "N":
-                return new Knight_1.Knight(id, rank, file, chessRef);
+                return new Knight_1.Knight(faction, rank, file, chessRef);
             case "B":
-                return new Bishop_1.Bishop(id, rank, file, chessRef);
+                return new Bishop_1.Bishop(faction, rank, file, chessRef);
             case "R":
-                return new Rook_1.Rook(id, rank, file, chessRef);
+                return new Rook_1.Rook(faction, rank, file, chessRef);
             case "Q":
-                return new Queen_1.Queen(id, rank, file, chessRef);
+                return new Queen_1.Queen(faction, rank, file, chessRef);
             case "K":
-                return new King_1.King(id, rank, file, chessRef);
+                return new King_1.King(faction, rank, file, chessRef);
             default:
                 throw "piece should be either p/b/n/r/q/k!";
         }
+    }
+    static getTotalValue(pieces) {
+        let total = 0;
+        for (const piece of pieces) {
+            if (piece.code.toUpperCase() === "K")
+                continue;
+            total += piece.value;
+        }
+        return total;
     }
     update(move) {
         if (move.castle)
@@ -77,6 +87,8 @@ class Player {
         const { rank: fromRank, file: fromFile } = move.from;
         const pieceIdx = Player.getPieceIndex(this.pieces, fromRank, fromFile);
         this.pieces[pieceIdx].move(move);
+        if (move.capture)
+            this.totalValue = Player.getTotalValue(this.pieces);
     }
     initialize(lastMove) {
         const init = () => {
@@ -122,8 +134,10 @@ class Player {
             throw "move.promotion must be defined";
         const { rank: fromRank, file: fromFile } = move.from;
         const pieceIdx = Player.getPieceIndex(this.pieces, fromRank, fromFile);
-        const newPiece = Player.createPiece(this.id, move.promotion, fromRank, fromFile, this.chessRef);
+        const newPiece = Player.createPiece(this.faction, move.promotion, fromRank, fromFile, this.chessRef);
         this.pieces[pieceIdx] = newPiece;
+        if (move.capture)
+            this.totalValue = Player.getTotalValue(this.pieces);
     }
     removePiece(rank, file) {
         const toRemoveIndex = Player.getPieceIndex(this.pieces, rank, file);

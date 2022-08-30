@@ -32,11 +32,12 @@ class Chess {
             this.data = this.getData();
     }
     info(mode = "log") {
-        var _a;
+        var _a, _b;
         const info = [];
         info.push(this.fen.fen);
         info.push(this.board.getDisplay());
         info.push(`status: ${(_a = this.data) === null || _a === void 0 ? void 0 : _a.status}`);
+        info.push(`difference: ${(_b = this.data) === null || _b === void 0 ? void 0 : _b.difference}`);
         info.push(`${this.currentPlayer.name} to move`);
         info.push("Possible moves:");
         info.push(this.currentPlayer.getSanMoves());
@@ -66,6 +67,7 @@ class Chess {
     getData() {
         return {
             status: this.getStatus(),
+            difference: this.pwhite.totalValue - this.pblack.totalValue,
             turn: this.turn,
             fen: this.fen.fen,
             board: this.board.board,

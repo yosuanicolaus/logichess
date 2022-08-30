@@ -9,6 +9,7 @@ type GameStatus = "normal" | "check" | "end";
 
 interface ChessData {
   status: GameStatus;
+  difference: number;
   turn: Faction;
   fen: FenString;
   board: string[][];
@@ -55,10 +56,11 @@ export default class Chess {
   }
 
   info(mode: "log" | "get" = "log") {
-    const info = [];
+    const info: string[] = [];
     info.push(this.fen.fen);
     info.push(this.board.getDisplay());
     info.push(`status: ${this.data?.status}`);
+    info.push(`difference: ${this.data?.difference}`);
     info.push(`${this.currentPlayer.name} to move`);
     info.push("Possible moves:");
     info.push(this.currentPlayer.getSanMoves());
@@ -90,6 +92,7 @@ export default class Chess {
   private getData(): ChessData {
     return {
       status: this.getStatus(),
+      difference: this.pwhite.totalValue - this.pblack.totalValue,
       turn: this.turn,
       fen: this.fen.fen,
       board: this.board.board,
