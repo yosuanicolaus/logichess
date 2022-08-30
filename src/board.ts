@@ -72,6 +72,9 @@ export default class Board {
     } else if (move.enpassant) {
       this.normalMove(move);
       this.removePiece(move.from.rank, move.to.file);
+    } else if (move.promotion) {
+      this.normalMove(move);
+      this.updatePiece(move.to.rank, move.to.file, move.promotion);
     } else {
       this.normalMove(move);
     }
@@ -81,6 +84,10 @@ export default class Board {
     if (!move.piece) throw "move.piece should be defined";
     this.board[move.from.rank][move.from.file] = ".";
     this.board[move.to.rank][move.to.file] = move.piece;
+  }
+
+  updatePiece(rank: number, file: number, pieceCode: string) {
+    this.board[rank][file] = pieceCode;
   }
 
   removePiece(rank: number, file: number) {

@@ -83,13 +83,38 @@ class Player {
             return;
         }
         const [fr, ff] = [move.from.rank, move.from.file];
-        for (const piece of this.pieces) {
+        for (let i = 0; i < this.pieces.length; i++) {
+            const piece = this.pieces[i];
             if (piece.rank === fr && piece.file === ff) {
                 piece.move(move);
+                if (move.promotion) {
+                    const newPiece = this.createPromotionPiece(move);
+                    this.pieces[i] = newPiece;
+                }
                 return;
             }
         }
         throw "can't find piece from that rank and file";
+    }
+    createPromotionPiece(move) {
+        if (!move.promotion || !move.faction)
+            throw "move should have promotion and faction prop!";
+        const args = [
+            move.faction,
+            move.to.rank,
+            move.to.file,
+            this.chessRef,
+        ];
+        switch (move.promotion) {
+            case "Q":
+                return new piece_1.Queen(...args);
+            case "R":
+                return new piece_1.Rook(...args);
+            case "B":
+                return new piece_1.Bishop(...args);
+            case "N":
+                return new piece_1.Knight(...args);
+        }
     }
     castle(code) {
         let kingMove, rookMove;
