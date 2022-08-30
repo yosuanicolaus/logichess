@@ -52,7 +52,7 @@ class Chess {
         this.fen.updateTurn();
         this.fen.updateFen();
         this.updateTurn();
-        this.currentPlayer.generatePossibleMoves();
+        this.currentPlayer.initialize();
     }
     updateTurn() {
         this.turn = this.fen.fenTurn;

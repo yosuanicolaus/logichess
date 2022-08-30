@@ -75,7 +75,7 @@ export default class Chess {
     this.fen.updateTurn();
     this.fen.updateFen();
     this.updateTurn();
-    this.currentPlayer.generatePossibleMoves();
+    this.currentPlayer.initialize();
   }
 
   private updateTurn() {

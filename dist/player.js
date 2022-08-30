@@ -5,21 +5,22 @@ const piece_1 = require("./piece");
 const utils_1 = require("./utils");
 class Player {
     constructor(id, chessRef) {
-        this.id = id;
-        this.chessRef = chessRef;
         this.pieces = [];
         this.possibleMoves = [];
+        this.id = id;
+        this.chessRef = chessRef;
         if (id === "w") {
             this.name = "White";
         }
         else {
             this.name = "Black";
         }
-        this.getPieces();
+        this.pieces = Player.getPieces(id, chessRef);
     }
-    getPieces() {
-        const fen = this.chessRef.fen.fenBoard;
+    static getPieces(id, chessRef) {
+        const fen = chessRef.fen.fenBoard;
         let [file, rank] = [0, 0];
+        const pieces = [];
         for (let i = 0; i < fen.length; i++) {
             if (fen[i] === "/") {
                 file = 0;
@@ -30,71 +31,47 @@ class Player {
                 file += Number(fen[i]);
                 continue;
             }
-            else {
-                if (this.id === "w") {
-                    // if white, get all capital pieces position
-                    if ((0, utils_1.isCapital)(fen[i])) {
-                        this.addPiece(fen[i], rank, file);
-                    }
-                }
-                else if (this.id === "b") {
-                    // if black, get the noncapital pieces position
-                    if (!(0, utils_1.isCapital)(fen[i])) {
-                        this.addPiece(fen[i], rank, file);
-                    }
-                }
-                else {
-                    throw "player's id must be either 'w' or 'b'!";
-                }
-                file++;
+            if (id === "w" && (0, utils_1.isCapital)(fen[i])) {
+                // white gets capital pieces position
+                const piece = Player.createPiece(id, fen[i], rank, file, chessRef);
+                pieces.push(piece);
             }
+            else if (id === "b" && !(0, utils_1.isCapital)(fen[i])) {
+                // black gets noncapital pieces position
+                const piece = Player.createPiece(id, fen[i], rank, file, chessRef);
+                pieces.push(piece);
+            }
+            file++;
         }
+        return pieces;
     }
-    addPiece(code, rank, file) {
+    static createPiece(id, code, rank, file, chessRef) {
         const upCode = code.toUpperCase();
-        let newPiece;
         switch (upCode) {
             case "P":
-                newPiece = new piece_1.Pawn(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.Pawn(id, rank, file, chessRef);
             case "N":
-                newPiece = new piece_1.Knight(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.Knight(id, rank, file, chessRef);
             case "B":
-                newPiece = new piece_1.Bishop(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.Bishop(id, rank, file, chessRef);
             case "R":
-                newPiece = new piece_1.Rook(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.Rook(id, rank, file, chessRef);
             case "Q":
-                newPiece = new piece_1.Queen(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.Queen(id, rank, file, chessRef);
             case "K":
-                newPiece = new piece_1.King(this.id, rank, file, this.chessRef);
-                break;
+                return new piece_1.King(id, rank, file, chessRef);
             default:
                 throw "piece should be either p/b/n/r/q/k!";
         }
-        this.pieces.push(newPiece);
     }
     update(move) {
-        if (move.castle) {
-            this.castle(move.castle);
-            return;
-        }
-        const [fr, ff] = [move.from.rank, move.from.file];
-        for (let i = 0; i < this.pieces.length; i++) {
-            const piece = this.pieces[i];
-            if (piece.rank === fr && piece.file === ff) {
-                piece.move(move);
-                if (move.promotion) {
-                    const newPiece = this.createPromotionPiece(move);
-                    this.pieces[i] = newPiece;
-                }
-                return;
-            }
-        }
-        throw "can't find piece from that rank and file";
+        if (move.castle)
+            return this.castleMove(move);
+        if (move.promotion)
+            return this.promotionMove(move);
+        const { rank: fromRank, file: fromFile } = move.from;
+        const pieceIdx = Player.getPieceIndex(this.pieces, fromRank, fromFile);
+        this.pieces[pieceIdx].move(move);
     }
     initialize(lastMove) {
         const init = () => {
@@ -110,27 +87,10 @@ class Player {
         }
         init();
     }
-    createPromotionPiece(move) {
-        if (!move.promotion || !move.faction)
-            throw "move should have promotion and faction prop!";
-        const args = [
-            move.faction,
-            move.to.rank,
-            move.to.file,
-            this.chessRef,
-        ];
-        switch (move.promotion) {
-            case "Q":
-                return new piece_1.Queen(...args);
-            case "R":
-                return new piece_1.Rook(...args);
-            case "B":
-                return new piece_1.Bishop(...args);
-            case "N":
-                return new piece_1.Knight(...args);
-        }
-    }
-    castle(code) {
+    castleMove(move) {
+        if (!move.castle)
+            throw "move.castle must be defined";
+        const code = move.castle;
         let kingMove, rookMove;
         switch (code) {
             case "K":
@@ -148,42 +108,47 @@ class Player {
             case "q":
                 kingMove = new move_1.default(0, 4, 0, 2);
                 rookMove = new move_1.default(0, 0, 0, 3);
-                break;
-            default:
-                throw "(Player) castle code should be either K/Q/k/q!";
         }
         this.update(kingMove);
         this.update(rookMove);
     }
+    promotionMove(move) {
+        if (!move.promotion)
+            throw "move.promotion must be defined";
+        const { rank: fromRank, file: fromFile } = move.from;
+        const pieceIdx = Player.getPieceIndex(this.pieces, fromRank, fromFile);
+        const newPiece = Player.createPiece(this.id, move.promotion, fromRank, fromFile, this.chessRef);
+        this.pieces[pieceIdx] = newPiece;
+    }
     removePiece(rank, file) {
-        let toRemoveIndex;
-        for (let i = 0; i < this.pieces.length; i++) {
-            const piece = this.pieces[i];
-            if (piece.rank === rank && piece.file === file) {
-                toRemoveIndex = i;
-                break;
-            }
-        }
-        if (typeof toRemoveIndex !== "number") {
-            throw "can't find piece with that rank and file!";
-        }
+        const toRemoveIndex = Player.getPieceIndex(this.pieces, rank, file);
         this.pieces.splice(toRemoveIndex, 1);
     }
-    generatePossibleMoves() {
-        this.getPiecesMoves();
-        this.disambiguateSan();
-    }
-    getPiecesMoves() {
-        this.possibleMoves = [];
-        for (const piece of this.pieces) {
-            piece.generateMoves();
-            this.possibleMoves.push(...piece.moves);
+    static getPieceIndex(pieces, rank, file) {
+        for (let i = 0; i < pieces.length; i++) {
+            if (pieces[i].rank === rank && pieces[i].file === file) {
+                return i;
+            }
         }
+        throw "can't find piece";
     }
-    disambiguateSan() {
+    generatePossibleMoves() {
+        const possibleMoves = Player.getPiecesMoves(this.pieces);
+        Player.disambiguateMoveSan(possibleMoves);
+        this.possibleMoves = possibleMoves;
+    }
+    static getPiecesMoves(pieces) {
+        const moves = [];
+        for (const piece of pieces) {
+            piece.generateMoves();
+            moves.push(...piece.moves);
+        }
+        return moves;
+    }
+    static disambiguateMoveSan(moves) {
         const seenSan = {};
         const toDisamb = {};
-        for (const move of this.possibleMoves) {
+        for (const move of moves) {
             if (seenSan[move.san]) {
                 if (!toDisamb[move.san]) {
                     toDisamb[move.san] = [seenSan[move.san], move];

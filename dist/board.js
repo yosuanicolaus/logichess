@@ -103,7 +103,7 @@ class Board {
                 this.board[0][6] = "k";
                 this.board[0][7] = ".";
                 break;
-            default:
+            case "q":
                 this.board[0][0] = ".";
                 this.board[0][1] = ".";
                 this.board[0][2] = "k";
