@@ -69,6 +69,10 @@ class Board {
             this.normalMove(move);
             this.removePiece(move.from.rank, move.to.file);
         }
+        else if (move.promotion) {
+            this.normalMove(move);
+            this.updatePiece(move.to.rank, move.to.file, move.promotion);
+        }
         else {
             this.normalMove(move);
         }
@@ -78,6 +82,9 @@ class Board {
             throw "move.piece should be defined";
         this.board[move.from.rank][move.from.file] = ".";
         this.board[move.to.rank][move.to.file] = move.piece;
+    }
+    updatePiece(rank, file, pieceCode) {
+        this.board[rank][file] = pieceCode;
     }
     removePiece(rank, file) {
         this.board[rank][file] = ".";

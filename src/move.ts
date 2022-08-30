@@ -91,6 +91,10 @@ export default class Move {
     const to = convertRankFile(this.to.rank, this.to.file);
     lan += to;
     san += to;
+    if (this.promotion) {
+      lan += `=${this.promotion}`;
+      san += `=${this.promotion}`;
+    }
     if (this.checkmate) {
       lan += "#";
       san += "#";
@@ -106,6 +110,9 @@ export default class Move {
     let uci = "";
     uci += convertRankFile(this.from.rank, this.from.file);
     uci += convertRankFile(this.to.rank, this.to.file);
+    if (this.promotion) {
+      uci += this.promotion.toLowerCase();
+    }
     this.uci = uci;
   }
 

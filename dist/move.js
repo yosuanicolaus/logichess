@@ -65,6 +65,10 @@ class Move {
         const to = (0, utils_1.convertRankFile)(this.to.rank, this.to.file);
         lan += to;
         san += to;
+        if (this.promotion) {
+            lan += `=${this.promotion}`;
+            san += `=${this.promotion}`;
+        }
         if (this.checkmate) {
             lan += "#";
             san += "#";
@@ -80,6 +84,9 @@ class Move {
         let uci = "";
         uci += (0, utils_1.convertRankFile)(this.from.rank, this.from.file);
         uci += (0, utils_1.convertRankFile)(this.to.rank, this.to.file);
+        if (this.promotion) {
+            uci += this.promotion.toLowerCase();
+        }
         this.uci = uci;
     }
     sanAddFromFile() {
