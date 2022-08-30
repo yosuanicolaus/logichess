@@ -1,5 +1,5 @@
 import Chess from "./chess";
-import { Faction } from "./types";
+import { Faction, PieceCode } from "./types";
 
 export function inBoundaries(rank: number, file: number) {
   return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
@@ -35,12 +35,15 @@ export function isCapital(str: string) {
   return str.toUpperCase() === str;
 }
 
-export function addIncrement(target: number[], increment: number[]) {
+export function addIncrement(
+  target: [number, number],
+  increment: [number, number]
+) {
   target[0] += increment[0];
   target[1] += increment[1];
 }
 
-export function allDifferent(...args: unknown[]) {
+export function allDifferent(...args: string[]) {
   const seen = new Set();
   for (const arg of args) {
     if (seen.has(arg)) {
@@ -51,12 +54,14 @@ export function allDifferent(...args: unknown[]) {
   return true;
 }
 
-export function factionCode(faction: Faction, code: string) {
+export function createPieceCode(faction: Faction, code: PieceCode): PieceCode {
+  let pieceCode: PieceCode;
   if (faction === "w") {
-    return code.toUpperCase();
+    pieceCode = code.toUpperCase() as PieceCode;
   } else {
-    return code.toLowerCase();
+    pieceCode = code.toLowerCase() as PieceCode;
   }
+  return pieceCode;
 }
 
 export function sameFaction(faction: Faction, panelPiece: string) {

@@ -2,7 +2,7 @@ import Board from "../board";
 import Chess from "../chess";
 import Fen from "../fen";
 import Move from "../move";
-import { Faction } from "../types";
+import { Faction, PieceCode } from "../types";
 import {
   checkBoundaries,
   inBoundaries,
@@ -18,7 +18,7 @@ export default abstract class Piece {
   boardRef: Board;
   fenRef: Fen;
   moves: Move[];
-  code: string;
+  code: PieceCode;
   value: number;
 
   constructor(
@@ -26,7 +26,7 @@ export default abstract class Piece {
     rank: number,
     file: number,
     chessRef: Chess,
-    code: string,
+    code: PieceCode,
     value: number
   ) {
     checkBoundaries(rank, file);
@@ -40,8 +40,6 @@ export default abstract class Piece {
     this.code = code;
     this.value = value;
   }
-
-  abstract generateMoves(): void;
 
   protected createMove(toRank: number, toFile: number) {
     const move = new Move(
@@ -63,18 +61,18 @@ export default abstract class Piece {
     }
   }
 
-  addMove(move: Move) {
+  protected addMove(move: Move) {
     move.generate();
     this.moves.push(move);
   }
 
-  validateMove(rank: number, file: number) {
+  protected validateMove(rank: number, file: number) {
     const move = this.createMove(rank, file);
     this.addCaptureProp(move);
     this.checkSimulation(move);
   }
 
-  checkSimulation(move: Move) {
+  protected checkSimulation(move: Move) {
     if (this.chessRef.simulation) {
       this.addMove(move);
       return;
@@ -98,30 +96,35 @@ export default abstract class Piece {
     this.addMove(move);
   }
 
-  canMoveOrCapture(rank: number, file: number) {
+  protected canMoveOrCapture(rank: number, file: number) {
     return (
       inBoundaries(rank, file) &&
       (this.panelEmpty(rank, file) || this.canCapture(rank, file))
     );
   }
 
-  canMoveNormal(rank: number, file: number) {
+  protected canMoveNormal(rank: number, file: number) {
     return inBoundaries(rank, file) && this.panelEmpty(rank, file);
   }
 
-  canMoveCapture(rank: number, file: number) {
+  protected canMoveCapture(rank: number, file: number) {
     return inBoundaries(rank, file) && this.canCapture(rank, file);
   }
 
-  panelEmpty(rank: number, file: number) {
+  protected panelEmpty(rank: number, file: number) {
     const panelPiece = this.boardRef.get(rank, file);
     return panelPiece === ".";
   }
 
-  canCapture(rank: number, file: number) {
+  protected canCapture(rank: number, file: number) {
     const panelPiece = this.boardRef.get(rank, file);
     return panelPiece !== "." && !sameFaction(this.faction, panelPiece);
   }
+
+  /* ---------------------------------- */
+  /* public methods called by player.ts */
+
+  abstract generateMoves(): void;
 
   move(move: Move) {
     this.rank = move.to.rank;

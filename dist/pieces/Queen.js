@@ -5,7 +5,7 @@ const utils_1 = require("../utils");
 const piece_1 = require("./piece");
 class Queen extends piece_1.default {
     constructor(faction, rank, file, chessRef) {
-        const code = (0, utils_1.factionCode)(faction, "Q");
+        const code = (0, utils_1.createPieceCode)(faction, "Q");
         const value = 9;
         super(faction, rank, file, chessRef, code, value);
     }

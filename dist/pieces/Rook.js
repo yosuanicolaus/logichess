@@ -5,7 +5,7 @@ const utils_1 = require("../utils");
 const piece_1 = require("./piece");
 class Rook extends piece_1.default {
     constructor(faction, rank, file, chessRef) {
-        const code = (0, utils_1.factionCode)(faction, "R");
+        const code = (0, utils_1.createPieceCode)(faction, "R");
         const value = 5;
         super(faction, rank, file, chessRef, code, value);
     }

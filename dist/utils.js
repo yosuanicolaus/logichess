@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = exports.inBoundaries = void 0;
+exports.isInCheck = exports.sameFaction = exports.createPieceCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = exports.inBoundaries = void 0;
 const chess_1 = require("./chess");
 function inBoundaries(rank, file) {
     return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
@@ -52,15 +52,17 @@ function allDifferent(...args) {
     return true;
 }
 exports.allDifferent = allDifferent;
-function factionCode(faction, code) {
+function createPieceCode(faction, code) {
+    let pieceCode;
     if (faction === "w") {
-        return code.toUpperCase();
+        pieceCode = code.toUpperCase();
     }
     else {
-        return code.toLowerCase();
+        pieceCode = code.toLowerCase();
     }
+    return pieceCode;
 }
-exports.factionCode = factionCode;
+exports.createPieceCode = createPieceCode;
 function sameFaction(faction, panelPiece) {
     return ((faction === "w" && isCapital(panelPiece)) ||
         (faction === "b" && !isCapital(panelPiece)));

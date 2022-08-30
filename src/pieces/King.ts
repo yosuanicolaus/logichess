@@ -1,11 +1,11 @@
 import Chess from "../chess";
 import { CastleCode, Faction } from "../types";
-import { factionCode } from "../utils";
+import { createPieceCode } from "../utils";
 import Piece from "./piece";
 
 export class King extends Piece {
   constructor(faction: Faction, rank: number, file: number, chessRef: Chess) {
-    const code = factionCode(faction, "K");
+    const code = createPieceCode(faction, "K");
     const value = Number.POSITIVE_INFINITY;
     super(faction, rank, file, chessRef, code, value);
   }

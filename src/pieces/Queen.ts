@@ -1,11 +1,11 @@
 import Chess from "../chess";
 import { Faction } from "../types";
-import { addIncrement, factionCode, inBoundaries } from "../utils";
+import { addIncrement, createPieceCode, inBoundaries } from "../utils";
 import Piece from "./piece";
 
 export class Queen extends Piece {
   constructor(faction: Faction, rank: number, file: number, chessRef: Chess) {
-    const code = factionCode(faction, "Q");
+    const code = createPieceCode(faction, "Q");
     const value = 9;
     super(faction, rank, file, chessRef, code, value);
   }
@@ -23,7 +23,7 @@ export class Queen extends Piece {
       [this.rank + 1, this.file + 0],
       [this.rank + 1, this.file + 1],
     ];
-    const increments = [
+    const increments: [number, number][] = [
       [-1, -1],
       [-1, 0],
       [-1, 1],

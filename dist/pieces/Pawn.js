@@ -5,7 +5,7 @@ const utils_1 = require("../utils");
 const piece_1 = require("./piece");
 class Pawn extends piece_1.default {
     constructor(faction, rank, file, chessRef) {
-        const code = (0, utils_1.factionCode)(faction, "P");
+        const code = (0, utils_1.createPieceCode)(faction, "P");
         const value = 1;
         super(faction, rank, file, chessRef, code, value);
     }

@@ -1,11 +1,11 @@
 import Chess from "../chess";
 import { Faction, PromoteCode } from "../types";
-import { convertUciLocation, factionCode } from "../utils";
+import { convertUciLocation, createPieceCode } from "../utils";
 import Piece from "./piece";
 
 export class Pawn extends Piece {
   constructor(faction: Faction, rank: number, file: number, chessRef: Chess) {
-    const code = factionCode(faction, "P");
+    const code = createPieceCode(faction, "P");
     const value = 1;
     super(faction, rank, file, chessRef, code, value);
   }
