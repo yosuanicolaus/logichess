@@ -2,7 +2,7 @@ import Board from "./board";
 import Chess from "./chess";
 import Fen from "./fen";
 import Move from "./move";
-import { CastleCode, Faction } from "./types";
+import { CastleCode, Faction, PromoteCode } from "./types";
 import {
   addIncrement,
   checkBoundaries,
@@ -163,7 +163,12 @@ export class Pawn extends Piece {
     } else {
       target = [this.rank + 1, this.file];
     }
-    if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
+    if (
+      (this.faction === "w" && target[0] === 0) ||
+      (this.faction === "b" && target[0] === 7)
+    ) {
+      this.checkPromotion(...target);
+    } else if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
       this.validateMove(...target);
     }
   }
@@ -183,7 +188,14 @@ export class Pawn extends Piece {
     }
     for (let i = 0; i < targets.length; i++) {
       if (this.inBoundaries(...targets[i]) && this.canCapture(...targets[i])) {
-        this.validateMove(...targets[i]);
+        if (
+          (this.faction === "w" && targets[i][0] === 0) ||
+          (this.faction === "b" && targets[i][0] === 7)
+        ) {
+          this.checkPromotion(...targets[i]);
+        } else {
+          this.validateMove(...targets[i]);
+        }
       }
     }
   }
@@ -204,6 +216,19 @@ export class Pawn extends Piece {
         move.enpassant = true;
         this.checkSimulation(move);
       }
+    }
+  }
+
+  checkPromotion(rank: number, file: number) {
+    const promoteOption: PromoteCode[] = ["Q", "R", "B", "N"];
+    for (let i = 0; i < 4; i++) {
+      const move = this.createMove(rank, file);
+      if (!this.panelEmpty(rank, file)) {
+        move.capture = true;
+        move.capturedPiece = this.boardRef.get(rank, file);
+      }
+      move.promotion = promoteOption[i];
+      this.checkSimulation(move);
     }
   }
 }
