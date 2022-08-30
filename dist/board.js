@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 class Board {
     constructor(fenBoard) {
-        this.board = this.createBoard();
+        this.board = Board.createBoard();
         this.load(fenBoard);
     }
-    createBoard() {
+    static createBoard() {
         const board = [];
         for (let i = 0; i < 8; i++) {
             board.push([]);
@@ -35,31 +35,24 @@ class Board {
             }
         }
     }
-    /**
-     *  example uci = "e2"|"f3"|"h7"
-     *  get piece at uci location
-     */
-    getUci(uci) {
-        const [rank, file] = (0, utils_1.convertUciLocation)(uci);
-        return this.board[rank][file];
-    }
     get(rank, file) {
         return this.board[rank][file];
     }
-    display(mode = "log") {
-        let result = "";
+    /** example uci = 'e2' | 'f3' | 'h7'
+        ~ get piece using uci notation */
+    getByUci(uci) {
+        const [rank, file] = (0, utils_1.convertUciLocation)(uci);
+        return this.get(rank, file);
+    }
+    getDisplay() {
+        let display = "";
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                result += this.board[i][j] + " ";
+                display += this.board[i][j] + " ";
             }
-            result += "\n";
+            display += "\n";
         }
-        if (mode === "log") {
-            console.log(result);
-        }
-        else {
-            return result;
-        }
+        return display;
     }
     update(move) {
         if (move.castle) {

@@ -66,7 +66,7 @@ export default class Chess {
   info(mode: "log" | "get" = "log") {
     const info = [];
     info.push(this.fen.fen);
-    info.push(this.board.display("get"));
+    info.push(this.board.getDisplay());
     info.push(`status: ${this.data?.status}`);
     info.push(`${this.currentPlayer.name} to move`);
     info.push("Possible moves:");
