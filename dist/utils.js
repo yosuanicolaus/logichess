@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = void 0;
+exports.isInCheck = exports.sameFaction = exports.factionCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = exports.inBoundaries = void 0;
 const chess_1 = require("./chess");
+function inBoundaries(rank, file) {
+    return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
+}
+exports.inBoundaries = inBoundaries;
 function checkBoundaries(rank, file) {
     if (file < 0 || file > 7) {
         throw "file is out of bonds";

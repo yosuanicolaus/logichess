@@ -1,6 +1,10 @@
 import Chess from "./chess";
 import { Faction } from "./types";
 
+export function inBoundaries(rank: number, file: number) {
+  return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
+}
+
 export function checkBoundaries(rank: number, file: number) {
   if (file < 0 || file > 7) {
     throw "file is out of bonds";

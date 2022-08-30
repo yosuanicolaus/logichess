@@ -8,6 +8,7 @@ import {
   checkBoundaries,
   convertUciLocation,
   factionCode,
+  inBoundaries,
   isInCheck,
   sameFaction,
 } from "./utils";
@@ -45,7 +46,7 @@ export default abstract class Piece {
 
   abstract generateMoves(): void;
 
-  createMove(toRank: number, toFile: number) {
+  protected createMove(toRank: number, toFile: number) {
     const move = new Move(
       this.rank,
       this.file,
@@ -57,6 +58,14 @@ export default abstract class Piece {
     return move;
   }
 
+  protected addCaptureProp(move: Move) {
+    const { rank, file } = move.to;
+    if (!this.panelEmpty(rank, file)) {
+      move.capture = true;
+      move.capturedPiece = this.boardRef.get(rank, file);
+    }
+  }
+
   addMove(move: Move) {
     move.generate();
     this.moves.push(move);
@@ -64,11 +73,7 @@ export default abstract class Piece {
 
   validateMove(rank: number, file: number) {
     const move = this.createMove(rank, file);
-    if (!this.panelEmpty(rank, file)) {
-      move.capture = true;
-      move.capturedPiece = this.boardRef.get(rank, file);
-    }
-
+    this.addCaptureProp(move);
     this.checkSimulation(move);
   }
 
@@ -96,11 +101,19 @@ export default abstract class Piece {
     this.addMove(move);
   }
 
-  canMove(rank: number, file: number) {
+  canMoveOrCapture(rank: number, file: number) {
     return (
-      this.inBoundaries(rank, file) &&
+      inBoundaries(rank, file) &&
       (this.panelEmpty(rank, file) || this.canCapture(rank, file))
     );
+  }
+
+  canMoveNormal(rank: number, file: number) {
+    return inBoundaries(rank, file) && this.panelEmpty(rank, file);
+  }
+
+  canMoveCapture(rank: number, file: number) {
+    return inBoundaries(rank, file) && this.canCapture(rank, file);
   }
 
   panelEmpty(rank: number, file: number) {
@@ -111,10 +124,6 @@ export default abstract class Piece {
   canCapture(rank: number, file: number) {
     const panelPiece = this.boardRef.get(rank, file);
     return panelPiece !== "." && !sameFaction(this.faction, panelPiece);
-  }
-
-  inBoundaries(rank: number, file: number) {
-    return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
   }
 
   move(move: Move) {
@@ -168,7 +177,7 @@ export class Pawn extends Piece {
       (this.faction === "b" && target[0] === 7)
     ) {
       this.checkPromotion(...target);
-    } else if (this.inBoundaries(...target) && this.panelEmpty(...target)) {
+    } else if (this.canMoveNormal(...target)) {
       this.validateMove(...target);
     }
   }
@@ -187,7 +196,7 @@ export class Pawn extends Piece {
       ];
     }
     for (let i = 0; i < targets.length; i++) {
-      if (this.inBoundaries(...targets[i]) && this.canCapture(...targets[i])) {
+      if (this.canMoveCapture(...targets[i])) {
         if (
           (this.faction === "w" && targets[i][0] === 0) ||
           (this.faction === "b" && targets[i][0] === 7)
@@ -223,10 +232,7 @@ export class Pawn extends Piece {
     const promoteOption: PromoteCode[] = ["Q", "R", "B", "N"];
     for (let i = 0; i < 4; i++) {
       const move = this.createMove(rank, file);
-      if (!this.panelEmpty(rank, file)) {
-        move.capture = true;
-        move.capturedPiece = this.boardRef.get(rank, file);
-      }
+      this.addCaptureProp(move);
       move.promotion = promoteOption[i];
       this.checkSimulation(move);
     }
@@ -255,7 +261,7 @@ export class King extends Piece {
     ];
 
     for (let i = 0; i < targets.length; i++) {
-      if (this.canMove(...targets[i])) {
+      if (this.canMoveOrCapture(...targets[i])) {
         this.validateMove(...targets[i]);
       }
     }
@@ -313,9 +319,6 @@ export class King extends Piece {
         adjacent1 = this.panelEmpty(0, 3);
         adjacent2 = this.panelEmpty(0, 2);
         adjacent3 = this.panelEmpty(0, 1);
-        break;
-      default:
-        throw "(Piece) code should be either K/Q/k/q!";
     }
 
     if (adjacent1 && adjacent2 && adjacent3) {
@@ -363,7 +366,7 @@ export class Queen extends Piece {
     ];
 
     for (let i = 0; i < 8; i++) {
-      while (this.inBoundaries(...targets[i])) {
+      while (inBoundaries(...targets[i])) {
         if (this.panelEmpty(...targets[i])) {
           this.validateMove(...targets[i]);
         } else if (this.canCapture(...targets[i])) {
@@ -402,7 +405,7 @@ export class Bishop extends Piece {
     ];
 
     for (let i = 0; i < 4; i++) {
-      while (this.inBoundaries(...targets[i])) {
+      while (inBoundaries(...targets[i])) {
         if (this.panelEmpty(...targets[i])) {
           this.validateMove(...targets[i]);
         } else if (this.canCapture(...targets[i])) {
@@ -439,7 +442,7 @@ export class Knight extends Piece {
     ];
 
     for (let i = 0; i < targets.length; i++) {
-      if (this.canMove(...targets[i])) {
+      if (this.canMoveOrCapture(...targets[i])) {
         this.validateMove(...targets[i]);
       }
     }
@@ -470,7 +473,7 @@ export class Rook extends Piece {
     ];
 
     for (let i = 0; i < 4; i++) {
-      while (this.inBoundaries(...targets[i])) {
+      while (inBoundaries(...targets[i])) {
         if (this.panelEmpty(...targets[i])) {
           this.validateMove(...targets[i]);
         } else if (this.canCapture(...targets[i])) {
