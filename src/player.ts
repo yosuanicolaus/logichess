@@ -94,13 +94,39 @@ export default class Player {
 
     const [fr, ff] = [move.from.rank, move.from.file];
 
-    for (const piece of this.pieces) {
+    for (let i = 0; i < this.pieces.length; i++) {
+      const piece = this.pieces[i];
       if (piece.rank === fr && piece.file === ff) {
         piece.move(move);
+        if (move.promotion) {
+          const newPiece = this.createPromotionPiece(move);
+          this.pieces[i] = newPiece;
+        }
         return;
       }
     }
     throw "can't find piece from that rank and file";
+  }
+
+  createPromotionPiece(move: Move) {
+    if (!move.promotion || !move.faction)
+      throw "move should have promotion and faction prop!";
+    const args: [Faction, number, number, Chess] = [
+      move.faction,
+      move.to.rank,
+      move.to.file,
+      this.chessRef,
+    ];
+    switch (move.promotion) {
+      case "Q":
+        return new Queen(...args);
+      case "R":
+        return new Rook(...args);
+      case "B":
+        return new Bishop(...args);
+      case "N":
+        return new Knight(...args);
+    }
   }
 
   castle(code: CastleCode) {
