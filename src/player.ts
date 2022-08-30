@@ -1,6 +1,12 @@
 import Chess from "./chess";
 import Move from "./move";
-import Piece, { Bishop, King, Knight, Pawn, Queen, Rook } from "./piece";
+import Piece from "./pieces/piece";
+import { Rook } from "./pieces/Rook";
+import { Knight } from "./pieces/Knight";
+import { Bishop } from "./pieces/Bishop";
+import { Queen } from "./pieces/Queen";
+import { King } from "./pieces/King";
+import { Pawn } from "./pieces/Pawn";
 import { Faction } from "./types";
 import { allDifferent, isCapital, isStringNumber } from "./utils";
 

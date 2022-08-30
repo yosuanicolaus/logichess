@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const move_1 = require("./move");
-const piece_1 = require("./piece");
+const Rook_1 = require("./pieces/Rook");
+const Knight_1 = require("./pieces/Knight");
+const Bishop_1 = require("./pieces/Bishop");
+const Queen_1 = require("./pieces/Queen");
+const King_1 = require("./pieces/King");
+const Pawn_1 = require("./pieces/Pawn");
 const utils_1 = require("./utils");
 class Player {
     constructor(id, chessRef) {
@@ -49,17 +54,17 @@ class Player {
         const upCode = code.toUpperCase();
         switch (upCode) {
             case "P":
-                return new piece_1.Pawn(id, rank, file, chessRef);
+                return new Pawn_1.Pawn(id, rank, file, chessRef);
             case "N":
-                return new piece_1.Knight(id, rank, file, chessRef);
+                return new Knight_1.Knight(id, rank, file, chessRef);
             case "B":
-                return new piece_1.Bishop(id, rank, file, chessRef);
+                return new Bishop_1.Bishop(id, rank, file, chessRef);
             case "R":
-                return new piece_1.Rook(id, rank, file, chessRef);
+                return new Rook_1.Rook(id, rank, file, chessRef);
             case "Q":
-                return new piece_1.Queen(id, rank, file, chessRef);
+                return new Queen_1.Queen(id, rank, file, chessRef);
             case "K":
-                return new piece_1.King(id, rank, file, chessRef);
+                return new King_1.King(id, rank, file, chessRef);
             default:
                 throw "piece should be either p/b/n/r/q/k!";
         }
