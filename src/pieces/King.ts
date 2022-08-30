@@ -11,6 +11,11 @@ export class King extends Piece {
   }
 
   generateMoves() {
+    this.generateNormalMove();
+    this.generateCastleMove();
+  }
+
+  private generateNormalMove() {
     this.moves = [];
 
     const targets: [number, number][] = [
@@ -29,37 +34,29 @@ export class King extends Piece {
         this.validateMove(...targets[i]);
       }
     }
-
-    this.castleCheck();
   }
 
-  castleCheck() {
+  private generateCastleMove() {
     const castleFen = this.chessRef.fen.fenCastle;
-    let kingside = false;
-    let queenside = false;
 
     if (this.faction === "w") {
-      kingside = castleFen.includes("K");
-      queenside = castleFen.includes("Q");
-      if (kingside) {
+      if (castleFen.includes("K")) {
         this.validateCastleMove("K");
       }
-      if (queenside) {
+      if (castleFen.includes("Q")) {
         this.validateCastleMove("Q");
       }
     } else {
-      kingside = castleFen.includes("k");
-      queenside = castleFen.includes("q");
-      if (kingside) {
+      if (castleFen.includes("k")) {
         this.validateCastleMove("k");
       }
-      if (queenside) {
+      if (castleFen.includes("q")) {
         this.validateCastleMove("q");
       }
     }
   }
 
-  validateCastleMove(code: CastleCode) {
+  private validateCastleMove(code: CastleCode) {
     let adjacent1 = false;
     let adjacent2 = false;
     let adjacent3 = false;

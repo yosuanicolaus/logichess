@@ -44,9 +44,8 @@ class Pawn extends piece_1.default {
         else {
             target = [this.rank + 1, this.file];
         }
-        if ((this.faction === "w" && target[0] === 0) ||
-            (this.faction === "b" && target[0] === 7)) {
-            this.checkPromotion(...target);
+        if (this.canPromote(target[0])) {
+            this.validatePromotionMove(...target);
         }
         else if (this.canMoveNormal(...target)) {
             this.validateMove(...target);
@@ -68,9 +67,8 @@ class Pawn extends piece_1.default {
         }
         for (let i = 0; i < targets.length; i++) {
             if (this.canMoveCapture(...targets[i])) {
-                if ((this.faction === "w" && targets[i][0] === 0) ||
-                    (this.faction === "b" && targets[i][0] === 7)) {
-                    this.checkPromotion(...targets[i]);
+                if (this.canPromote(targets[i][0])) {
+                    this.validatePromotionMove(...targets[i]);
                 }
                 else {
                     this.validateMove(...targets[i]);
@@ -93,7 +91,11 @@ class Pawn extends piece_1.default {
             }
         }
     }
-    checkPromotion(rank, file) {
+    canPromote(moveRank) {
+        return ((this.faction === "w" && moveRank === 0) ||
+            (this.faction === "b" && moveRank === 7));
+    }
+    validatePromotionMove(rank, file) {
         const promoteOption = ["Q", "R", "B", "N"];
         for (let i = 0; i < 4; i++) {
             const move = this.createMove(rank, file);

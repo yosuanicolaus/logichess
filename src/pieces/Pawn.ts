@@ -18,7 +18,7 @@ export class Pawn extends Piece {
     this.checkEnPassant();
   }
 
-  checkSpecialMove() {
+  private checkSpecialMove() {
     let targets: [[number, number], [number, number]];
     if (this.faction === "w" && this.rank === 6) {
       targets = [
@@ -36,24 +36,21 @@ export class Pawn extends Piece {
     }
   }
 
-  checkNormalMove() {
+  private checkNormalMove() {
     let target: [number, number];
     if (this.faction === "w") {
       target = [this.rank - 1, this.file];
     } else {
       target = [this.rank + 1, this.file];
     }
-    if (
-      (this.faction === "w" && target[0] === 0) ||
-      (this.faction === "b" && target[0] === 7)
-    ) {
-      this.checkPromotion(...target);
+    if (this.canPromote(target[0])) {
+      this.validatePromotionMove(...target);
     } else if (this.canMoveNormal(...target)) {
       this.validateMove(...target);
     }
   }
 
-  checkCrossCapture() {
+  private checkCrossCapture() {
     let targets: [[number, number], [number, number]];
     if (this.faction === "w") {
       targets = [
@@ -68,11 +65,8 @@ export class Pawn extends Piece {
     }
     for (let i = 0; i < targets.length; i++) {
       if (this.canMoveCapture(...targets[i])) {
-        if (
-          (this.faction === "w" && targets[i][0] === 0) ||
-          (this.faction === "b" && targets[i][0] === 7)
-        ) {
-          this.checkPromotion(...targets[i]);
+        if (this.canPromote(targets[i][0])) {
+          this.validatePromotionMove(...targets[i]);
         } else {
           this.validateMove(...targets[i]);
         }
@@ -80,7 +74,7 @@ export class Pawn extends Piece {
     }
   }
 
-  checkEnPassant() {
+  private checkEnPassant() {
     if (this.fenRef.fenEnPassant !== "-") {
       const [eprank, epfile] = convertUciLocation(this.fenRef.fenEnPassant);
 
@@ -99,7 +93,14 @@ export class Pawn extends Piece {
     }
   }
 
-  checkPromotion(rank: number, file: number) {
+  private canPromote(moveRank: number) {
+    return (
+      (this.faction === "w" && moveRank === 0) ||
+      (this.faction === "b" && moveRank === 7)
+    );
+  }
+
+  private validatePromotionMove(rank: number, file: number) {
     const promoteOption: PromoteCode[] = ["Q", "R", "B", "N"];
     for (let i = 0; i < 4; i++) {
       const move = this.createMove(rank, file);

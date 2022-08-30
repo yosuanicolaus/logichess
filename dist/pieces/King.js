@@ -10,6 +10,10 @@ class King extends piece_1.default {
         super(faction, rank, file, chessRef, code, value);
     }
     generateMoves() {
+        this.generateNormalMove();
+        this.generateCastleMove();
+    }
+    generateNormalMove() {
         this.moves = [];
         const targets = [
             [this.rank - 1, this.file - 1],
@@ -26,29 +30,22 @@ class King extends piece_1.default {
                 this.validateMove(...targets[i]);
             }
         }
-        this.castleCheck();
     }
-    castleCheck() {
+    generateCastleMove() {
         const castleFen = this.chessRef.fen.fenCastle;
-        let kingside = false;
-        let queenside = false;
         if (this.faction === "w") {
-            kingside = castleFen.includes("K");
-            queenside = castleFen.includes("Q");
-            if (kingside) {
+            if (castleFen.includes("K")) {
                 this.validateCastleMove("K");
             }
-            if (queenside) {
+            if (castleFen.includes("Q")) {
                 this.validateCastleMove("Q");
             }
         }
         else {
-            kingside = castleFen.includes("k");
-            queenside = castleFen.includes("q");
-            if (kingside) {
+            if (castleFen.includes("k")) {
                 this.validateCastleMove("k");
             }
-            if (queenside) {
+            if (castleFen.includes("q")) {
                 this.validateCastleMove("q");
             }
         }
