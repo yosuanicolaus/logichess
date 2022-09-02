@@ -20,7 +20,7 @@ export default class Chess {
     private pblack;
     protected turn: Faction;
     currentPlayer: Player;
-    data?: ChessData;
+    data: ChessData;
     constructor(fen?: FenString, simulation?: boolean);
     play(move: Move | string): void;
     info(mode?: "log" | "get"): string | undefined;

@@ -24,7 +24,7 @@ export default class Chess {
   private pblack: Player;
   protected turn: Faction;
   currentPlayer: Player;
-  data?: ChessData;
+  data: ChessData;
 
   constructor(fen?: FenString, simulation = false) {
     this.fen = new Fen(fen);
@@ -37,9 +37,7 @@ export default class Chess {
 
     this.updateTurn();
     this.currentPlayer.initialize();
-    if (!simulation) {
-      this.data = this.getData();
-    }
+    this.data = this.getData();
   }
 
   play(move: Move | string) {
@@ -101,12 +99,9 @@ export default class Chess {
   }
 
   private getStatus(): GameStatus {
-    if (this.currentPlayer.possibleMoves.length === 0) {
-      return "end";
-    } else if (isInCheck(this)) {
-      return "check";
-    } else {
-      return "normal";
-    }
+    if (this.simulation) return "normal";
+    if (this.currentPlayer.possibleMoves.length === 0) return "end";
+    if (isInCheck(this)) return "check";
+    return "normal";
   }
 }

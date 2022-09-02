@@ -15,9 +15,7 @@ class Chess {
         this.currentPlayer = this.pwhite;
         this.updateTurn();
         this.currentPlayer.initialize();
-        if (!simulation) {
-            this.data = this.getData();
-        }
+        this.data = this.getData();
     }
     play(move) {
         if (typeof move === "string") {
@@ -75,15 +73,13 @@ class Chess {
         };
     }
     getStatus() {
-        if (this.currentPlayer.possibleMoves.length === 0) {
-            return "end";
-        }
-        else if ((0, utils_1.isInCheck)(this)) {
-            return "check";
-        }
-        else {
+        if (this.simulation)
             return "normal";
-        }
+        if (this.currentPlayer.possibleMoves.length === 0)
+            return "end";
+        if ((0, utils_1.isInCheck)(this))
+            return "check";
+        return "normal";
     }
 }
 exports.default = Chess;
