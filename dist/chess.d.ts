@@ -1,7 +1,7 @@
-import Board from "./board";
-import Fen, { FenString } from "./fen";
-import Move from "./move";
-import Player from "./player";
+import { Board } from "./board";
+import { Fen, FenString } from "./fen";
+import { Move } from "./move";
+import { Player } from "./player";
 import { Faction } from "./types";
 declare type GameStatus = "normal" | "check" | "end";
 interface ChessData {
@@ -12,7 +12,7 @@ interface ChessData {
     board: string[][];
     moves: Move[];
 }
-export default class Chess {
+export declare class Chess {
     readonly fen: Fen;
     readonly board: Board;
     readonly simulation: boolean;

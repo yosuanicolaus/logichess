@@ -1,6 +1,6 @@
 import { Notation } from "./types";
-import Move from "./move";
-export default class Board {
+import { Move } from "./move";
+export declare class Board {
     board: string[][];
     constructor(fenBoard: string);
     private static createBoard;

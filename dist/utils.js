@@ -69,7 +69,7 @@ function sameFaction(faction, panelPiece) {
 }
 exports.sameFaction = sameFaction;
 function isInCheck(chess) {
-    const simulation = new chess_1.default(chess.fen.fen, true);
+    const simulation = new chess_1.Chess(chess.fen.fen, true);
     simulation.playNone();
     return simulation.currentPlayer.canCaptureKing();
 }

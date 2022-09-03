@@ -1,7 +1,7 @@
-import Move from "./move";
+import { Move } from "./move";
 import { Faction } from "./types";
 export declare type FenString = `${string} ${Faction} ${string} ${string} ${number} ${number}`;
-export default class Fen {
+export declare class Fen {
     fen: FenString;
     fenBoard: string;
     fenTurn: Faction;

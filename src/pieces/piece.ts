@@ -1,7 +1,7 @@
-import Board from "../board";
-import Chess from "../chess";
-import Fen from "../fen";
-import Move from "../move";
+import { Board } from "../board";
+import { Chess } from "../chess";
+import { Fen } from "../fen";
+import { Move } from "../move";
 import { Faction, PieceCode } from "../types";
 import {
   checkBoundaries,
@@ -10,7 +10,7 @@ import {
   sameFaction,
 } from "../utils";
 
-export default abstract class Piece {
+export abstract class Piece {
   faction: Faction;
   rank: number;
   file: number;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pawn = void 0;
 const utils_1 = require("../utils");
 const piece_1 = require("./piece");
-class Pawn extends piece_1.default {
+class Pawn extends piece_1.Piece {
     constructor(faction, rank, file, chessRef) {
         const code = (0, utils_1.createPieceCode)(faction, "P");
         const value = 1;

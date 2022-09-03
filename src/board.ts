@@ -1,8 +1,8 @@
 import { isStringNumber, convertUciLocation } from "./utils";
 import { CastleCode, Notation } from "./types";
-import Move from "./move";
+import { Move } from "./move";
 
-export default class Board {
+export class Board {
   board: string[][];
   constructor(fenBoard: string) {
     this.board = Board.createBoard();

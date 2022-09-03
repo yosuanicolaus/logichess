@@ -1,7 +1,7 @@
-import Board from "./board";
-import Fen, { FenString } from "./fen";
-import Move from "./move";
-import Player from "./player";
+import { Board } from "./board";
+import { Fen, FenString } from "./fen";
+import { Move } from "./move";
+import { Player } from "./player";
 import { Faction } from "./types";
 import { isInCheck } from "./utils";
 
@@ -16,7 +16,7 @@ interface ChessData {
   moves: Move[];
 }
 
-export default class Chess {
+export class Chess {
   readonly fen: Fen;
   readonly board: Board;
   readonly simulation: boolean;

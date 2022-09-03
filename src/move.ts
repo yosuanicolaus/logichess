@@ -1,7 +1,7 @@
 import { convertRankFile } from "./utils";
 import { Faction, CastleCode, PromoteCode } from "./types";
 
-export default class Move {
+export class Move {
   readonly from: {
     rank: number;
     file: number;

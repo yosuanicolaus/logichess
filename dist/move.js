@@ -6,6 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _Move_instances, _Move_sanAddFrom;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Move = void 0;
 const utils_1 = require("./utils");
 class Move {
     constructor(fromRank, fromFile, toRank, toFile, piece, faction) {
@@ -101,7 +102,7 @@ class Move {
         this.san = this.lan;
     }
 }
-exports.default = Move;
+exports.Move = Move;
 _Move_instances = new WeakSet(), _Move_sanAddFrom = function _Move_sanAddFrom() {
     var _a;
     const from = (0, utils_1.convertRankFile)(this.from.rank, this.from.file);

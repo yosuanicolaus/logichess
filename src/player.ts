@@ -1,16 +1,16 @@
-import Chess from "./chess";
-import Move from "./move";
-import Piece from "./pieces/piece";
+import { Chess } from "./chess";
+import { Move } from "./move";
+import { Piece } from "./pieces/piece";
 import { Rook } from "./pieces/Rook";
 import { Knight } from "./pieces/Knight";
 import { Bishop } from "./pieces/Bishop";
 import { Queen } from "./pieces/Queen";
 import { King } from "./pieces/King";
 import { Pawn } from "./pieces/Pawn";
-import { Faction, PieceCode } from "./types";
+import { Faction } from "./types";
 import { allDifferent, isCapital, isStringNumber } from "./utils";
 
-export default class Player {
+export class Player {
   private faction: Faction;
   private chessRef: Chess;
   private pieces: Piece[] = [];

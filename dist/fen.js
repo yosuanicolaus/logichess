@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Fen = void 0;
 const utils_1 = require("./utils");
 const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 class Fen {
@@ -157,4 +158,4 @@ class Fen {
         }
     }
 }
-exports.default = Fen;
+exports.Fen = Fen;

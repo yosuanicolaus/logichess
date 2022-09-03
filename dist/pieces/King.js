@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.King = void 0;
 const utils_1 = require("../utils");
 const piece_1 = require("./piece");
-class King extends piece_1.default {
+class King extends piece_1.Piece {
     constructor(faction, rank, file, chessRef) {
         const code = (0, utils_1.createPieceCode)(faction, "K");
         const value = Number.POSITIVE_INFINITY;

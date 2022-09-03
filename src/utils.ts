@@ -1,4 +1,4 @@
-import Chess from "./chess";
+import { Chess } from "./chess";
 import { Faction, PieceCode } from "./types";
 
 export function inBoundaries(rank: number, file: number) {

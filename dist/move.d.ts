@@ -1,5 +1,5 @@
 import { Faction, CastleCode, PromoteCode } from "./types";
-export default class Move {
+export declare class Move {
     #private;
     readonly from: {
         rank: number;

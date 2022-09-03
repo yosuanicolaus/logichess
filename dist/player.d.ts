@@ -1,7 +1,7 @@
-import Chess from "./chess";
-import Move from "./move";
+import { Chess } from "./chess";
+import { Move } from "./move";
 import { Faction } from "./types";
-export default class Player {
+export declare class Player {
     private faction;
     private chessRef;
     private pieces;

@@ -1,7 +1,7 @@
-import Chess from "../chess";
+import { Chess } from "../chess";
 import { Faction, PromoteCode } from "../types";
 import { convertUciLocation, createPieceCode } from "../utils";
-import Piece from "./piece";
+import { Piece } from "./piece";
 
 export class Pawn extends Piece {
   constructor(faction: Faction, rank: number, file: number, chessRef: Chess) {

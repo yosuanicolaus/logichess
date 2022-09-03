@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Queen = void 0;
 const utils_1 = require("../utils");
 const piece_1 = require("./piece");
-class Queen extends piece_1.default {
+class Queen extends piece_1.Piece {
     constructor(faction, rank, file, chessRef) {
         const code = (0, utils_1.createPieceCode)(faction, "Q");
         const value = 9;

@@ -1,5 +1,5 @@
 import { convertRankFile } from "./utils";
-import Move from "./move";
+import { Move } from "./move";
 import { Faction } from "./types";
 
 export type FenString =
@@ -8,7 +8,7 @@ export type FenString =
 const defaultFen: FenString =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-export default class Fen {
+export class Fen {
   fen: FenString;
   fenBoard: string;
   fenTurn: Faction;

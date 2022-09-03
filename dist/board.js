@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Board = void 0;
 const utils_1 = require("./utils");
 class Board {
     constructor(fenBoard) {
@@ -112,4 +113,4 @@ class Board {
         }
     }
 }
-exports.default = Board;
+exports.Board = Board;

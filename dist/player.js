@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Player = void 0;
 const move_1 = require("./move");
 const Rook_1 = require("./pieces/Rook");
 const Knight_1 = require("./pieces/Knight");
@@ -111,20 +112,20 @@ class Player {
         let kingMove, rookMove;
         switch (code) {
             case "K":
-                kingMove = new move_1.default(7, 4, 7, 6);
-                rookMove = new move_1.default(7, 7, 7, 5);
+                kingMove = new move_1.Move(7, 4, 7, 6);
+                rookMove = new move_1.Move(7, 7, 7, 5);
                 break;
             case "Q":
-                kingMove = new move_1.default(7, 4, 7, 2);
-                rookMove = new move_1.default(7, 0, 7, 3);
+                kingMove = new move_1.Move(7, 4, 7, 2);
+                rookMove = new move_1.Move(7, 0, 7, 3);
                 break;
             case "k":
-                kingMove = new move_1.default(0, 4, 0, 6);
-                rookMove = new move_1.default(0, 7, 0, 5);
+                kingMove = new move_1.Move(0, 4, 0, 6);
+                rookMove = new move_1.Move(0, 7, 0, 5);
                 break;
             case "q":
-                kingMove = new move_1.default(0, 4, 0, 2);
-                rookMove = new move_1.default(0, 0, 0, 3);
+                kingMove = new move_1.Move(0, 4, 0, 2);
+                rookMove = new move_1.Move(0, 0, 0, 3);
         }
         this.update(kingMove);
         this.update(rookMove);
@@ -248,4 +249,4 @@ class Player {
         throw `can't found move ${str}. Available moves: ${this.getSanMoves()}`;
     }
 }
-exports.default = Player;
+exports.Player = Player;

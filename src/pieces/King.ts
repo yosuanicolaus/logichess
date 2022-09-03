@@ -1,7 +1,7 @@
-import Chess from "../chess";
+import { Chess } from "../chess";
 import { CastleCode, Faction } from "../types";
 import { createPieceCode } from "../utils";
-import Piece from "./piece";
+import { Piece } from "./piece";
 
 export class King extends Piece {
   constructor(faction: Faction, rank: number, file: number, chessRef: Chess) {

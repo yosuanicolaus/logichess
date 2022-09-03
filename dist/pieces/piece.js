@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Piece = void 0;
 const chess_1 = require("../chess");
 const move_1 = require("../move");
 const utils_1 = require("../utils");
@@ -17,7 +18,7 @@ class Piece {
         this.value = value;
     }
     createMove(toRank, toFile) {
-        const move = new move_1.default(this.rank, this.file, toRank, toFile, this.code, this.faction);
+        const move = new move_1.Move(this.rank, this.file, toRank, toFile, this.code, this.faction);
         return move;
     }
     addCaptureProp(move) {
@@ -46,7 +47,7 @@ class Piece {
             return;
         }
         // creates simulation where we play the move
-        const simulation = new chess_1.default(this.fenRef.fen, true);
+        const simulation = new chess_1.Chess(this.fenRef.fen, true);
         simulation.play(move);
         if (simulation.currentPlayer.canCaptureKing()) {
             // if the opponent can take player's king right
@@ -82,4 +83,4 @@ class Piece {
         this.file = move.to.file;
     }
 }
-exports.default = Piece;
+exports.Piece = Piece;

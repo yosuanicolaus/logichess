@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Chess = void 0;
 const board_1 = require("./board");
 const fen_1 = require("./fen");
 const player_1 = require("./player");
 const utils_1 = require("./utils");
 class Chess {
     constructor(fen, simulation = false) {
-        this.fen = new fen_1.default(fen);
-        this.board = new board_1.default(this.fen.fenBoard);
+        this.fen = new fen_1.Fen(fen);
+        this.board = new board_1.Board(this.fen.fenBoard);
         this.simulation = simulation;
-        this.pwhite = new player_1.default("w", this);
-        this.pblack = new player_1.default("b", this);
+        this.pwhite = new player_1.Player("w", this);
+        this.pblack = new player_1.Player("b", this);
         this.turn = this.fen.fenTurn;
         this.currentPlayer = this.pwhite;
         this.updateTurn();
@@ -82,4 +83,4 @@ class Chess {
         return "normal";
     }
 }
-exports.default = Chess;
+exports.Chess = Chess;
