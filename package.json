@@ -1,8 +1,8 @@
 {
   "name": "logichess",
-  "version": "1.0.0",
-  "description": "A chess programming library in JavaScript",
-  "main": "board.js",
+  "version": "0.1.1",
+  "description": "A chess programming library written in TypeScript",
+  "main": "index.js",
   "scripts": {
     "build": "tsc"
   },
@@ -10,8 +10,10 @@
     "type": "git",
     "url": "git+https://github.com/yosuanicolaus/logichess.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "chess"
+  ],
+  "author": "Yosua Nicolaus",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/yosuanicolaus/logichess/issues"
