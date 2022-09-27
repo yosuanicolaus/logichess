@@ -1,8 +1,7 @@
 import { Move } from "./move";
 import { Faction } from "./types";
-export declare type FenString = `${string} ${Faction} ${string} ${string} ${number} ${number}`;
 export declare class Fen {
-    fen: FenString;
+    fen: string;
     fenBoard: string;
     fenTurn: Faction;
     fenCastle: string;
@@ -10,7 +9,7 @@ export declare class Fen {
     fenHalfmove: number;
     fenFullmove: number;
     castlingRights: string[];
-    constructor(fen?: `${string} b ${string} ${string} ${number} ${number}` | `${string} w ${string} ${string} ${number} ${number}`);
+    constructor(fen?: string);
     getCastlingRights(fenCastle: string): string[];
     update(move: Move, newBoard: string[][]): void;
     updateFen(): void;

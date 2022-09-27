@@ -1,5 +1,5 @@
 import { Board } from "./board";
-import { Fen, FenString } from "./fen";
+import { Fen } from "./fen";
 import { Move } from "./move";
 import { Player } from "./player";
 import { Faction } from "./types";
@@ -8,7 +8,7 @@ interface ChessData {
     status: GameStatus;
     difference: number;
     turn: Faction;
-    fen: FenString;
+    fen: string;
     board: string[][];
     moves: Move[];
 }
@@ -21,7 +21,7 @@ export declare class Chess {
     protected turn: Faction;
     currentPlayer: Player;
     data: ChessData;
-    constructor(fen?: FenString, simulation?: boolean);
+    constructor(fen?: string, simulation?: boolean);
     play(move: Move | string): void;
     info(mode?: "log" | "get"): string | undefined;
     playNone(): void;
