@@ -8,13 +8,30 @@ Install:
 npm i logichess
 ```
 
-Usage:
+# Usage:
+
+- Import module
 
 ```javascript
-const Chess = require("logichess");
+// Common JS
+const { Chess } = require("logichess");
+// ES Module
+import { Chess } from "logichess";
+```
 
+- Create new game
+
+```javascript
 const game = new Chess();
+// Or if you want custom game, (need FEN)
+const fenString =
+  "r1bqkb1r/pppp1ppp/2n2n2/4p1N1/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 5 4";
+const customGame = new Chess(fenString);
+```
 
+When creating a new Chess object, it will automatically calculate all possible/legal moves that you can choose to play, along with other useful informations like whose turn, is it in check, material difference, and also board display.
+
+```javascript
 console.log(game.data);
 
 /* logs:
