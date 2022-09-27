@@ -2,14 +2,10 @@ import { convertRankFile } from "./utils";
 import { Move } from "./move";
 import { Faction } from "./types";
 
-export type FenString =
-  `${string} ${Faction} ${string} ${string} ${number} ${number}`;
-
-const defaultFen: FenString =
-  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export class Fen {
-  fen: FenString;
+  fen: string;
   fenBoard: string;
   fenTurn: Faction;
   fenCastle: string;
@@ -21,14 +17,10 @@ export class Fen {
   constructor(fen = defaultFen) {
     this.fen = fen;
     const fens = fen.split(" ");
+    // TODO: add type & validation like fenTurn's for
+    // fenBoard, fenCastle, & fenEnPassant
     this.fenBoard = fens[0];
-
-    const turn = fens[1];
-    if (turn !== "w" && turn !== "b") {
-      throw "Fen turn (fens[1]) must be w / b!";
-    }
-    this.fenTurn = turn;
-
+    this.fenTurn = validateFenTurn(fens[1]);
     this.fenCastle = fens[2];
     this.fenEnPassant = fens[3];
     this.fenHalfmove = Number(fens[4]);
@@ -165,4 +157,13 @@ export class Fen {
       this.fenEnPassant = "-";
     }
   }
+}
+
+// Fen Validation Functions
+
+function validateFenTurn(fenTurn: string) {
+  if (fenTurn !== "w" && fenTurn !== "b") {
+    throw "Fen turn (fens[1]) must be w / b!";
+  }
+  return fenTurn;
 }

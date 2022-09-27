@@ -1,5 +1,5 @@
 import { Board } from "./board";
-import { Fen, FenString } from "./fen";
+import { Fen } from "./fen";
 import { Move } from "./move";
 import { Player } from "./player";
 import { Faction } from "./types";
@@ -11,7 +11,7 @@ interface ChessData {
   status: GameStatus;
   difference: number;
   turn: Faction;
-  fen: FenString;
+  fen: string;
   board: string[][];
   moves: Move[];
 }
@@ -26,7 +26,7 @@ export class Chess {
   currentPlayer: Player;
   data: ChessData;
 
-  constructor(fen?: FenString, simulation = false) {
+  constructor(fen?: string, simulation = false) {
     this.fen = new Fen(fen);
     this.board = new Board(this.fen.fenBoard);
     this.simulation = simulation;
