@@ -2,7 +2,7 @@ import { Board } from "../board";
 import { Chess } from "../chess";
 import { Fen } from "../fen";
 import { Move } from "../move";
-import { Faction, PieceCode } from "../types";
+import { Faction, PieceCode, RankFile } from "../types";
 import {
   checkBoundaries,
   inBoundaries,
@@ -42,14 +42,13 @@ export abstract class Piece {
   }
 
   protected createMove(toRank: number, toFile: number) {
-    const move = new Move(
+    const [fr, ff, tr, tf] = [
       this.rank,
       this.file,
       toRank,
       toFile,
-      this.code,
-      this.faction
-    );
+    ] as RankFile[];
+    const move = new Move(fr, ff, tr, tf, this.code, this.faction);
     return move;
   }
 

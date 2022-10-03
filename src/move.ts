@@ -1,14 +1,14 @@
 import { convertRankFile } from "./utils";
-import { Faction, CastleCode, PromoteCode } from "./types";
+import { Faction, CastleCode, PromoteCode, RankFile } from "./types";
 
 export class Move {
   readonly from: {
-    rank: number;
-    file: number;
+    rank: RankFile;
+    file: RankFile;
   };
   readonly to: {
-    rank: number;
-    file: number;
+    rank: RankFile;
+    file: RankFile;
   };
   piece?: string;
   faction?: Faction;
@@ -28,10 +28,10 @@ export class Move {
   fenResult: string;
 
   constructor(
-    fromRank: number,
-    fromFile: number,
-    toRank: number,
-    toFile: number,
+    fromRank: RankFile,
+    fromFile: RankFile,
+    toRank: RankFile,
+    toFile: RankFile,
     piece?: string,
     faction?: Faction
   ) {

@@ -1,23 +1,27 @@
 import { isStringNumber, convertUciLocation } from "./utils";
-import { CastleCode, Notation } from "./types";
+import { BoardStringArray, CastleCode, Notation } from "./types";
 import { Move } from "./move";
 
+const defaultBoard: BoardStringArray = [
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+  [".", ".", ".", ".", ".", ".", ".", "."],
+];
+
 export class Board {
-  board: string[][];
+  board: BoardStringArray;
   constructor(fenBoard: string) {
     this.board = Board.createBoard();
     this.load(fenBoard);
   }
 
   private static createBoard() {
-    const board: string[][] = [];
-    for (let i = 0; i < 8; i++) {
-      board.push([]);
-      for (let j = 0; j < 8; j++) {
-        board[i].push(".");
-      }
-    }
-    return board;
+    return defaultBoard.map((arr) => arr.slice()) as BoardStringArray;
   }
 
   private load(fen: string) {

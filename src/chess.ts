@@ -2,7 +2,7 @@ import { Board } from "./board";
 import { Fen } from "./fen";
 import { Move } from "./move";
 import { Player } from "./player";
-import { Faction } from "./types";
+import { BoardStringArray, Faction } from "./types";
 import { isInCheck } from "./utils";
 
 type GameStatus = "normal" | "check" | "end";
@@ -12,7 +12,7 @@ interface ChessData {
   difference: number;
   turn: Faction;
   fen: string;
-  board: string[][];
+  board: BoardStringArray;
   moves: Move[];
 }
 
