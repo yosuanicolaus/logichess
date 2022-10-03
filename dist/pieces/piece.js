@@ -18,7 +18,13 @@ class Piece {
         this.value = value;
     }
     createMove(toRank, toFile) {
-        const move = new move_1.Move(this.rank, this.file, toRank, toFile, this.code, this.faction);
+        const [fr, ff, tr, tf] = [
+            this.rank,
+            this.file,
+            toRank,
+            toFile,
+        ];
+        const move = new move_1.Move(fr, ff, tr, tf, this.code, this.faction);
         return move;
     }
     addCaptureProp(move) {

@@ -1,5 +1,5 @@
 import { Chess } from "./chess";
-import { Faction, PieceCode } from "./types";
+import { Faction, PieceCode, RankFile } from "./types";
 export declare function inBoundaries(rank: number, file: number): boolean;
 export declare function checkBoundaries(rank: number, file: number): void;
 export declare function convertUciLocation(uci: string): number[];
@@ -11,3 +11,5 @@ export declare function allDifferent(...args: string[]): boolean;
 export declare function createPieceCode(faction: Faction, code: PieceCode): PieceCode;
 export declare function sameFaction(faction: Faction, panelPiece: string): boolean;
 export declare function isInCheck(chess: Chess): boolean;
+export declare function forAllRankFile(callback: (rank: RankFile, file: RankFile) => void): void;
+export declare function deepCopy(array: any[][]): any[][];

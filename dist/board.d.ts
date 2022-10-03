@@ -1,7 +1,7 @@
-import { Notation } from "./types";
+import { BoardStringArray, Notation } from "./types";
 import { Move } from "./move";
 export declare class Board {
-    board: string[][];
+    board: BoardStringArray;
     constructor(fenBoard: string);
     private static createBoard;
     private load;

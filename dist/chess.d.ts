@@ -2,14 +2,14 @@ import { Board } from "./board";
 import { Fen } from "./fen";
 import { Move } from "./move";
 import { Player } from "./player";
-import { Faction } from "./types";
+import { BoardStringArray, Faction } from "./types";
 declare type GameStatus = "normal" | "check" | "end";
 interface ChessData {
     status: GameStatus;
     difference: number;
     turn: Faction;
     fen: string;
-    board: string[][];
+    board: BoardStringArray;
     moves: Move[];
 }
 export declare class Chess {

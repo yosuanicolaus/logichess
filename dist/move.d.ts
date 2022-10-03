@@ -1,13 +1,13 @@
-import { Faction, CastleCode, PromoteCode } from "./types";
+import { Faction, CastleCode, PromoteCode, RankFile } from "./types";
 export declare class Move {
     #private;
     readonly from: {
-        rank: number;
-        file: number;
+        rank: RankFile;
+        file: RankFile;
     };
     readonly to: {
-        rank: number;
-        file: number;
+        rank: RankFile;
+        file: RankFile;
     };
     piece?: string;
     faction?: Faction;
@@ -22,7 +22,7 @@ export declare class Move {
     lan: string;
     uci: string;
     fenResult: string;
-    constructor(fromRank: number, fromFile: number, toRank: number, toFile: number, piece?: string, faction?: Faction);
+    constructor(fromRank: RankFile, fromFile: RankFile, toRank: RankFile, toFile: RankFile, piece?: string, faction?: Faction);
     generate(): void;
     generateSanLan(): void;
     generateUci(): void;

@@ -2,20 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Board = void 0;
 const utils_1 = require("./utils");
+const defaultBoard = [
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+    [".", ".", ".", ".", ".", ".", ".", "."],
+];
 class Board {
     constructor(fenBoard) {
         this.board = Board.createBoard();
         this.load(fenBoard);
     }
     static createBoard() {
-        const board = [];
-        for (let i = 0; i < 8; i++) {
-            board.push([]);
-            for (let j = 0; j < 8; j++) {
-                board[i].push(".");
-            }
-        }
-        return board;
+        return (0, utils_1.deepCopy)(defaultBoard);
     }
     load(fen) {
         let rank = 0;

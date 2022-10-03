@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInCheck = exports.sameFaction = exports.createPieceCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = exports.inBoundaries = void 0;
+exports.deepCopy = exports.forAllRankFile = exports.isInCheck = exports.sameFaction = exports.createPieceCode = exports.allDifferent = exports.addIncrement = exports.isCapital = exports.isStringNumber = exports.convertRankFile = exports.convertUciLocation = exports.checkBoundaries = exports.inBoundaries = void 0;
 const chess_1 = require("./chess");
 function inBoundaries(rank, file) {
     return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
@@ -74,3 +74,17 @@ function isInCheck(chess) {
     return simulation.currentPlayer.canCaptureKing();
 }
 exports.isInCheck = isInCheck;
+function forAllRankFile(callback) {
+    for (let r = 0; r < 8; r++) {
+        for (let f = 0; f < 8; f++) {
+            const rank = r;
+            const file = f;
+            callback(rank, file);
+        }
+    }
+}
+exports.forAllRankFile = forAllRankFile;
+function deepCopy(array) {
+    return array.map((arr) => arr.slice());
+}
+exports.deepCopy = deepCopy;
