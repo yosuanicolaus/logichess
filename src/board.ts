@@ -1,4 +1,4 @@
-import { isStringNumber, convertUciLocation } from "./utils";
+import { isStringNumber, convertUciLocation, deepCopy } from "./utils";
 import { BoardStringArray, CastleCode, Notation } from "./types";
 import { Move } from "./move";
 
@@ -21,7 +21,7 @@ export class Board {
   }
 
   private static createBoard() {
-    return defaultBoard.map((arr) => arr.slice()) as BoardStringArray;
+    return deepCopy(defaultBoard) as BoardStringArray;
   }
 
   private load(fen: string) {

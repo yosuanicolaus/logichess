@@ -1,5 +1,5 @@
 import { Chess } from "./chess";
-import { Faction, PieceCode } from "./types";
+import { Faction, PieceCode, RankFile } from "./types";
 
 export function inBoundaries(rank: number, file: number) {
   return rank >= 0 && rank <= 7 && file >= 0 && file <= 7;
@@ -75,4 +75,20 @@ export function isInCheck(chess: Chess) {
   const simulation = new Chess(chess.fen.fen, true);
   simulation.playNone();
   return simulation.currentPlayer.canCaptureKing();
+}
+
+export function forAllRankFile(
+  callback: (rank: RankFile, file: RankFile) => void
+) {
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const rank = r as RankFile;
+      const file = f as RankFile;
+      callback(rank, file);
+    }
+  }
+}
+
+export function deepCopy(array: any[][]) {
+  return array.map((arr) => arr.slice());
 }
