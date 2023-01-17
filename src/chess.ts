@@ -2,19 +2,8 @@ import { Board } from "./board";
 import { Fen } from "./fen";
 import { Move } from "./move";
 import { Player } from "./player";
-import { BoardStringArray, Faction } from "./types";
+import { ChessData, Faction } from "./types";
 import { isInCheck } from "./utils";
-
-type GameStatus = "normal" | "check" | "end";
-
-interface ChessData {
-  status: GameStatus;
-  difference: number;
-  turn: Faction;
-  fen: string;
-  board: BoardStringArray;
-  moves: Move[];
-}
 
 export class Chess {
   readonly fen: Fen;
@@ -88,8 +77,9 @@ export class Chess {
   }
 
   private getData(): ChessData {
+    const status: "normal" | "check" | "end" = this.getStatus();
     return {
-      status: this.getStatus(),
+      status,
       difference: this.pwhite.totalValue - this.pblack.totalValue,
       turn: this.turn,
       fen: this.fen.fen,
@@ -98,7 +88,7 @@ export class Chess {
     };
   }
 
-  private getStatus(): GameStatus {
+  private getStatus() {
     if (this.simulation) return "normal";
     if (this.currentPlayer.possibleMoves.length === 0) return "end";
     if (isInCheck(this)) return "check";

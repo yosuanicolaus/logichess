@@ -1,3 +1,5 @@
+import { Move } from "./move";
+
 export type PieceCode =
   | "p"
   | "n"
@@ -37,3 +39,13 @@ type Array8x8<T> = [
 ];
 
 export type BoardStringArray = Array8x8<string>;
+
+export type ChessData = {
+  difference: number;
+  turn: "w" | "b";
+  fen: string;
+  board: BoardStringArray;
+  moves: Move[];
+  status: "normal" | "check" | "end";
+  result?: "White Win" | "Black Win" | "Draw";
+};

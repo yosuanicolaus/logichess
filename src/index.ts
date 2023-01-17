@@ -1,3 +1,5 @@
 import { Chess } from "./chess";
+import { Move } from "./move";
+import { ChessData } from "./types";
 
-export { Chess };
+export { Chess, Move, ChessData };
