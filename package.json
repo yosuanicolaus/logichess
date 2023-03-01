@@ -1,6 +1,6 @@
 {
   "name": "logichess",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A chess programming library written in TypeScript",
   "main": "dist/index.js",
   "module": "dist/esm/wrapper.js",
